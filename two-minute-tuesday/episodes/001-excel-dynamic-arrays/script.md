@@ -7,6 +7,7 @@
 | **Tip** | `UNIQUE`, `SORT`, `FILTER` |
 | **Target runtime** | 1:49 |
 | **Demo file** | `demo-workbook.xlsx` (380 rows, 15 vendors, 6 cost centers) |
+| **Rendered cut** | `TMT-001-Excel-Dynamic-Arrays.mp4` — 1:47, captioned, no voiceover. See [`render/README.md`](render/README.md). |
 | **Recap card lines** | 1. `=UNIQUE(range)` · 2. `=SORT(UNIQUE(range))` · 3. `=FILTER(table, column = criteria)` |
 
 ## The pain, in one sentence
@@ -55,7 +56,7 @@ where each beat *starts*.
 | 1:00 | "Enter. Alphabetical, and still one formula." | **Enter.** Pause. |
 | 1:05 | "Now the useful one. FILTER. Give it the whole table, then tell it which rows you want." | Click **F7**. Type `=FILTER(` |
 | 1:12 | "The table..." | Click the **ERP Export** tab, click cell **A2**, and press **Ctrl+A** to grab the whole table — or type `ERP_Export`. Type a comma. |
-| 1:18 | "...and the rule: cost center equals whatever's in this cell." | Reference the **Cost Center** column, type `=`, click back to **Report** and click **G4**. Close the paren. |
+| 1:18 | "...and the rule: cost center equals whatever's in this cell." | Reference the **Cost Center** column, type `=`, click back to **Report** and click **G4**. Then type `,"No matches"` and close the paren — that third argument is what shows instead of `#CALC!` when nothing matches. |
 | 1:26 | "Enter." | **Enter.** A hundred and thirty-six rows spill out across six columns. Pause a beat and let the size of it land. |
 | 1:30 | "Every line charged to Powder Line 1. And here's the part that matters —" | Hover **G4**. |
 | 1:34 | "— change the cost center, and the whole report redraws itself." | Click **G4**, open the dropdown, pick **Shipping**. Pause. Then pick **Prep & Blast**. Pause. |
