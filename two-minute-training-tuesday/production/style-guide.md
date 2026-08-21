@@ -63,10 +63,10 @@ into it.
 ## File naming
 
 ```
-TMT-###-Short-Kebab-Title.mp4      TMT-001-Excel-Dynamic-Arrays.mp4
-TMT-###-raw.mp4                    TMT-001-raw.mp4          (keep 30 days, then delete)
-TMT-###-title.png                  TMT-001-title.png
-TMT-###-recap.png                  TMT-001-recap.png
+TMTT-###-Short-Kebab-Title.mp4      TMTT-001-Excel-Dynamic-Arrays.mp4
+TMTT-###-raw.mp4                    TMTT-001-raw.mp4          (keep 30 days, then delete)
+TMTT-###-title.png                  TMTT-001-title.png
+TMTT-###-recap.png                  TMTT-001-recap.png
 ```
 
 Episode numbers are permanent and never reused, even if an episode is retired.

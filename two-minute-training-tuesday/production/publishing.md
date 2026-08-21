@@ -18,7 +18,7 @@ afternoon.
 
 ### One-time setup
 
-1. Create a dedicated channel — **Two-Minute Tuesday** — in whichever team
+1. Create a dedicated channel — **Two-Minute Training Tuesday** — in whichever team
    everyone is already in. Do not make a new team for it; a new team is a new
    thing to remember to visit.
 2. Pin a post to the channel explaining what the series is and when it lands.
@@ -55,7 +55,7 @@ Someone will search "vendor list" in October and needs to land on episode 1.
 
 ## 2. Viva Engage
 
-1. Post to the all-company community, or a **Two-Minute Tuesday** community if
+1. Post to the all-company community, or a **Two-Minute Training Tuesday** community if
    volume justifies one later.
 2. Upload the same MP4 natively rather than linking out. Native video plays in
    the feed; a link asks for a click most people won't spend.

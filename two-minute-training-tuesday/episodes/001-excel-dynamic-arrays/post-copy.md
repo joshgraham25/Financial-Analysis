@@ -4,7 +4,7 @@
 
 **Subject / first line**
 
-> Two-Minute Tuesday #001 — Stop copy-pasting your vendor list
+> Two-Minute Training Tuesday #001 — Stop copy-pasting your vendor list
 
 **Body**
 
@@ -29,13 +29,13 @@
 >
 > Got a tip you want covered — ERP, Outlook, Teams, anything? Reply here.
 
-**Attach:** `TMT-001-Excel-Dynamic-Arrays.mp4`, `demo-workbook.xlsx`
+**Attach:** `TMTT-001-Excel-Dynamic-Arrays.mp4`, `demo-workbook.xlsx`
 
 ## Viva Engage post
 
 Shorter. The feed punishes length.
 
-> **Two-Minute Tuesday #001** is up 🎬
+> **Two-Minute Training Tuesday #001** is up 🎬
 >
 > Stop copy-pasting your vendor list. `UNIQUE`, `SORT`, and `FILTER` do the
 > copy-paste-dedupe-sort routine in one formula that updates itself.
@@ -58,7 +58,7 @@ in the feed; a link costs you most of your viewers.
 
 ## Files to have ready
 
-- `TMT-001-Excel-Dynamic-Arrays.mp4` — the export
-- `TMT-001-title.png` / `TMT-001-recap.png` — from `assets/title-card.html`
+- `TMTT-001-Excel-Dynamic-Arrays.mp4` — the export
+- `TMTT-001-title.png` / `TMTT-001-recap.png` — from `assets/title-card.html`
 - `demo-workbook.xlsx` — attach it to the Teams post
-- `TMT-001-raw.mp4` — keep 30 days in case you need a re-edit, then delete
+- `TMTT-001-raw.mp4` — keep 30 days in case you need a re-edit, then delete

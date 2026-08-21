@@ -30,7 +30,7 @@ Tuesday boring, and boring is the goal.
 - [ ] No customer, employee, or personal data anywhere in frame
 - [ ] Mic enabled in the Snipping Tool toolbar — **verified with a 5-second test take**
 - [ ] Three seconds of silence at the start and the end
-- [ ] Raw file renamed `TMT-###-raw.mp4`
+- [ ] Raw file renamed `TMTT-###-raw.mp4`
 
 ## Edit
 

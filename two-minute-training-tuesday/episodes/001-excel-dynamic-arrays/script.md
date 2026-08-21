@@ -7,7 +7,7 @@
 | **Tip** | `UNIQUE`, `SORT`, `FILTER` |
 | **Target runtime** | 1:49 |
 | **Demo file** | `demo-workbook.xlsx` (380 rows, 15 vendors, 6 cost centers) |
-| **Rendered cut** | `TMT-001-Excel-Dynamic-Arrays.mp4` — 1:47, captioned, no voiceover. See [`render/README.md`](render/README.md). |
+| **Rendered cut** | `TMTT-001-Excel-Dynamic-Arrays.mp4` — 1:49, captioned, no voiceover. See [`render/README.md`](render/README.md). |
 | **Recap card lines** | 1. `=UNIQUE(range)` · 2. `=SORT(UNIQUE(range))` · 3. `=FILTER(table, column = criteria)` |
 
 ## The pain, in one sentence
@@ -42,26 +42,31 @@ Two clean Tuesdays beat one rushed one.
 Read the **Say** column out loud. The **Do** column is your hands. Times are
 where each beat *starts*.
 
+**These timecodes are the plan; [`narration.md`](narration.md) is the record.**
+That file is generated from the rendered video's own caption track, so when the
+two disagree, narration.md is right. The rendered cut runs 1:49 after slack was
+added at the title card and the opening beat so nothing has to be rushed.
+
 | Time | Say | Do |
 | --- | --- | --- |
-| 0:00 | *(silent)* | Title card, 2.5 s |
-| 0:03 | "This is a job cost export out of the ERP. Three hundred and eighty lines, and it lands in your inbox every month." | On **ERP Export**. Scroll down a few pages at a readable speed, then Ctrl+Home back to the top. |
-| 0:09 | "You need the list of vendors we actually bought from. So today you copy this column, paste it into a new tab, Remove Duplicates, sort it — and next month you do all of it again." | Click the **Vendor** header, drag-select a chunk of the column so it is clear which column you mean. |
-| 0:18 | "Here's the version that never needs doing twice." | Click the **Report** tab. |
+| 0:00 | "Welcome to Two-Minute Training Tuesday." | Title card, 3.7 s |
+| 0:04 | "This is an example export file. Three hundred and eighty lines." | On **ERP Export**. Scroll down a few pages at a readable speed, then Ctrl+Home back to the top. |
+| 0:11 | "You need a unique list of the vendors we actually bought from. Instead of copy, paste, Remove Duplicates —" | Click the **Vendor** header, drag-select a chunk of the column so it is clear which column you mean. Then move to the **Report** tab and pause on it before clicking. |
+| 0:18 | "Here's a better way." | Click the **Report** tab — the click lands as this line starts. |
 | 0:22 | "One formula. UNIQUE — U, N, I, Q, U, E — and the vendor column." | Click **B5**. Type `=UNIQUE(` then click the **ERP Export** tab and click the **Vendor** column header so Excel writes the structured reference for you. Close the paren. |
 | 0:32 | "Enter." | **Enter.** Let the list spill down. Pause a full second — this is the moment. |
 | 0:35 | "Fifteen vendors, out of three hundred and eighty lines, from one formula. I never told it fifteen. It figured that out and it took the space it needed." | Move the mouse down the spilled list. Click one cell mid-list and point at the greyed-out formula in the formula bar. |
 | 0:44 | "Every cell in that list belongs to the one formula in B5. That's called a spill range, and the blue border is Excel telling you so." | Click **B5** so the spill border shows. |
 | 0:52 | "It's not sorted, though. So wrap it in SORT." | Click **D5**. Type `=SORT(UNIQUE(` and reference the same Vendor column, close both parens. |
 | 1:00 | "Enter. Alphabetical, and still one formula." | **Enter.** Pause. |
-| 1:05 | "Now the useful one. FILTER. Give it the whole table, then tell it which rows you want." | Click **F7**. Type `=FILTER(` |
+| 1:05 | "Now the most powerful one. FILTER. Give it the whole table, then tell it which rows you want." | Click **F7**. Type `=FILTER(` |
 | 1:12 | "The table..." | Click the **ERP Export** tab, click cell **A2**, and press **Ctrl+A** to grab the whole table — or type `ERP_Export`. Type a comma. |
 | 1:18 | "...and the rule: cost center equals whatever's in this cell." | Reference the **Cost Center** column, type `=`, click back to **Report** and click **G4**. Then type `,"No matches"` and close the paren — that third argument is what shows instead of `#CALC!` when nothing matches. |
 | 1:26 | "Enter." | **Enter.** A hundred and thirty-six rows spill out across six columns. Pause a beat and let the size of it land. |
-| 1:30 | "Every line charged to Powder Line 1. And here's the part that matters —" | Hover **G4**. |
+| 1:22 | "A hundred and thirty-six lines — your whole report, sorted by that one filter. Similar to a pivot table. And here's the part that matters —" | Hover **G4**. |
 | 1:34 | "— change the cost center, and the whole report redraws itself." | Click **G4**, open the dropdown, pick **Shipping**. Pause. Then pick **Prep & Blast**. Pause. |
-| 1:42 | "No copying. No pasting. No re-sorting. Next Tuesday." | — |
-| 1:45 | *(silent)* | Recap card, 4 s |
+| 1:41 | "No copying. No pasting. No re-sorting." | — |
+| 1:45 | "Next week: how we built that drop-down." | Recap card, 4 s |
 
 ## Proof step
 

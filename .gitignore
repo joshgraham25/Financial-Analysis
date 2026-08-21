@@ -1,0 +1,3 @@
+# Derived voiceover cuts -- regenerate with make_voiceover.py
+two-minute-training-tuesday/episodes/*/TMTT-*-voiced-*.mp4
+two-minute-training-tuesday/episodes/*/TMTT-*-narration.m4a

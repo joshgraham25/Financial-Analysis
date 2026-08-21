@@ -1,11 +1,69 @@
-# Narration — episode 001
+"""Regenerate narration.md and TMTT-001-captions.srt from the video's caption track.
 
-The rendered cut (`TMT-001-Excel-Dynamic-Arrays.mp4`) ships silent with
+    python make_narration.py
+
+The caption cues in render/episode.html are the single source of truth: the
+video, the narration script, and the SRT all come from the same array, so the
+wording and timings cannot drift apart. Edit CAPTIONS in episode.html, re-run
+this, and re-render the video.
+"""
+
+import re
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+EPISODE_HTML = HERE / "render" / "episode.html"
+NARRATION_MD = HERE / "narration.md"
+SRT = HERE / "TMTT-001-captions.srt"
+
+
+def read_cues():
+    src = EPISODE_HTML.read_text(encoding="utf-8")
+    block = re.search(r"const CAPTIONS = \[(.*?)\n\];", src, re.S)
+    if not block:
+        raise SystemExit(f"could not find the CAPTIONS array in {EPISODE_HTML}")
+    cues = re.findall(r"\[\s*([\d.]+),\s*([\d.]+),\s*\"(.*?)\"\]", block.group(1))
+    if not cues:
+        raise SystemExit("CAPTIONS array parsed but held no cues")
+    return [(float(a), float(b), t.replace('\\"', '"')) for a, b, t in cues]
+
+
+def timestamp(sec):
+    h, rem = divmod(sec, 3600)
+    m, s = divmod(rem, 60)
+    return f"{int(h):02d}:{int(m):02d}:{s:06.3f}".replace(".", ",")
+
+
+def write_srt(cues):
+    blocks = [
+        f"{i}\n{timestamp(a)} --> {timestamp(b)}\n{text}\n"
+        for i, (a, b, text) in enumerate(cues, 1)
+    ]
+    SRT.write_text("\n".join(blocks), encoding="utf-8")
+
+
+def write_narration(cues):
+    full = " ".join(text for _, _, text in cues)
+    words = len(full.split())
+    duration = cues[-1][1]
+    wpm = round(words / duration * 60)
+    rows = "\n".join(
+        f"| {a:0.1f} | {b - a:0.1f}s | {len(text.split())} | {text} |"
+        for a, b, text in cues
+    )
+    NARRATION_MD.write_text(TEMPLATE.format(
+        words=words, duration=round(duration), wpm=wpm, full=full, rows=rows,
+    ), encoding="utf-8")
+
+
+TEMPLATE = """# Narration — episode 001
+
+The rendered cut (`TMTT-001-Excel-Dynamic-Arrays.mp4`) ships silent with
 burned-in captions. This is the voiceover script for it, generated directly from
 the video's caption track, so **the timings below are the video's real timings**
 — not the estimates in `script.md`.
 
-179 words over 103 seconds — about 104 words per minute, a
+{words} words over {duration} seconds — about {wpm} words per minute, a
 deliberately slow, clear pace for a technical demo.
 
 This file is generated. Edit the wording in `render/episode.html` (the
@@ -39,7 +97,7 @@ to ten minutes of audio, so a two-minute episode is well inside the limit.
 Paste this whole block into text to speech for one continuous take. It matches
 the on-screen captions word for word.
 
-> This is a job cost export out of the ERP. Three hundred and eighty lines. Every month. You need the list of vendors we actually bought from. Copy the column, new tab, Remove Duplicates, sort — then do it again next month. Here's the version that never needs doing twice. One formula: UNIQUE — and the vendor column. Excel writes the table reference for you. Fifteen vendors, out of three hundred and eighty lines. I never told it fifteen. It took exactly the space it needed. Every cell in that list belongs to the one formula in B5. That's a spill range. It isn't sorted — so wrap the whole thing in SORT. One more function around the outside. Nothing else changes. Alphabetical. Still one formula. Now the useful one. FILTER — give it the whole table... ...then the rule: cost center equals this cell. A hundred and thirty-six lines. Every one charged to Powder Line 1. And here's the part that matters. Change the cost center... ...and the whole report redraws itself. No copying. No pasting. No re-sorting.
+> {full}
 
 ## Beat-by-beat, with the video's real timings
 
@@ -48,28 +106,7 @@ timecode. More work, much tighter sync.
 
 | Starts at | Window | Words | Line |
 | --- | --- | --- | --- |
-| 2.5 | 3.0s | 10 | This is a job cost export out of the ERP. |
-| 5.6 | 4.0s | 7 | Three hundred and eighty lines. Every month. |
-| 10.4 | 2.8s | 10 | You need the list of vendors we actually bought from. |
-| 13.3 | 2.7s | 15 | Copy the column, new tab, Remove Duplicates, sort — then do it again next month. |
-| 16.1 | 2.3s | 8 | Here's the version that never needs doing twice. |
-| 18.5 | 4.5s | 8 | One formula: UNIQUE — and the vendor column. |
-| 23.1 | 4.3s | 7 | Excel writes the table reference for you. |
-| 28.2 | 5.2s | 9 | Fifteen vendors, out of three hundred and eighty lines. |
-| 33.5 | 5.4s | 12 | I never told it fifteen. It took exactly the space it needed. |
-| 39.0 | 4.9s | 12 | Every cell in that list belongs to the one formula in B5. |
-| 44.0 | 2.7s | 4 | That's a spill range. |
-| 46.8 | 5.2s | 11 | It isn't sorted — so wrap the whole thing in SORT. |
-| 52.1 | 4.3s | 9 | One more function around the outside. Nothing else changes. |
-| 57.2 | 3.8s | 4 | Alphabetical. Still one formula. |
-| 61.1 | 3.1s | 4 | Now the useful one. |
-| 64.3 | 6.2s | 7 | FILTER — give it the whole table... |
-| 70.6 | 7.8s | 8 | ...then the rule: cost center equals this cell. |
-| 79.5 | 5.5s | 12 | A hundred and thirty-six lines. Every one charged to Powder Line 1. |
-| 85.1 | 3.3s | 6 | And here's the part that matters. |
-| 88.5 | 4.5s | 4 | Change the cost center... |
-| 94.5 | 4.5s | 6 | ...and the whole report redraws itself. |
-| 99.1 | 3.9s | 6 | No copying. No pasting. No re-sorting. |
+{rows}
 
 ## If you would rather record it yourself
 
@@ -88,6 +125,18 @@ the full audio setup.
 
 ## Also here
 
-`TMT-001-captions.srt` — the same caption track as a sidecar file, from the same
+`TMTT-001-captions.srt` — the same caption track as a sidecar file, from the same
 source. Useful if you upload somewhere that wants captions separately, or want to
 edit the wording without re-rendering the video.
+"""
+
+
+def main():
+    cues = read_cues()
+    write_srt(cues)
+    write_narration(cues)
+    print(f"{len(cues)} cues -> {NARRATION_MD.name}, {SRT.name}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,4 +1,4 @@
-"""Render Two-Minute Tuesday episode 001 to an MP4.
+"""Render Two-Minute Training Tuesday episode 001 to an MP4.
 
     pip install openpyxl playwright
     python make_video.py                 # full render
@@ -27,8 +27,8 @@ HERE = Path(__file__).resolve().parent
 EPISODE_HTML = HERE / "episode.html"
 WORKBOOK = HERE.parent / "demo-workbook.xlsx"
 BRAND_JSON = HERE.parent.parent.parent / "brand.json"
-OUT_MP4 = HERE.parent / "TMT-001-Excel-Dynamic-Arrays.mp4"
-OUT_MP4_CLEAN = HERE.parent / "TMT-001-Excel-Dynamic-Arrays-no-captions.mp4"
+OUT_MP4 = HERE.parent / "TMTT-001-Excel-Dynamic-Arrays.mp4"
+OUT_MP4_CLEAN = HERE.parent / "TMTT-001-Excel-Dynamic-Arrays-no-captions.mp4"
 
 FPS = 20
 WIDTH, HEIGHT = 1920, 1080

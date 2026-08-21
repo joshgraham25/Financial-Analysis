@@ -1,0 +1,17 @@
+{
+  "_comment": "Single source of truth for Two-Minute Training Tuesday brand colors. Values are taken from the CLC platform theme (clc-theme.css in clc-webapp-starter, the design-standard source of truth) so the videos match the internal apps. Change these six values and re-run the episode's make_video.py and build_demo_workbook.py to restyle everything. The Excel UI itself (its green, its greys, its blue spill borders) is deliberately NOT themed -- recoloring Excel's own chrome makes a screencast look fake.",
+  "dark": "#15171c",
+  "accent": "#e0303e",
+  "header": "#a8121f",
+  "tint": "#fdecee",
+  "input": "#fff0dc",
+  "muted": "#c6cbd6",
+  "_roles": {
+    "dark": "Title and recap card background. CLC charcoal (--clc-charcoal), the app header bar color.",
+    "accent": "Card accent bar, series name, recap numbers. CLC brand red, dark-surface variant (--clc-red dark). Large text only -- 4.0:1 on `dark` clears AA for large, not for body copy.",
+    "header": "Table header fill and report label text. CLC brand red, deep (--clc-red-dark), so white header text stays legible.",
+    "tint": "Table row stripe. CLC red tint (--clc-red-tint).",
+    "input": "The editable cell on the report. CLC monitor/amber tint (--clc-monitor-tint) -- deliberately off the red family so the one editable cell reads as editable.",
+    "muted": "Secondary text on the cards. CLC dimmed header ink (--clc-header-ink-dim), 11:1 on `dark`."
+  }
+}

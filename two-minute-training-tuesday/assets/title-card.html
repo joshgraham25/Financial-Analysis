@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Two-Minute Tuesday — card generator</title>
+<title>Two-Minute Training Tuesday — card generator</title>
 <style>
   :root {
-    --navy: #1f3864;
+    --brand: #a8121f;
     --ink: #101828;
     --line: #d6dae2;
     --bg: #f4f6f9;
@@ -19,7 +19,7 @@
     background: var(--bg);
   }
   header {
-    background: var(--navy);
+    background: var(--brand);
     color: #fff;
     padding: 18px 28px;
   }
@@ -57,7 +57,7 @@
     padding: 11px;
     font: 600 15px "Segoe UI", system-ui, sans-serif;
     color: #fff;
-    background: var(--navy);
+    background: var(--brand);
     border: 0;
     border-radius: 6px;
     cursor: pointer;
@@ -78,7 +78,7 @@
 <body>
 
 <header>
-  <h1>Two-Minute Tuesday — card generator</h1>
+  <h1>Two-Minute Training Tuesday — card generator</h1>
   <p>1920 × 1080 title and recap cards. Fill in the fields, download the PNG, drop it on the Clipchamp timeline.</p>
 </header>
 
@@ -112,7 +112,7 @@
     </label>
 
     <button id="download">Download PNG</button>
-    <p class="hint">Saves as <code>TMT-001-title.png</code>. If the download is blocked, right-click the preview and “Save image as”.</p>
+    <p class="hint">Saves as <code>TMTT-001-title.png</code>. If the download is blocked, right-click the preview and “Save image as”.</p>
   </form>
 
   <div>
@@ -127,11 +127,11 @@ const W = 1920, H = 1080;
    of truth for the video and the demo workbook, but this page is standalone HTML
    so it cannot read it. Change both together. */
 const BRAND = {
-  dark:   "#0e1b34",
-  accent: "#f2b134",
-  muted:  "#9fb0cc",
+  dark:   "#15171c",
+  accent: "#e0303e",
+  muted:  "#c6cbd6",
 };
-const NAVY = BRAND.dark, ACCENT = BRAND.accent, MUTED = BRAND.muted, WHITE = "#ffffff";
+const DARK = BRAND.dark, ACCENT = BRAND.accent, MUTED = BRAND.muted, WHITE = "#ffffff";
 const SANS = '"Segoe UI", system-ui, -apple-system, sans-serif';
 const MONO = 'Consolas, "Cascadia Mono", ui-monospace, monospace';
 
@@ -165,7 +165,7 @@ function draw() {
 
   el("linesWrap").style.display = mode === "recap" ? "block" : "none";
 
-  ctx.fillStyle = NAVY;
+  ctx.fillStyle = DARK;
   ctx.fillRect(0, 0, W, H);
 
   // Left accent bar — the one piece of identity that carries across episodes.
@@ -178,7 +178,7 @@ function draw() {
   ctx.fillStyle = ACCENT;
   ctx.font = "700 34px " + SANS;
   ctx.letterSpacing = "6px";
-  ctx.fillText("TWO-MINUTE TUESDAY", x, 168);
+  ctx.fillText("TWO-MINUTE TRAINING TUESDAY", x, 168);
   ctx.letterSpacing = "0px";
 
   ctx.fillStyle = MUTED;
@@ -228,7 +228,7 @@ function download() {
   const episode = String(el("episode").value || "1").padStart(3, "0");
   const suffix = el("mode").value === "recap" ? "recap" : "title";
   const link = document.createElement("a");
-  link.download = "TMT-" + episode + "-" + suffix + ".png";
+  link.download = "TMTT-" + episode + "-" + suffix + ".png";
   link.href = canvas.toDataURL("image/png");
   link.click();
 }

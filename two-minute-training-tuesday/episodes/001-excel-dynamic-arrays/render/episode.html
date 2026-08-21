@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Two-Minute Tuesday 001 — renderer</title>
+<title>Two-Minute Training Tuesday 001 — renderer</title>
 <style>
   html, body { margin: 0; background: #222; }
   canvas { display: block; width: 100vw; height: auto; }
@@ -12,7 +12,7 @@
 <canvas id="c" width="1920" height="1080"></canvas>
 <script>
 /* ===========================================================================
-   Two-Minute Tuesday, episode 001 — deterministic frame renderer.
+   Two-Minute Training Tuesday, episode 001 — deterministic frame renderer.
 
    drawFrame(t) paints the complete 1920x1080 frame for time t in seconds.
    Nothing depends on wall-clock time, Math.random, or animation callbacks, so
@@ -44,18 +44,18 @@ const SPILL_BLUE  = "#2b579a";
    Everything above is Excel's own UI and is deliberately not themed: recoloring
    Excel's chrome is what makes a screencast look fake. */
 const BRAND = Object.assign({
-  dark:   "#0e1b34",
-  accent: "#f2b134",
-  header: "#1f3864",
-  tint:   "#eaf0f8",
-  input:  "#fff2cc",
-  muted:  "#9fb0cc",
+  dark:   "#15171c",
+  accent: "#e0303e",
+  header: "#a8121f",
+  tint:   "#fdecee",
+  input:  "#fff0dc",
+  muted:  "#c6cbd6",
 }, window.__BRAND__ || {});
 
 const TABLE_HDR   = BRAND.header;
 const STRIPE      = BRAND.tint;
 const INPUT_FILL  = BRAND.input;
-const NAVY        = BRAND.dark;
+const DARK        = BRAND.dark;
 const ACCENT      = BRAND.accent;
 const MUTED       = BRAND.muted;
 
@@ -124,22 +124,22 @@ function wrapText(text, font, maxWidth) {
    TIMELINE
    =========================================================================== */
 const T = {
-  titleEnd:     2.5,
-  scrollStart:  5.5,  scrollEnd:   9.5,
-  homeEnd:     10.3,
-  vendorSel:   10.3,
-  reportSwitch:16.0,
-  uniqType:    18.5,  uniqTypeEnd: 27.5,
-  uniqEnter:   27.5,
-  clickMid:    39.0,  backToB5:    44.0,
-  sortType:    46.8,  sortTypeEnd: 56.5,
-  sortEnter:   56.5,
-  scrollRight: 61.0,  scrollRightEnd: 63.5,
-  filtType:    64.3,  filtTypeEnd: 78.5,
-  filtEnter:   78.5,
-  dd1Open:     85.0,  dd1Pick:     88.5,
-  dd2Open:     93.0,  dd2Pick:     94.5,
-  recapStart: 103.0,  end:        107.0,
+  titleEnd: 3.7,
+  scrollStart: 6.7,  scrollEnd: 10.7,
+  homeEnd: 11.5,
+  vendorSel: 11.5,
+  reportSwitch: 18.3,
+  uniqType: 21.0,  uniqTypeEnd: 30.0,
+  uniqEnter: 30.0,
+  clickMid: 41.5,  backToB5: 46.5,
+  sortType: 49.3,  sortTypeEnd: 59.0,
+  sortEnter: 59.0,
+  scrollRight: 63.5,  scrollRightEnd: 66.0,
+  filtType: 66.8,  filtTypeEnd: 81.0,
+  filtEnter: 81.0,
+  dd1Open: 87.5,  dd1Pick: 91.6,
+  dd2Open: 95.5,  dd2Pick: 97.0,
+  recapStart: 105.5,  end: 109.5,
 };
 
 const UNIQ_F = "=UNIQUE(ERP_Export[Vendor])";
@@ -149,53 +149,58 @@ const FILT_F = '=FILTER(ERP_Export,ERP_Export[Cost Center]=G4,"No matches")';
 const COST_CENTERS = ["Powder Line 1", "Liquid Line 2", "Prep & Blast", "Maintenance", "QC Lab", "Shipping"];
 
 const CAPTIONS = [
-  [ 2.5,  5.5, "This is a job cost export out of the ERP."],
-  [ 5.6,  9.6, "Three hundred and eighty lines. Every month."],
-  [10.4, 13.2, "You need the list of vendors we actually bought from."],
-  [13.3, 16.0, "Copy the column, new tab, Remove Duplicates, sort — then do it again next month."],
-  [16.1, 18.4, "Here's the version that never needs doing twice."],
-  [18.5, 23.0, "One formula: UNIQUE — and the vendor column."],
-  [23.1, 27.4, "Excel writes the table reference for you."],
-  [28.2, 33.4, "Fifteen vendors, out of three hundred and eighty lines."],
-  [33.5, 38.9, "I never told it fifteen. It took exactly the space it needed."],
-  [39.0, 43.9, "Every cell in that list belongs to the one formula in B5."],
-  [44.0, 46.7, "That's a spill range."],
-  [46.8, 52.0, "It isn't sorted — so wrap the whole thing in SORT."],
-  [52.1, 56.4, "One more function around the outside. Nothing else changes."],
-  [57.2, 61.0, "Alphabetical. Still one formula."],
-  [61.1, 64.2, "Now the useful one."],
-  [64.3, 70.5, "FILTER — give it the whole table..."],
-  [70.6, 78.4, "...then the rule: cost center equals this cell."],
-  [79.5, 85.0, "A hundred and thirty-six lines. Every one charged to Powder Line 1."],
-  [85.1, 88.4, "And here's the part that matters."],
-  [88.5, 93.0, "Change the cost center..."],
-  [94.5, 99.0, "...and the whole report redraws itself."],
-  [99.1, 103.0, "No copying. No pasting. No re-sorting."],
+  [0.3, 3.6, "Welcome to Two-Minute Training Tuesday."],
+  [3.7, 6.7, "This is an example export file."],
+  [6.8, 10.8, "Three hundred and eighty lines."],
+  [11.0, 14.4, "You need a unique list of the vendors we actually bought from."],
+  [14.5, 18.3, "Instead of copy, paste, Remove Duplicates"],
+  [18.4, 20.1, "Here's a better way."],
+  [21.0, 25.5, "One formula: UNIQUE — and the vendor column."],
+  [25.6, 29.9, "Excel writes the table reference for you."],
+  [30.7, 35.9, "Fifteen vendors, out of three hundred and eighty lines."],
+  [36.0, 41.4, "I never told it fifteen. It took exactly the space it needed."],
+  [41.5, 46.4, "Every cell in that list belongs to the one formula in B5."],
+  [46.5, 49.2, "That's a spill range."],
+  [49.3, 54.5, "It isn't sorted — so wrap the whole thing in SORT."],
+  [54.6, 58.9, "One more function around the outside. Nothing else changes."],
+  [59.7, 63.5, "Alphabetical. Still one formula."],
+  [63.6, 66.7, "Now the most powerful one."],
+  [66.8, 73.0, "FILTER — give it the whole table..."],
+  [73.1, 80.9, "...then the rule: cost center equals this cell."],
+  [82.0, 87.5, "A hundred and thirty-six lines — your whole report, sorted by that one filter."],
+  [87.6, 90.9, "Similar to a pivot table. And here's the part that matters."],
+  [91.6, 95.5, "Change the cost center..."],
+  [97.0, 101.5, "...and the whole report redraws itself."],
+  [101.6, 105.5, "No copying. No pasting. No re-sorting."],
+  [105.9, 109.1, "Next week: how we built that drop-down."],
 ];
 
 /* Mouse pointer keyframes: [t, x, y]. Linear-eased between neighbours. */
 const CURSOR = [
-  [ 0.0,  960, 620],
-  [ 9.5,  900, 500],
-  [10.3, 1010, 154],
-  [15.0, 1010, 500],
-  [16.0,  300, 1057],
-  [18.4,  300, 1057],
-  [19.2,  300,  380],
-  [27.5,  300,  380],
-  [39.0,  300,  620],
-  [44.0,  300,  380],
-  [46.0,  700,  380],
-  [56.5,  700,  380],
-  [62.0, 1200,  500],
-  [64.0,  190,  460],
-  [78.5,  190,  460],
-  [85.0,  300,  296],
-  [88.5,  360,  562],
-  [93.0,  300,  296],
-  [94.5,  360,  450],
-  [99.0,  700,  600],
-  [103.0, 700,  600],
+  [0.0, 960, 620],
+  [10.7, 900, 500],
+  [11.5, 1010, 154],
+  [16.2, 1010, 500],
+  [16.6, 620, 860],
+  [16.9, 226, 1057],
+  [18.3, 226, 1057],
+  [18.7, 250, 760],
+  [19.3, 300, 380],
+  [21.7, 300, 380],
+  [30.0, 300, 380],
+  [41.5, 300, 620],
+  [46.5, 300, 380],
+  [48.5, 700, 380],
+  [59.0, 700, 380],
+  [64.5, 1200, 500],
+  [66.5, 190, 460],
+  [81.0, 190, 460],
+  [87.5, 300, 296],
+  [91.0, 360, 562],
+  [95.5, 300, 296],
+  [97.0, 360, 450],
+  [101.5, 700, 600],
+  [105.5, 700, 600],
 ];
 
 function cursorAt(t) {
@@ -693,14 +698,14 @@ function drawCaption(t) {
 
 /* ---------- cards ---------- */
 function drawCard(kind) {
-  ctx.fillStyle = NAVY; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = DARK; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = ACCENT; ctx.fillRect(0, 0, 18, H);
   const x = 132;
   ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
 
   ctx.fillStyle = ACCENT; ctx.font = "700 34px " + SANS;
   ctx.letterSpacing = "6px";
-  ctx.fillText("TWO-MINUTE TUESDAY", x, 168);
+  ctx.fillText("TWO-MINUTE TRAINING TUESDAY", x, 168);
   ctx.letterSpacing = "0px";
 
   ctx.fillStyle = MUTED; ctx.font = "400 30px " + SANS;

@@ -1,4 +1,4 @@
-"""Build the on-screen demo workbook for Two-Minute Tuesday episode 001.
+"""Build the on-screen demo workbook for Two-Minute Training Tuesday episode 001.
 
 The workbook stands in for a job-cost export out of the ERP so the episode can
 be recorded without a single row of real customer or vendor data on screen.
@@ -95,7 +95,7 @@ HEADERS = ["Date", "Job Number", "Cost Center", "Vendor", "Category", "Amount"]
 def _brand():
     """Brand colors from ../../brand.json, so the workbook matches the video."""
     path = Path(__file__).resolve().parents[2] / "brand.json"
-    defaults = {"header": "#1f3864", "tint": "#eaf0f8", "input": "#fff2cc"}
+    defaults = {"header": "#a8121f", "tint": "#fdecee", "input": "#fff0dc"}
     if path.exists():
         raw = json.loads(path.read_text())
         defaults.update({k: v for k, v in raw.items() if k in defaults})

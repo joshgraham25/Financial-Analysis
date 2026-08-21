@@ -101,7 +101,7 @@ Rehearsal is 5 minutes and routinely saves 40.
    a 90-minute one.
 6. Wait three silent seconds after your last word, then **Stop**.
 7. The MP4 lands in **Videos → Screen Recordings**. Rename it immediately:
-   `TMT-001-raw.mp4`.
+   `TMTT-001-raw.mp4`.
 
 ### Recording the ERP or anything with real data
 
@@ -123,7 +123,7 @@ Open Clipchamp (Start menu, or clipchamp.com signed in with your work account),
 
 ### 1. Import and lay down the take
 
-Drag `TMT-001-raw.mp4` onto the timeline.
+Drag `TMTT-001-raw.mp4` onto the timeline.
 
 ### 2. Cut the dead air and the fumbles
 
@@ -176,7 +176,7 @@ desk, and a Teams-embedded video does not always surface a sidecar caption file.
 
 ### 7. Export
 
-**Export → 1080p → MP4.** Save as `TMT-001-Excel-Dynamic-Arrays.mp4`.
+**Export → 1080p → MP4.** Save as `TMTT-001-Excel-Dynamic-Arrays.mp4`.
 
 Then **watch the exported file, all the way through, once.** Not the preview —
 the export. This is where you catch the caption typo and the notification toast.
