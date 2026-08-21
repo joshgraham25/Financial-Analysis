@@ -37,13 +37,27 @@ const HDR_BG      = "#f5f5f5";
 const HDR_BG_ON   = "#d3e3d8";
 const HDR_TEXT    = "#5a5a5a";
 const INK         = "#1a1a1a";
-const TABLE_HDR   = "#1f3864";
-const STRIPE      = "#eaf0f8";
 const SPILL_BLUE  = "#2b579a";
-const INPUT_FILL  = "#fff2cc";
-const NAVY        = "#0e1b34";
-const ACCENT      = "#f2b134";
-const MUTED       = "#9fb0cc";
+
+/* Brand colors — the ONLY themeable values. Defaults here are overridden by
+   ../../brand.json, which make_video.py injects as window.__BRAND__.
+   Everything above is Excel's own UI and is deliberately not themed: recoloring
+   Excel's chrome is what makes a screencast look fake. */
+const BRAND = Object.assign({
+  dark:   "#0e1b34",
+  accent: "#f2b134",
+  header: "#1f3864",
+  tint:   "#eaf0f8",
+  input:  "#fff2cc",
+  muted:  "#9fb0cc",
+}, window.__BRAND__ || {});
+
+const TABLE_HDR   = BRAND.header;
+const STRIPE      = BRAND.tint;
+const INPUT_FILL  = BRAND.input;
+const NAVY        = BRAND.dark;
+const ACCENT      = BRAND.accent;
+const MUTED       = BRAND.muted;
 
 const SANS = '"Segoe UI", system-ui, sans-serif';
 const MONO = 'Consolas, "DejaVu Sans Mono", monospace';
@@ -657,6 +671,7 @@ function drawCursor(t) {
 }
 
 function drawCaption(t) {
+  if (window.__NO_CAPTIONS__) return;
   const cue = CAPTIONS.find(([a, b]) => t >= a && t <= b);
   if (!cue) return;
   const text = cue[2];

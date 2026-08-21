@@ -26,7 +26,9 @@ from playwright.sync_api import sync_playwright
 HERE = Path(__file__).resolve().parent
 EPISODE_HTML = HERE / "episode.html"
 WORKBOOK = HERE.parent / "demo-workbook.xlsx"
+BRAND_JSON = HERE.parent.parent.parent / "brand.json"
 OUT_MP4 = HERE.parent / "TMT-001-Excel-Dynamic-Arrays.mp4"
+OUT_MP4_CLEAN = HERE.parent / "TMT-001-Excel-Dynamic-Arrays-no-captions.mp4"
 
 FPS = 20
 WIDTH, HEIGHT = 1920, 1080
@@ -43,13 +45,25 @@ def read_rows():
     ]
 
 
-def open_page(pw, rows):
+def read_brand():
+    """Brand colors from brand.json. Missing file just means the built-in defaults."""
+    if not BRAND_JSON.exists():
+        return {}
+    raw = json.loads(BRAND_JSON.read_text())
+    return {k: v for k, v in raw.items() if not k.startswith("_")}
+
+
+def open_page(pw, rows, brand, captions=True):
     browser = pw.chromium.launch(
         executable_path=CHROME if Path(CHROME).exists() else None,
         args=["--force-device-scale-factor=1", "--hide-scrollbars"],
     )
     page = browser.new_page(viewport={"width": WIDTH, "height": HEIGHT})
-    page.add_init_script(f"window.__ROWS__ = {json.dumps(rows)};")
+    page.add_init_script(
+        f"window.__ROWS__ = {json.dumps(rows)};"
+        f"window.__BRAND__ = {json.dumps(brand)};"
+        f"window.__NO_CAPTIONS__ = {json.dumps(not captions)};"
+    )
     page.goto(EPISODE_HTML.as_uri())
     page.wait_for_function("window.drawFrame !== undefined")
     return browser, page
@@ -69,13 +83,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--probe", help="comma-separated timestamps to render as PNGs instead")
     ap.add_argument("--outdir", default=None, help="where probe PNGs land")
+    ap.add_argument("--no-captions", action="store_true",
+                    help="render a clean picture, for adding your own captions in Clipchamp")
     args = ap.parse_args()
 
     rows = read_rows()
+    brand = read_brand()
     print(f"{len(rows)} rows from {WORKBOOK.name}")
+    print(f"brand: {brand or 'built-in defaults'}")
 
     with sync_playwright() as pw:
-        browser, page = open_page(pw, rows)
+        browser, page = open_page(pw, rows, brand, captions=not args.no_captions)
         duration = page.evaluate("window.EPISODE_END")
 
         if args.probe:
@@ -102,6 +120,7 @@ def main():
                 print(f"  {i}/{total}", flush=True)
         browser.close()
 
+    out_path = OUT_MP4_CLEAN if args.no_captions else OUT_MP4
     print("encoding with", FFMPEG)
     subprocess.run(
         [
@@ -114,13 +133,13 @@ def main():
             "-pix_fmt", "yuv420p",
             # Even dimensions and faststart so it streams in Teams and SharePoint.
             "-movflags", "+faststart",
-            str(OUT_MP4),
+            str(out_path),
         ],
         check=True,
     )
     shutil.rmtree(frames_dir)
-    size_mb = OUT_MP4.stat().st_size / 1e6
-    print(f"wrote {OUT_MP4} ({size_mb:.1f} MB, {duration:.1f}s)")
+    size_mb = out_path.stat().st_size / 1e6
+    print(f"wrote {out_path} ({size_mb:.1f} MB, {duration:.1f}s)")
 
 
 if __name__ == "__main__":

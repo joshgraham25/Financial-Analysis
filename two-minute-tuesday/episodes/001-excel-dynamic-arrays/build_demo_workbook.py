@@ -19,6 +19,7 @@ Data is generated from a fixed seed, so re-running produces a byte-identical
 workbook and the script's timecodes stay accurate.
 """
 
+import json
 import random
 from datetime import date, timedelta
 from pathlib import Path
@@ -91,12 +92,24 @@ AMOUNT_RANGE = {
 
 HEADERS = ["Date", "Job Number", "Cost Center", "Vendor", "Category", "Amount"]
 
-HEADER_FILL = PatternFill("solid", fgColor="1F3864")
+def _brand():
+    """Brand colors from ../../brand.json, so the workbook matches the video."""
+    path = Path(__file__).resolve().parents[2] / "brand.json"
+    defaults = {"header": "#1f3864", "tint": "#eaf0f8", "input": "#fff2cc"}
+    if path.exists():
+        raw = json.loads(path.read_text())
+        defaults.update({k: v for k, v in raw.items() if k in defaults})
+    return {k: v.lstrip("#").upper() for k, v in defaults.items()}
+
+
+BRAND = _brand()
+
+HEADER_FILL = PatternFill("solid", fgColor=BRAND["header"])
 HEADER_FONT = Font(color="FFFFFF", bold=True, size=11)
-LABEL_FONT = Font(bold=True, size=11, color="1F3864")
-TITLE_FONT = Font(bold=True, size=16, color="1F3864")
+LABEL_FONT = Font(bold=True, size=11, color=BRAND["header"])
+TITLE_FONT = Font(bold=True, size=16, color=BRAND["header"])
 HINT_FONT = Font(italic=True, size=10, color="666666")
-INPUT_FILL = PatternFill("solid", fgColor="FFF2CC")
+INPUT_FILL = PatternFill("solid", fgColor=BRAND["input"])
 THIN = Side(style="thin", color="BFBFBF")
 
 

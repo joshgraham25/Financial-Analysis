@@ -123,7 +123,15 @@
 
 <script>
 const W = 1920, H = 1080;
-const NAVY = "#0e1b34", ACCENT = "#f2b134", WHITE = "#ffffff", MUTED = "#9fb0cc";
+/* Brand colors. Keep these in step with ../brand.json — that file is the source
+   of truth for the video and the demo workbook, but this page is standalone HTML
+   so it cannot read it. Change both together. */
+const BRAND = {
+  dark:   "#0e1b34",
+  accent: "#f2b134",
+  muted:  "#9fb0cc",
+};
+const NAVY = BRAND.dark, ACCENT = BRAND.accent, MUTED = BRAND.muted, WHITE = "#ffffff";
 const SANS = '"Segoe UI", system-ui, -apple-system, sans-serif';
 const MONO = 'Consolas, "Cascadia Mono", ui-monospace, monospace';
 
