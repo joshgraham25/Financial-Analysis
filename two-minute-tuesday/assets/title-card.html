@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two-Minute Tuesday — card generator</title>
+<style>
+  :root {
+    --navy: #1f3864;
+    --ink: #101828;
+    --line: #d6dae2;
+    --bg: #f4f6f9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font: 15px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+  }
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 18px 28px;
+  }
+  header h1 { margin: 0; font-size: 19px; }
+  header p { margin: 4px 0 0; font-size: 13px; opacity: .75; }
+  main {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 28px;
+    padding: 28px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  .panel {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  label { display: block; margin-bottom: 16px; font-weight: 600; font-size: 13px; }
+  label span { display: block; font-weight: 400; color: #667085; margin-top: 2px; font-size: 12px; }
+  input, textarea, select {
+    width: 100%;
+    margin-top: 6px;
+    padding: 8px 10px;
+    font: inherit;
+    color: inherit;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+  }
+  textarea { resize: vertical; min-height: 96px; font-family: Consolas, ui-monospace, monospace; font-size: 13px; }
+  button {
+    width: 100%;
+    padding: 11px;
+    font: 600 15px "Segoe UI", system-ui, sans-serif;
+    color: #fff;
+    background: var(--navy);
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover { background: #16294a; }
+  canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #000;
+  }
+  .hint { margin: 12px 0 0; font-size: 13px; color: #667085; }
+  .hint code { background: #eceff4; padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Two-Minute Tuesday — card generator</h1>
+  <p>1920 × 1080 title and recap cards. Fill in the fields, download the PNG, drop it on the Clipchamp timeline.</p>
+</header>
+
+<main>
+  <form class="panel" id="form" onsubmit="return false">
+    <label>Card type
+      <select id="mode">
+        <option value="title">Title card — 2.5 seconds, first frame</option>
+        <option value="recap">Recap card — 4 seconds, last frame</option>
+      </select>
+    </label>
+
+    <label>Episode number
+      <input id="episode" type="number" min="1" value="1">
+    </label>
+
+    <label>App tag
+      <input id="app" type="text" value="Excel">
+    </label>
+
+    <label>Title
+      <span>Name the outcome, not the feature.</span>
+      <input id="title" type="text" value="Stop copy-pasting your vendor list">
+    </label>
+
+    <label id="linesWrap">Recap lines
+      <span>One per line. Three at most — this frame gets screenshotted.</span>
+      <textarea id="lines">=UNIQUE(range)
+=SORT(UNIQUE(range))
+=FILTER(table, column = criteria)</textarea>
+    </label>
+
+    <button id="download">Download PNG</button>
+    <p class="hint">Saves as <code>TMT-001-title.png</code>. If the download is blocked, right-click the preview and “Save image as”.</p>
+  </form>
+
+  <div>
+    <canvas id="canvas" width="1920" height="1080"></canvas>
+    <p class="hint">Preview is the real 1920 × 1080 output, scaled to fit.</p>
+  </div>
+</main>
+
+<script>
+const W = 1920, H = 1080;
+/* Brand colors. Keep these in step with ../brand.json — that file is the source
+   of truth for the video and the demo workbook, but this page is standalone HTML
+   so it cannot read it. Change both together. */
+const BRAND = {
+  dark:   "#0e1b34",
+  accent: "#f2b134",
+  muted:  "#9fb0cc",
+};
+const NAVY = BRAND.dark, ACCENT = BRAND.accent, MUTED = BRAND.muted, WHITE = "#ffffff";
+const SANS = '"Segoe UI", system-ui, -apple-system, sans-serif';
+const MONO = 'Consolas, "Cascadia Mono", ui-monospace, monospace';
+
+const el = id => document.getElementById(id);
+const canvas = el("canvas"), ctx = canvas.getContext("2d");
+
+/* Greedy wrap that returns the lines instead of drawing them, so the caller can
+   measure total height before choosing where to start. */
+function wrap(text, font, maxWidth) {
+  ctx.font = font;
+  const out = [];
+  let line = "";
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    const next = line ? line + " " + word : word;
+    if (ctx.measureText(next).width > maxWidth && line) {
+      out.push(line);
+      line = word;
+    } else {
+      line = next;
+    }
+  }
+  if (line) out.push(line);
+  return out;
+}
+
+function draw() {
+  const mode = el("mode").value;
+  const episode = String(el("episode").value || "1").padStart(3, "0");
+  const app = el("app").value.trim();
+  const title = el("title").value.trim();
+
+  el("linesWrap").style.display = mode === "recap" ? "block" : "none";
+
+  ctx.fillStyle = NAVY;
+  ctx.fillRect(0, 0, W, H);
+
+  // Left accent bar — the one piece of identity that carries across episodes.
+  ctx.fillStyle = ACCENT;
+  ctx.fillRect(0, 0, 18, H);
+
+  const x = 132;
+  ctx.textBaseline = "alphabetic";
+
+  ctx.fillStyle = ACCENT;
+  ctx.font = "700 34px " + SANS;
+  ctx.letterSpacing = "6px";
+  ctx.fillText("TWO-MINUTE TUESDAY", x, 168);
+  ctx.letterSpacing = "0px";
+
+  ctx.fillStyle = MUTED;
+  ctx.font = "400 30px " + SANS;
+  const meta = "Episode " + episode
+    + (app ? "  ·  " + app : "")
+    + (mode === "recap" ? "  ·  Recap" : "");
+  ctx.fillText(meta, x, 224);
+
+  if (mode === "title") {
+    const font = "600 104px " + SANS;
+    const lines = wrap(title, font, W - x - 132);
+    ctx.fillStyle = WHITE;
+    ctx.font = font;
+    let y = H / 2 - ((lines.length - 1) * 126) / 2 + 36;
+    for (const line of lines) {
+      ctx.fillText(line, x, y);
+      y += 126;
+    }
+  } else {
+    ctx.fillStyle = WHITE;
+    ctx.font = "600 64px " + SANS;
+    ctx.fillText(title || "Recap", x, 380);
+
+    const items = el("lines").value.split("\n").map(s => s.trim()).filter(Boolean);
+    let y = 500;
+    items.forEach((item, i) => {
+      ctx.fillStyle = ACCENT;
+      ctx.font = "700 46px " + SANS;
+      ctx.fillText(String(i + 1) + ".", x, y);
+
+      ctx.fillStyle = WHITE;
+      const font = "400 52px " + MONO;
+      const lines = wrap(item, font, W - x - 220);
+      ctx.font = font;
+      lines.forEach((line, j) => ctx.fillText(line, x + 78, y + j * 66));
+      y += 66 * lines.length + 46;
+    });
+  }
+
+  ctx.fillStyle = MUTED;
+  ctx.font = "400 26px " + SANS;
+  ctx.fillText("Creative Liquid Coatings", x, H - 88);
+}
+
+function download() {
+  const episode = String(el("episode").value || "1").padStart(3, "0");
+  const suffix = el("mode").value === "recap" ? "recap" : "title";
+  const link = document.createElement("a");
+  link.download = "TMT-" + episode + "-" + suffix + ".png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+
+el("form").addEventListener("input", draw);
+el("download").addEventListener("click", download);
+draw();
+</script>
+
+</body>
+</html>

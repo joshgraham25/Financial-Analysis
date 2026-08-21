@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Two-Minute Tuesday 001 — renderer</title>
+<style>
+  html, body { margin: 0; background: #222; }
+  canvas { display: block; width: 100vw; height: auto; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<script>
+/* ===========================================================================
+   Two-Minute Tuesday, episode 001 — deterministic frame renderer.
+
+   drawFrame(t) paints the complete 1920x1080 frame for time t in seconds.
+   Nothing depends on wall-clock time, Math.random, or animation callbacks, so
+   frame N is byte-identical on every run. make_video.py walks t in fixed steps,
+   pulls each frame off the canvas, and hands the sequence to ffmpeg.
+
+   ROWS is injected by make_video.py at the marker below (the real 380 rows out
+   of demo-workbook.xlsx, so the video shows the same data as the workbook).
+   =========================================================================== */
+
+const ROWS = window.__ROWS__ || [];
+
+const W = 1920, H = 1080;
+const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+
+/* ---------- palette ---------- */
+const CHROME      = "#f3f2f1";
+const CHROME_LINE = "#d2d0ce";
+const XL_GREEN    = "#217346";
+const GRID_LINE   = "#d8d8d8";
+const HDR_BG      = "#f5f5f5";
+const HDR_BG_ON   = "#d3e3d8";
+const HDR_TEXT    = "#5a5a5a";
+const INK         = "#1a1a1a";
+const SPILL_BLUE  = "#2b579a";
+
+/* Brand colors — the ONLY themeable values. Defaults here are overridden by
+   ../../brand.json, which make_video.py injects as window.__BRAND__.
+   Everything above is Excel's own UI and is deliberately not themed: recoloring
+   Excel's chrome is what makes a screencast look fake. */
+const BRAND = Object.assign({
+  dark:   "#0e1b34",
+  accent: "#f2b134",
+  header: "#1f3864",
+  tint:   "#eaf0f8",
+  input:  "#fff2cc",
+  muted:  "#9fb0cc",
+}, window.__BRAND__ || {});
+
+const TABLE_HDR   = BRAND.header;
+const STRIPE      = BRAND.tint;
+const INPUT_FILL  = BRAND.input;
+const NAVY        = BRAND.dark;
+const ACCENT      = BRAND.accent;
+const MUTED       = BRAND.muted;
+
+const SANS = '"Segoe UI", system-ui, sans-serif';
+const MONO = 'Consolas, "DejaVu Sans Mono", monospace';
+
+/* ---------- chrome geometry ---------- */
+const TITLEBAR_H = 40;
+const TABSTRIP_H = 44;
+const FBAR_H     = 48;
+const COLHDR_H   = 44;
+const GRID_TOP   = TITLEBAR_H + TABSTRIP_H + FBAR_H + COLHDR_H;   // 176
+const SHEETBAR_H = 44;
+const GRID_BOT   = H - SHEETBAR_H;                                 // 1036
+const GUTTER     = 70;
+const ROW_H      = 40;
+
+/* ---------- derived data ---------- */
+const VEND_FIRST_SEEN = (() => {
+  const seen = new Set(), out = [];
+  for (const r of ROWS) if (!seen.has(r[3])) { seen.add(r[3]); out.push(r[3]); }
+  return out;
+})();
+const VEND_SORTED = [...VEND_FIRST_SEEN].sort((a, b) => a.localeCompare(b));
+const filteredBy = cc => ROWS.filter(r => r[2] === cc);
+
+/* ---------- sheets ---------- */
+const ERP_COLS    = [190, 210, 250, 340, 260, 200];
+const REPORT_COLS = [60, 340, 60, 340, 60, 190, 210, 250, 340, 260, 200];
+const REPORT_F_X  = REPORT_COLS.slice(0, 5).reduce((a, b) => a + b, 0);  // 860
+
+const money = n => "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const colName = i => String.fromCharCode(65 + i);
+
+/* ---------- small helpers ---------- */
+const clamp01 = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const ease = x => { x = clamp01(x); return x < 0.5 ? 2*x*x : 1 - Math.pow(-2*x + 2, 2)/2; };
+/** Progress through [a,b], eased. */
+const seg = (t, a, b) => ease((t - a) / (b - a));
+const lerp = (a, b, u) => a + (b - a) * u;
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function wrapText(text, font, maxWidth) {
+  ctx.font = font;
+  const out = [];
+  let line = "";
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    const next = line ? line + " " + word : word;
+    if (ctx.measureText(next).width > maxWidth && line) { out.push(line); line = word; }
+    else line = next;
+  }
+  if (line) out.push(line);
+  return out;
+}
+
+/* ===========================================================================
+   TIMELINE
+   =========================================================================== */
+const T = {
+  titleEnd:     2.5,
+  scrollStart:  5.5,  scrollEnd:   9.5,
+  homeEnd:     10.3,
+  vendorSel:   10.3,
+  reportSwitch:16.0,
+  uniqType:    18.5,  uniqTypeEnd: 27.5,
+  uniqEnter:   27.5,
+  clickMid:    39.0,  backToB5:    44.0,
+  sortType:    46.8,  sortTypeEnd: 56.5,
+  sortEnter:   56.5,
+  scrollRight: 61.0,  scrollRightEnd: 63.5,
+  filtType:    64.3,  filtTypeEnd: 78.5,
+  filtEnter:   78.5,
+  dd1Open:     85.0,  dd1Pick:     88.5,
+  dd2Open:     93.0,  dd2Pick:     94.5,
+  recapStart: 103.0,  end:        107.0,
+};
+
+const UNIQ_F = "=UNIQUE(ERP_Export[Vendor])";
+const SORT_F = "=SORT(UNIQUE(ERP_Export[Vendor]))";
+const FILT_F = '=FILTER(ERP_Export,ERP_Export[Cost Center]=G4,"No matches")';
+
+const COST_CENTERS = ["Powder Line 1", "Liquid Line 2", "Prep & Blast", "Maintenance", "QC Lab", "Shipping"];
+
+const CAPTIONS = [
+  [ 2.5,  5.5, "This is a job cost export out of the ERP."],
+  [ 5.6,  9.6, "Three hundred and eighty lines. Every month."],
+  [10.4, 13.2, "You need the list of vendors we actually bought from."],
+  [13.3, 16.0, "Copy the column, new tab, Remove Duplicates, sort — then do it again next month."],
+  [16.1, 18.4, "Here's the version that never needs doing twice."],
+  [18.5, 23.0, "One formula: UNIQUE — and the vendor column."],
+  [23.1, 27.4, "Excel writes the table reference for you."],
+  [28.2, 33.4, "Fifteen vendors, out of three hundred and eighty lines."],
+  [33.5, 38.9, "I never told it fifteen. It took exactly the space it needed."],
+  [39.0, 43.9, "Every cell in that list belongs to the one formula in B5."],
+  [44.0, 46.7, "That's a spill range."],
+  [46.8, 52.0, "It isn't sorted — so wrap the whole thing in SORT."],
+  [52.1, 56.4, "One more function around the outside. Nothing else changes."],
+  [57.2, 61.0, "Alphabetical. Still one formula."],
+  [61.1, 64.2, "Now the useful one."],
+  [64.3, 70.5, "FILTER — give it the whole table..."],
+  [70.6, 78.4, "...then the rule: cost center equals this cell."],
+  [79.5, 85.0, "A hundred and thirty-six lines. Every one charged to Powder Line 1."],
+  [85.1, 88.4, "And here's the part that matters."],
+  [88.5, 93.0, "Change the cost center..."],
+  [94.5, 99.0, "...and the whole report redraws itself."],
+  [99.1, 103.0, "No copying. No pasting. No re-sorting."],
+];
+
+/* Mouse pointer keyframes: [t, x, y]. Linear-eased between neighbours. */
+const CURSOR = [
+  [ 0.0,  960, 620],
+  [ 9.5,  900, 500],
+  [10.3, 1010, 154],
+  [15.0, 1010, 500],
+  [16.0,  300, 1057],
+  [18.4,  300, 1057],
+  [19.2,  300,  380],
+  [27.5,  300,  380],
+  [39.0,  300,  620],
+  [44.0,  300,  380],
+  [46.0,  700,  380],
+  [56.5,  700,  380],
+  [62.0, 1200,  500],
+  [64.0,  190,  460],
+  [78.5,  190,  460],
+  [85.0,  300,  296],
+  [88.5,  360,  562],
+  [93.0,  300,  296],
+  [94.5,  360,  450],
+  [99.0,  700,  600],
+  [103.0, 700,  600],
+];
+
+function cursorAt(t) {
+  if (t <= CURSOR[0][0]) return {x: CURSOR[0][1], y: CURSOR[0][2]};
+  for (let i = 1; i < CURSOR.length; i++) {
+    if (t <= CURSOR[i][0]) {
+      const [t0, x0, y0] = CURSOR[i-1], [t1, x1, y1] = CURSOR[i];
+      const u = ease((t - t0) / (t1 - t0));
+      return {x: lerp(x0, x1, u), y: lerp(y0, y1, u)};
+    }
+  }
+  const last = CURSOR[CURSOR.length - 1];
+  return {x: last[1], y: last[2]};
+}
+
+/* ===========================================================================
+   STATE — everything the frame needs, derived from t alone
+   =========================================================================== */
+function stateAt(t) {
+  const s = {
+    card: null, sheet: "erp", scrollX: 0, scrollY: 0,
+    active: null, editing: null, formulaBar: "", greyFormula: false,
+    selRange: null, spills: [], dropdown: null, costCenter: "Powder Line 1",
+    reveal: {},
+  };
+
+  if (t < T.titleEnd) { s.card = "title"; return s; }
+  if (t >= T.recapStart) { s.card = "recap"; return s; }
+
+  /* ---- ERP export sheet ---- */
+  if (t < T.reportSwitch) {
+    s.sheet = "erp";
+    s.active = [0, 1];
+    if (t < T.scrollStart) s.scrollY = 0;
+    else if (t < T.scrollEnd) s.scrollY = lerp(0, 78 * ROW_H, seg(t, T.scrollStart, T.scrollEnd));
+    else if (t < T.homeEnd) s.scrollY = lerp(78 * ROW_H, 0, seg(t, T.scrollEnd, T.homeEnd));
+    else s.scrollY = 0;
+
+    if (t >= T.vendorSel) {
+      s.selRange = {c0: 3, c1: 3, r0: 2, r1: 22};
+      s.active = [3, 2];
+      s.formulaBar = ROWS.length ? ROWS[0][3] : "";
+    }
+    return s;
+  }
+
+  /* ---- Report sheet ---- */
+  s.sheet = "report";
+  s.costCenter = t < T.dd1Pick ? "Powder Line 1" : (t < T.dd2Pick ? "Shipping" : "Prep & Blast");
+
+  s.scrollX = t < T.scrollRight ? 0
+            : t < T.scrollRightEnd ? lerp(0, REPORT_F_X, seg(t, T.scrollRight, T.scrollRightEnd))
+            : REPORT_F_X;
+
+  /* UNIQUE in B5 */
+  if (t >= T.uniqEnter) {
+    s.spills.push({col: 1, row: 5, cols: 1, values: VEND_FIRST_SEEN.map(v => [v])});
+    s.reveal.uniq = clamp01((t - T.uniqEnter) / 0.7);
+  }
+  /* SORT in D5 */
+  if (t >= T.sortEnter) {
+    s.spills.push({col: 3, row: 5, cols: 1, values: VEND_SORTED.map(v => [v])});
+    s.reveal.sort = clamp01((t - T.sortEnter) / 0.7);
+  }
+  /* FILTER in F7 */
+  if (t >= T.filtEnter) {
+    const rows = filteredBy(s.costCenter);
+    s.spills.push({col: 5, row: 7, cols: 6, values: rows.map(r => r.slice()), money: 5});
+    const redrawFrom = t < T.dd1Pick ? T.filtEnter : (t < T.dd2Pick ? T.dd1Pick : T.dd2Pick);
+    s.reveal.filt = clamp01((t - redrawFrom) / 0.7);
+  }
+
+  /* active cell + edit state */
+  if (t < T.uniqType) {
+    s.active = [1, 5];
+  } else if (t < T.uniqTypeEnd) {
+    const n = Math.floor(clamp01((t - T.uniqType) / (T.uniqTypeEnd - T.uniqType)) * UNIQ_F.length);
+    s.active = [1, 5];
+    s.editing = {text: UNIQ_F.slice(0, n), caret: (t * 2) % 1 < 0.6};
+    s.formulaBar = s.editing.text;
+  } else if (t < T.clickMid) {
+    s.active = [1, 5];
+    s.formulaBar = UNIQ_F;
+  } else if (t < T.backToB5) {
+    s.active = [1, 11];
+    s.formulaBar = UNIQ_F;
+    s.greyFormula = true;
+  } else if (t < T.sortType) {
+    s.active = [1, 5];
+    s.formulaBar = UNIQ_F;
+  } else if (t < T.sortTypeEnd) {
+    const n = Math.floor(clamp01((t - T.sortType) / (T.sortTypeEnd - T.sortType)) * SORT_F.length);
+    s.active = [3, 5];
+    s.editing = {text: SORT_F.slice(0, n), caret: (t * 2) % 1 < 0.6};
+    s.formulaBar = s.editing.text;
+  } else if (t < T.filtType) {
+    s.active = [3, 5];
+    s.formulaBar = SORT_F;
+  } else if (t < T.filtTypeEnd) {
+    const n = Math.floor(clamp01((t - T.filtType) / (T.filtTypeEnd - T.filtType)) * FILT_F.length);
+    s.active = [5, 7];
+    s.editing = {text: FILT_F.slice(0, n), caret: (t * 2) % 1 < 0.6};
+    s.formulaBar = s.editing.text;
+  } else {
+    s.active = [5, 7];
+    s.formulaBar = FILT_F;
+  }
+
+  /* the dropdown, twice */
+  if (t >= T.dd1Open && t < T.dd1Pick) {
+    s.active = [6, 4];
+    s.formulaBar = "Powder Line 1";
+    s.dropdown = {highlight: t > T.dd1Pick - 1.2 ? "Shipping" : null};
+  } else if (t >= T.dd2Open && t < T.dd2Pick) {
+    s.active = [6, 4];
+    s.formulaBar = "Shipping";
+    s.dropdown = {highlight: t > T.dd2Pick - 0.8 ? "Prep & Blast" : null};
+  } else if (t >= T.dd1Pick && t < T.dd2Open) {
+    s.active = [6, 4];
+    s.formulaBar = s.costCenter;
+  } else if (t >= T.dd2Pick) {
+    s.active = [6, 4];
+    s.formulaBar = s.costCenter;
+  }
+
+  return s;
+}
+
+/* ===========================================================================
+   CELL CONTENT
+   =========================================================================== */
+function erpCell(c, r) {
+  if (r === 1) return {text: ["Date","Job Number","Cost Center","Vendor","Category","Amount"][c],
+                       bold: true, color: "#fff", fill: TABLE_HDR, align: c === 5 ? "right" : "left"};
+  const row = ROWS[r - 2];
+  if (!row) return null;
+  const fill = (r % 2 === 0) ? null : STRIPE;
+  if (c === 5) return {text: money(row[5]), align: "right", fill};
+  return {text: String(row[c]), fill};
+}
+
+function reportCell(c, r, s) {
+  const K = c + "," + r;
+  const statics = {
+    "1,1": {text: "Vendor spend report", bold: true, size: 22, color: TABLE_HDR},
+    "1,2": {text: "Type the three formulas below. Nothing here is hard-coded.", italic: true, color: "#777", size: 15},
+    "1,4": {text: "1. Every vendor we used", bold: true, color: TABLE_HDR},
+    "3,4": {text: "2. Same list, alphabetical", bold: true, color: TABLE_HDR},
+    "5,4": {text: "Cost center", bold: true, color: TABLE_HDR},
+    "6,4": {text: s.costCenter, bold: true, fill: INPUT_FILL, box: true},
+    "5,6": {text: "3. Every line for that cost center", bold: true, color: TABLE_HDR},
+  };
+  if (statics[K]) return statics[K];
+
+  for (const sp of s.spills) {
+    const key = sp.col === 1 ? "uniq" : sp.col === 3 ? "sort" : "filt";
+    const shown = Math.ceil((s.reveal[key] ?? 1) * sp.values.length);
+    const dr = r - sp.row, dc = c - sp.col;
+    if (dr >= 0 && dr < shown && dc >= 0 && dc < sp.cols) {
+      const v = sp.values[dr][dc];
+      if (v === undefined) return null;
+      if (sp.money === dc) return {text: money(v), align: "right", spill: true};
+      return {text: String(v), spill: true};
+    }
+  }
+  return null;
+}
+
+/* ===========================================================================
+   DRAWING
+   =========================================================================== */
+function drawChrome(s) {
+  /* title bar */
+  ctx.fillStyle = CHROME; ctx.fillRect(0, 0, W, TITLEBAR_H + TABSTRIP_H);
+  ctx.fillStyle = XL_GREEN; ctx.fillRect(0, 0, 6, TITLEBAR_H);
+  ctx.fillStyle = "#3c3c3c"; ctx.font = "500 17px " + SANS; ctx.textBaseline = "middle";
+  ctx.textAlign = "left";
+  ctx.fillText("demo-workbook.xlsx  —  Excel", 24, TITLEBAR_H / 2);
+
+  /* ribbon tab strip (collapsed ribbon, per the style guide) */
+  const tabs = ["File", "Home", "Insert", "Draw", "Page Layout", "Formulas", "Data", "Review", "View", "Help"];
+  let x = 24;
+  ctx.font = "400 17px " + SANS;
+  tabs.forEach((tab, i) => {
+    const w = ctx.measureText(tab).width + 34;
+    if (i === 1) {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(x, TITLEBAR_H + 4, w, TABSTRIP_H - 4);
+      ctx.fillStyle = XL_GREEN;
+      ctx.fillRect(x, TITLEBAR_H + 4, w, 3);
+    }
+    ctx.fillStyle = i === 1 ? XL_GREEN : "#444";
+    ctx.textAlign = "center";
+    ctx.fillText(tab, x + w / 2, TITLEBAR_H + TABSTRIP_H / 2 + 2);
+    x += w;
+  });
+  ctx.textAlign = "left";
+
+  /* formula bar */
+  const fy = TITLEBAR_H + TABSTRIP_H;
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, fy, W, FBAR_H);
+  ctx.strokeStyle = CHROME_LINE; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, fy + FBAR_H - 0.5); ctx.lineTo(W, fy + FBAR_H - 0.5); ctx.stroke();
+
+  /* name box */
+  ctx.strokeStyle = CHROME_LINE;
+  ctx.strokeRect(12.5, fy + 7.5, 150, FBAR_H - 15);
+  ctx.fillStyle = INK; ctx.font = "400 18px " + SANS;
+  const ref = s.active ? colName(s.active[0]) + s.active[1] : "";
+  ctx.fillText(ref, 24, fy + FBAR_H / 2);
+
+  ctx.fillStyle = "#888"; ctx.font = "italic 400 18px " + SANS;
+  ctx.fillText("fx", 186, fy + FBAR_H / 2);
+  ctx.strokeStyle = CHROME_LINE;
+  ctx.beginPath(); ctx.moveTo(172.5, fy + 7); ctx.lineTo(172.5, fy + FBAR_H - 7); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(214.5, fy + 7); ctx.lineTo(214.5, fy + FBAR_H - 7); ctx.stroke();
+
+  if (s.formulaBar) {
+    ctx.fillStyle = s.greyFormula ? "#9a9a9a" : INK;
+    ctx.font = "400 20px " + MONO;
+    ctx.fillText(s.formulaBar, 230, fy + FBAR_H / 2 + 1);
+    if (s.editing && s.editing.caret) {
+      const cw = ctx.measureText(s.formulaBar).width;
+      ctx.fillStyle = INK;
+      ctx.fillRect(232 + cw, fy + 11, 2, FBAR_H - 22);
+    }
+  }
+}
+
+function drawSheetBar(s) {
+  const y = GRID_BOT;
+  ctx.fillStyle = CHROME; ctx.fillRect(0, y, W, SHEETBAR_H);
+  ctx.strokeStyle = CHROME_LINE;
+  ctx.beginPath(); ctx.moveTo(0, y + 0.5); ctx.lineTo(W, y + 0.5); ctx.stroke();
+
+  const names = ["ERP Export", "Report", "Answer Key"];
+  const activeName = s.sheet === "erp" ? "ERP Export" : "Report";
+  let x = 60;
+  ctx.font = "400 17px " + SANS; ctx.textBaseline = "middle";
+  for (const n of names) {
+    const w = ctx.measureText(n).width + 40;
+    const on = n === activeName;
+    if (on) {
+      ctx.fillStyle = "#fff"; ctx.fillRect(x, y + 1, w, SHEETBAR_H - 1);
+      ctx.fillStyle = XL_GREEN; ctx.fillRect(x, y + SHEETBAR_H - 4, w, 3);
+    }
+    ctx.fillStyle = on ? XL_GREEN : "#5a5a5a";
+    ctx.font = (on ? "600 " : "400 ") + "17px " + SANS;
+    ctx.textAlign = "center";
+    ctx.fillText(n, x + w / 2, y + SHEETBAR_H / 2);
+    x += w;
+  }
+  ctx.textAlign = "left";
+
+  const label = s.sheet === "erp" ? "380 rows" : "Ready";
+  ctx.fillStyle = "#666"; ctx.font = "400 16px " + SANS;
+  ctx.textAlign = "right";
+  ctx.fillText(label, W - 40, y + SHEETBAR_H / 2);
+  ctx.textAlign = "left";
+}
+
+function drawGrid(s) {
+  const cols = s.sheet === "erp" ? ERP_COLS : REPORT_COLS;
+  const cellAt = s.sheet === "erp" ? erpCell : (c, r) => reportCell(c, r, s);
+
+  /* column x positions in sheet space */
+  const cumX = [0];
+  for (const w of cols) cumX.push(cumX[cumX.length - 1] + w);
+
+  const firstRow = Math.floor(s.scrollY / ROW_H) + 1;
+  const yOff = -(s.scrollY % ROW_H);
+  const nRows = Math.ceil((GRID_BOT - GRID_TOP) / ROW_H) + 1;
+
+  const colX = i => GUTTER + cumX[i] - s.scrollX;
+  const rowY = r => GRID_TOP + yOff + (r - firstRow) * ROW_H;
+
+  /* white canvas */
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, GRID_TOP - COLHDR_H, W, GRID_BOT - GRID_TOP + COLHDR_H);
+
+  /* ---- cell fills + text ---- */
+  ctx.textBaseline = "middle";
+  for (let ri = 0; ri < nRows; ri++) {
+    const r = firstRow + ri, y = rowY(r);
+    if (y > GRID_BOT || y + ROW_H < GRID_TOP) continue;
+    for (let c = 0; c < cols.length; c++) {
+      const x = colX(c), w = cols[c];
+      if (x + w < GUTTER || x > W) continue;
+      const cell = cellAt(c, r);
+      if (!cell) continue;
+
+      const top = Math.max(y, GRID_TOP), bot = Math.min(y + ROW_H, GRID_BOT);
+      if (bot <= top) continue;
+
+      if (cell.fill) { ctx.fillStyle = cell.fill; ctx.fillRect(x, top, w, bot - top); }
+
+      /* Left-aligned text overflows into adjacent empty cells, like Excel. */
+      let avail = w;
+      if (cell.align !== "right") {
+        for (let k = c + 1; k < cols.length; k++) {
+          if (cellAt(k, r)) break;
+          avail += cols[k];
+        }
+      }
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(Math.max(x, GUTTER), top, avail - Math.max(0, GUTTER - x), bot - top);
+      ctx.clip();
+      ctx.fillStyle = cell.color || INK;
+      const size = cell.size || 19;
+      ctx.font = (cell.bold ? "600 " : cell.italic ? "italic 400 " : "400 ") + size + "px " + SANS;
+      ctx.textAlign = cell.align === "right" ? "right" : "left";
+      const tx = cell.align === "right" ? x + w - 12 : x + 12;
+      ctx.fillText(cell.text, tx, y + ROW_H / 2 + 1);
+      ctx.restore();
+
+      if (cell.box) {
+        ctx.strokeStyle = "#b8b8b8"; ctx.lineWidth = 1;
+        ctx.strokeRect(x + 0.5, y + 0.5, w - 1, ROW_H - 1);
+        /* validation dropdown arrow */
+        ctx.fillStyle = "#666";
+        ctx.beginPath();
+        ctx.moveTo(x + w - 26, y + ROW_H / 2 - 3);
+        ctx.lineTo(x + w - 14, y + ROW_H / 2 - 3);
+        ctx.lineTo(x + w - 20, y + ROW_H / 2 + 4);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+  }
+
+  /* ---- grid lines ---- */
+  ctx.strokeStyle = GRID_LINE; ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let ri = 0; ri <= nRows; ri++) {
+    const y = Math.round(rowY(firstRow + ri)) + 0.5;
+    if (y < GRID_TOP || y > GRID_BOT) continue;
+    ctx.moveTo(GUTTER, y); ctx.lineTo(W, y);
+  }
+  for (let c = 0; c <= cols.length; c++) {
+    const x = Math.round(colX(c)) + 0.5;
+    if (x < GUTTER || x > W) continue;
+    ctx.moveTo(x, GRID_TOP); ctx.lineTo(x, GRID_BOT);
+  }
+  ctx.stroke();
+
+  /* ---- selection range tint ---- */
+  if (s.selRange) {
+    const {c0, c1, r0, r1} = s.selRange;
+    const x = colX(c0), w = cumX[c1 + 1] - cumX[c0];
+    const y0 = Math.max(rowY(r0), GRID_TOP), y1 = Math.min(rowY(r1 + 1), GRID_BOT);
+    ctx.fillStyle = "rgba(33,115,70,0.12)";
+    ctx.fillRect(x, y0, w, y1 - y0);
+    ctx.strokeStyle = XL_GREEN; ctx.lineWidth = 2;
+    ctx.strokeRect(x + 1, y0 + 1, w - 2, y1 - y0 - 2);
+  }
+
+  /* ---- spill borders ---- */
+  for (const sp of s.spills) {
+    const key = sp.col === 1 ? "uniq" : sp.col === 3 ? "sort" : "filt";
+    const shown = Math.ceil((s.reveal[key] ?? 1) * sp.values.length);
+    if (!shown) continue;
+    const x = colX(sp.col);
+    const w = cumX[sp.col + sp.cols] - cumX[sp.col];
+    const y0 = Math.max(rowY(sp.row), GRID_TOP);
+    const y1 = Math.min(rowY(sp.row + shown), GRID_BOT);
+    if (y1 <= y0) continue;
+    ctx.strokeStyle = SPILL_BLUE; ctx.lineWidth = 2;
+    ctx.strokeRect(x + 1, y0 + 1, w - 2, y1 - y0 - 2);
+  }
+
+  /* ---- active cell ---- */
+  if (s.active && !s.selRange) {
+    const [c, r] = s.active;
+    const x = colX(c), w = cols[c], y = rowY(r);
+    if (y >= GRID_TOP - ROW_H && y <= GRID_BOT) {
+      if (s.editing) { ctx.fillStyle = "#fff"; ctx.fillRect(x + 1, y + 1, w - 2, ROW_H - 2); }
+      ctx.strokeStyle = XL_GREEN; ctx.lineWidth = 3;
+      ctx.strokeRect(x + 1.5, y + 1.5, w - 3, ROW_H - 3);
+      if (!s.editing) { ctx.fillStyle = XL_GREEN; ctx.fillRect(x + w - 5, y + ROW_H - 5, 7, 7); }
+
+      if (s.editing) {
+        ctx.save();
+        ctx.beginPath(); ctx.rect(x + 2, y + 2, W - x, ROW_H - 4); ctx.clip();
+        ctx.fillStyle = INK; ctx.font = "400 19px " + MONO; ctx.textAlign = "left";
+        ctx.fillText(s.editing.text, x + 10, y + ROW_H / 2 + 1);
+        if (s.editing.caret) {
+          const cw = ctx.measureText(s.editing.text).width;
+          ctx.fillRect(x + 12 + cw, y + 7, 2, ROW_H - 14);
+        }
+        ctx.restore();
+      }
+    }
+  }
+
+  /* ---- headers (drawn last so they sit above scrolled content) ---- */
+  ctx.fillStyle = HDR_BG;
+  ctx.fillRect(0, GRID_TOP - COLHDR_H, W, COLHDR_H);
+  ctx.fillRect(0, GRID_TOP, GUTTER, GRID_BOT - GRID_TOP);
+
+  ctx.strokeStyle = "#c6c6c6"; ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, GRID_TOP + 0.5); ctx.lineTo(W, GRID_TOP + 0.5);
+  ctx.moveTo(GUTTER + 0.5, GRID_TOP - COLHDR_H); ctx.lineTo(GUTTER + 0.5, GRID_BOT);
+  ctx.stroke();
+
+  ctx.font = "400 17px " + SANS; ctx.textBaseline = "middle";
+  const activeCol = s.active ? s.active[0] : -1, activeRow = s.active ? s.active[1] : -1;
+
+  for (let c = 0; c < cols.length; c++) {
+    const x = colX(c), w = cols[c];
+    if (x + w < GUTTER || x > W) continue;
+    const on = c === activeCol || (s.selRange && c >= s.selRange.c0 && c <= s.selRange.c1);
+    if (on) { ctx.fillStyle = HDR_BG_ON; ctx.fillRect(Math.max(x, GUTTER + 1), GRID_TOP - COLHDR_H + 1, w, COLHDR_H - 2); }
+    ctx.fillStyle = on ? XL_GREEN : HDR_TEXT;
+    ctx.textAlign = "center";
+    ctx.fillText(colName(c), x + w / 2, GRID_TOP - COLHDR_H / 2);
+    ctx.strokeStyle = "#c6c6c6";
+    ctx.beginPath();
+    ctx.moveTo(Math.round(x) + 0.5, GRID_TOP - COLHDR_H + 8);
+    ctx.lineTo(Math.round(x) + 0.5, GRID_TOP - 8);
+    ctx.stroke();
+  }
+
+  for (let ri = 0; ri < nRows; ri++) {
+    const r = firstRow + ri, y = rowY(r);
+    if (y + ROW_H < GRID_TOP || y > GRID_BOT) continue;
+    const top = Math.max(y, GRID_TOP), bot = Math.min(y + ROW_H, GRID_BOT);
+    if (bot - top < 6) continue;
+    const on = r === activeRow || (s.selRange && r >= s.selRange.r0 && r <= s.selRange.r1);
+    if (on) { ctx.fillStyle = HDR_BG_ON; ctx.fillRect(1, top, GUTTER - 2, bot - top); }
+    ctx.fillStyle = on ? XL_GREEN : HDR_TEXT;
+    ctx.textAlign = "center";
+    ctx.fillText(String(r), GUTTER / 2, (top + bot) / 2);
+    ctx.strokeStyle = "#c6c6c6";
+    ctx.beginPath(); ctx.moveTo(8, Math.round(y) + 0.5); ctx.lineTo(GUTTER - 8, Math.round(y) + 0.5); ctx.stroke();
+  }
+  ctx.textAlign = "left";
+
+  /* ---- data-validation dropdown, on top of everything ---- */
+  if (s.dropdown) {
+    const c = 6, r = 4;
+    const x = colX(c), w = Math.max(cols[c], 240), y = rowY(r) + ROW_H;
+    const itemH = 40, h = COST_CENTERS.length * itemH + 12;
+    ctx.save();
+    ctx.shadowColor = "rgba(0,0,0,0.28)"; ctx.shadowBlur = 18; ctx.shadowOffsetY = 5;
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(x, y, w, h);
+    ctx.restore();
+    ctx.strokeStyle = "#b0b0b0"; ctx.lineWidth = 1;
+    ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+    ctx.font = "400 19px " + SANS; ctx.textBaseline = "middle";
+    COST_CENTERS.forEach((cc, i) => {
+      const iy = y + 6 + i * itemH;
+      if (cc === s.dropdown.highlight) { ctx.fillStyle = "#cfe3d6"; ctx.fillRect(x + 2, iy, w - 4, itemH); }
+      ctx.fillStyle = INK;
+      ctx.fillText(cc, x + 14, iy + itemH / 2);
+    });
+  }
+}
+
+function drawCursor(t) {
+  const {x, y} = cursorAt(t);
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.beginPath();
+  ctx.moveTo(0, 0); ctx.lineTo(0, 26); ctx.lineTo(6.5, 19.5);
+  ctx.lineTo(11, 29); ctx.lineTo(16, 26.5); ctx.lineTo(11.5, 17.5);
+  ctx.lineTo(20, 16.5); ctx.closePath();
+  ctx.fillStyle = "#fff"; ctx.fill();
+  ctx.strokeStyle = "#111"; ctx.lineWidth = 1.6; ctx.stroke();
+  ctx.restore();
+}
+
+function drawCaption(t) {
+  if (window.__NO_CAPTIONS__) return;
+  const cue = CAPTIONS.find(([a, b]) => t >= a && t <= b);
+  if (!cue) return;
+  const text = cue[2];
+  const font = "600 34px " + SANS;
+  const lines = wrapText(text, font, 1360);
+  const lineH = 46, padX = 34, padY = 22;
+  ctx.font = font;
+  const boxW = Math.max(...lines.map(l => ctx.measureText(l).width)) + padX * 2;
+  const boxH = lines.length * lineH + padY * 2 - 8;
+  const bx = (W - boxW) / 2, by = GRID_BOT - 30 - boxH;
+
+  ctx.fillStyle = "rgba(8,12,20,0.86)";
+  roundRect(bx, by, boxW, boxH, 12); ctx.fill();
+
+  ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  lines.forEach((l, i) => ctx.fillText(l, W / 2, by + padY + lineH / 2 + i * lineH - 4));
+  ctx.textAlign = "left";
+}
+
+/* ---------- cards ---------- */
+function drawCard(kind) {
+  ctx.fillStyle = NAVY; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = ACCENT; ctx.fillRect(0, 0, 18, H);
+  const x = 132;
+  ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+
+  ctx.fillStyle = ACCENT; ctx.font = "700 34px " + SANS;
+  ctx.letterSpacing = "6px";
+  ctx.fillText("TWO-MINUTE TUESDAY", x, 168);
+  ctx.letterSpacing = "0px";
+
+  ctx.fillStyle = MUTED; ctx.font = "400 30px " + SANS;
+  ctx.fillText("Episode 001  ·  Excel" + (kind === "recap" ? "  ·  Recap" : ""), x, 224);
+
+  if (kind === "title") {
+    const font = "600 104px " + SANS;
+    const lines = wrapText("Stop copy-pasting your vendor list", font, W - x - 132);
+    ctx.fillStyle = "#fff"; ctx.font = font;
+    let y = H / 2 - ((lines.length - 1) * 126) / 2 + 36;
+    for (const l of lines) { ctx.fillText(l, x, y); y += 126; }
+  } else {
+    ctx.fillStyle = "#fff"; ctx.font = "600 64px " + SANS;
+    ctx.fillText("Stop copy-pasting your vendor list", x, 380);
+    const items = ["=UNIQUE(range)", "=SORT(UNIQUE(range))", "=FILTER(table, column = criteria)"];
+    let y = 500;
+    items.forEach((item, i) => {
+      ctx.fillStyle = ACCENT; ctx.font = "700 46px " + SANS;
+      ctx.fillText((i + 1) + ".", x, y);
+      ctx.fillStyle = "#fff"; ctx.font = "400 52px " + MONO;
+      ctx.fillText(item, x + 78, y);
+      y += 112;
+    });
+  }
+
+  ctx.fillStyle = MUTED; ctx.font = "400 26px " + SANS;
+  ctx.fillText("Creative Liquid Coatings", x, H - 88);
+}
+
+/* ===========================================================================
+   FRAME
+   =========================================================================== */
+function drawFrame(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+  const s = stateAt(t);
+
+  if (s.card) { drawCard(s.card); return; }
+
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, W, H);
+  drawChrome(s);
+  drawGrid(s);
+  drawSheetBar(s);
+  drawCaption(t);
+  drawCursor(t);
+}
+
+window.drawFrame = drawFrame;
+window.EPISODE_END = T.end;
+drawFrame(0);
+</script>
+</body>
+</html>
