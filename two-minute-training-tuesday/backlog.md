@@ -20,8 +20,8 @@ live in Excel stop watching.
 
 | # | App | Working title | The pain it kills |
 | --- | --- | --- | --- |
-| 001 | Excel | Stop copy-pasting your vendor list | `UNIQUE`, `SORT`, `FILTER` — **scripted, ready to record** |
-| 002 | Excel | Drop-downs that maintain themselves | The spill reference `B5#` feeding Data Validation, so a new vendor appears in the list with no edit |
+| 001 | Excel | Stop copy-pasting your vendor list | `UNIQUE`, `SORT`, `FILTER` — **rendered and voiced, ready to publish** |
+| 002 | Excel | Data Validation, basic then self-maintaining | Allow: List from a range, watch it go stale, then repoint Source at `=$K$5#` so it maintains itself — **scripted, ready to record** |
 | 003 | Outlook | Find any attachment in four seconds | `hasattachments:yes`, `from:`, `subject:` — search operators instead of scrolling |
 | 004 | Teams | Never lose a message again | Saved messages, plus `Ctrl+E` search with `from:` and `in:` filters |
 | 005 | Excel | XLOOKUP, and why you can delete VLOOKUP | Looking left, exact-match default, and the "if not found" argument |

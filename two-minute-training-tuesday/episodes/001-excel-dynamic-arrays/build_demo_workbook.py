@@ -4,9 +4,16 @@ The workbook stands in for a job-cost export out of the ERP so the episode can
 be recorded without a single row of real customer or vendor data on screen.
 
     pip install openpyxl
-    python build_demo_workbook.py
+    python build_demo_workbook.py            # blank Report sheet, for episode 001
+    python build_demo_workbook.py --solved   # 001 already solved, for episode 002
 
-Output: demo-workbook.xlsx, next to this script.
+Output: demo-workbook.xlsx, or demo-workbook-solved.xlsx with --solved.
+
+--solved emits the state episode 002 opens on: 001's three formulas already in
+B5/D5/F7, the six cost centers typed as plain text into J5:J10 to be the basic
+Data Validation source, and column K left clear for the array formula. G4 keeps
+its hard-coded validation list on purpose -- that stale list is what 002 replaces
+on camera, so fixing it here would delete the episode's subject.
 
 Sheets
 ------
@@ -19,6 +26,7 @@ Data is generated from a fixed seed, so re-running produces a byte-identical
 workbook and the script's timecodes stay accurate.
 """
 
+import argparse
 import json
 import random
 from datetime import date, timedelta
@@ -168,10 +176,15 @@ def write_export_sheet(ws, rows):
     return last_row
 
 
-def write_report_sheet(ws):
+def write_report_sheet(ws, solved=False):
     ws["B1"] = "Vendor spend report"
     ws["B1"].font = TITLE_FONT
-    ws["B2"] = "Type the three formulas below. Nothing here is hard-coded."
+    ws["B2"] = (
+        "Built with three formulas. Nothing here is hard-coded -- except the "
+        "cost center drop-down, which is."
+        if solved else
+        "Type the three formulas below. Nothing here is hard-coded."
+    )
     ws["B2"].font = HINT_FONT
 
     ws["B4"] = "1. Every vendor we used"
@@ -199,9 +212,30 @@ def write_report_sheet(ws):
     ws.add_data_validation(picker)
     picker.add(ws["G4"])
 
+    if solved:
+        write_solved_state(ws)
+
     for col, width in zip("ABCDEFGHIJKL", (3, 26, 3, 26, 3, 15, 17, 19, 26, 20, 15, 15)):
         ws.column_dimensions[col].width = width
     ws.sheet_view.showGridLines = False
+
+
+def write_solved_state(ws):
+    """The state episode 002 opens on: 001 finished, and a typed list to break.
+
+    The J5:J10 list is deliberately plain text. It is the basic Data Validation
+    source in 002, and the whole point is that it does not grow when the export
+    does -- so it must not be a formula.
+    """
+    ws["B5"] = "=UNIQUE(ERP_Export[Vendor])"
+    ws["D5"] = "=SORT(UNIQUE(ERP_Export[Vendor]))"
+    ws["F7"] = ('=FILTER(ERP_Export,ERP_Export[Cost Center]=G4,"No matches")')
+
+    ws["J4"] = "Cost centers (typed)"
+    ws["J4"].font = LABEL_FONT
+    for offset, name in enumerate(COST_CENTERS):
+        cell = ws.cell(row=5 + offset, column=10, value=name)
+        cell.border = Border(bottom=THIN, top=THIN, left=THIN, right=THIN)
 
 
 def write_answer_key(ws, last_row):
@@ -260,6 +294,11 @@ def write_answer_key(ws, last_row):
 
 
 def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--solved", action="store_true",
+                    help="emit the episode-002 starting state (see module docstring)")
+    args = ap.parse_args()
+
     rng = random.Random(SEED)
     rows = build_rows(rng)
 
@@ -268,11 +307,12 @@ def main():
     export.title = "ERP Export"
     last_row = write_export_sheet(export, rows)
 
-    write_report_sheet(wb.create_sheet("Report"))
+    write_report_sheet(wb.create_sheet("Report"), solved=args.solved)
     write_answer_key(wb.create_sheet("Answer Key"), last_row)
 
     wb.active = 0
-    out = Path(__file__).with_name("demo-workbook.xlsx")
+    name = "demo-workbook-solved.xlsx" if args.solved else "demo-workbook.xlsx"
+    out = Path(__file__).with_name(name)
     wb.save(out)
 
     vendors = sorted({r[3] for r in rows})
@@ -280,6 +320,9 @@ def main():
     print(f"  {len(rows)} rows, {len(vendors)} distinct vendors, "
           f"{len(COST_CENTERS)} cost centers")
     print(f"  table ERP_Export = 'ERP Export'!A1:F{last_row}")
+    if args.solved:
+        print("  Report: 001 formulas in B5/D5/F7, typed list J5:J10, K clear")
+        print("  G4 validation left hard-coded on purpose -- that is 002's subject")
 
 
 if __name__ == "__main__":
