@@ -216,11 +216,19 @@ def main() -> None:
         f"Two-Minute Training Tuesday #{ep['number']:03d} — {ep['title']}"
     )
     msg["From"] = formataddr((sender["displayName"], sender["address"]))
-    msg["To"] = ", ".join(args.to)
+    msg["Reply-To"] = sender["address"]
+
+    # BCC, NOT TO -- mirrors SmtpTrainingEmailSender in the Hub. An announcement list on the To
+    # line hands every recipient every other address and turns one Reply All into a thread the
+    # whole list has to read. The To line carries the sender so the message is not header-less.
+    msg["To"] = sender["address"]
+    msg["Bcc"] = ", ".join(args.to)
+
     msg.set_content(text)
     msg.add_alternative(html, subtype="html")
 
     with smtplib.SMTP(host, port, timeout=30) as smtp:
+        # send_message honours Bcc for the envelope but does not transmit the header.
         smtp.send_message(msg)
 
     print(f"sent episode {ep['number']:03d} to {', '.join(args.to)}")
