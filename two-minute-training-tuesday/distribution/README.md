@@ -4,9 +4,9 @@ Three pieces, decided 2026-08-24:
 
 | Piece | Where it lives | Status |
 | --- | --- | --- |
-| Video hosting + back catalogue | **New library on the TFA site** (interim), `CLC Training` later | library to create — [`admin-setup.md`](admin-setup.md) |
-| Browse/watch surface | A **section in the existing CLC Desktop Hub** | BUILT on `feat/tmtt-section`, not deployed |
-| Weekly email | Hub **Api** hosted service, drafts on a schedule, **you approve before it sends** | to build; sends as Josh for now, Mr. Bean needs Send As |
+| Video hosting + back catalogue | `CLC Training/Two-Minute Training` on the main site | **LIVE**, read granted, forwarding verified |
+| Browse/watch surface | SharePoint itself | Hub section built and deployed, then **HIDDEN** (Josh, 2026-08-25) — SharePoint already is the browse surface |
+| Weekly email | Hub **Api** hosted service, drafts on a schedule, **you approve before it sends** | composition BUILT + test-sent (`send_episode_email.py`); scheduling still to do |
 
 The single source of truth for what exists is
 [`../episodes.json`](../episodes.json). Both the Hub section and the email job
@@ -93,3 +93,49 @@ its own options section and its own `From`.
 Steps 3 and 4 can both be built and tested before step 1 finishes. The job with
 no uploaded video simply refuses to draft, which is the behaviour you want to see
 in testing anyway.
+
+
+---
+
+## Settled, with evidence (2026-08-25)
+
+**Links: path-based `stream.aspx`, and forwarding works.** Verified end to end —
+an email was forwarded to a colleague who opened the video without being granted
+anything. That is the whole point of path-based links over share links: they
+authorise against each viewer's own permissions, so there is no per-episode token
+to mint, track, or accidentally revoke.
+
+Getting there cost two wrong turns, both recorded so they are not repeated:
+
+1. **A path link on a private library is useless.** While the series sat in the
+   TFA library — a private group site with one member — the only thing that
+   opened for anyone else was an "anyone in the organisation" share link. A path
+   link was substituted for tidiness and broke the first forward. Path links need
+   the audience to have read access; check that before choosing the form.
+2. **Renaming a published file silently breaks a path link.** The filename is
+   encoded in the URL. The Hub keeps rendering a Watch button, the button lands
+   on an error, and nothing logs it. `Doc.aspx?sourcedoc={guid}` is rename-proof
+   but redirects to the folder listing for video instead of playing, so it is not
+   an escape hatch. **Once an episode ships, its published filename is fixed.**
+
+**Mail: no new mailbox needed.** Sending as `Two-Minute Training Tuesday
+<JoshGraham@…>` — a display name over an address Josh owns — needs no grant and
+passes DMARC. "Mr. Bean" turned out to be the Hub's existing Finance Assistant
+persona rather than a mailbox; sending genuinely as an alias would need a shared
+mailbox (not a distribution list) plus Send As.
+
+**Host gotcha:** `~/.config/clc-shared/smtp.env.sh` uses plain assignments, not
+`export`, so sourcing it in a shell does not put `Smtp__Host` in the environment
+of a child process. Use `set -a; . file; set +a`.
+
+## Still open
+
+- **Episode 002 is not uploaded.** `TMTT-002-Data-Validation.mp4` is rendered and
+  voiced, waiting in `episodes/001-excel-dynamic-arrays/upload/`.
+- **001's video cards still show the previous wording** ("Stop copying and
+  pasting"). A re-render costs an upload and a rename, so it waits for the title
+  to be final.
+- **Scheduling the send.** The composition works; the weekly draft-and-hold job
+  and its approval step do not exist yet.
+- **A recipient distribution group.** Nothing goes company-wide without one, and
+  it must not be an address list in config.
