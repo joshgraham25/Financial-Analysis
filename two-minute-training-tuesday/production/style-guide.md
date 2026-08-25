@@ -78,7 +78,7 @@ Name the outcome, not the feature. The feature name goes in the subtitle.
 
 | Write this | Not this |
 | --- | --- |
-| Stop copying and pasting to get a unique list | An introduction to UNIQUE |
+| Stop using copy and pasting to get a unique list | An introduction to UNIQUE |
 | Find that attachment in four seconds | Outlook search operators |
 | Never lose a Teams message again | Using saved messages in Teams |
 | Make one number and let Excel do the rest | Understanding spill ranges |

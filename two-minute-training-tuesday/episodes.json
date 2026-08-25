@@ -13,25 +13,26 @@
       "library": "Shared Documents",
       "folder": "CLC Training/Two-Minute Training",
       "folderUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FCLCMainSite%2FShared%20Documents%2FCLC%20Training%2FTwo-Minute%20Training",
-      "_comment": "Home as of 2026-08-25: CLC Training on the main site, alongside CLC University, LEHS, IQMS and Paulson -- where staff already look for training. Read access is granted, so videoUrl is a PATH-BASED stream.aspx link: it authorises against each viewer's own permissions, so it survives forwarding and needs no per-item share token. This replaced both the interim TFA library and the ':v:/s/...?e=' share links that library required while it was private to one member."
+      "_comment": "Home as of 2026-08-25: CLC Training on the main site, alongside CLC University, LEHS, IQMS and Paulson -- where staff already look for training. Read access is granted, so videoUrl is a PATH-BASED stream.aspx link: it authorises against each viewer's own permissions, so it survives forwarding and needs no per-item share token. This replaced both the interim TFA library and the ':v:/s/...?e=' share links that library required while it was private to one member. WARNING: a path-based stream link encodes the FILENAME, so renaming or moving a published file breaks it silently -- the Hub keeps rendering a Watch button that lands on an error. Renaming 001 in SharePoint already did this once. Doc.aspx?sourcedoc={guid} is rename-proof but redirects to the folder view for video rather than playing it, so it is not an option here. Treat the published filename as fixed once an episode ships; if it must change, update videoUrl and publishedFileName in the same pass."
     }
   },
   "episodes": [
     {
       "number": 1,
       "slug": "001-excel-dynamic-arrays",
-      "title": "Stop copying and pasting to get a unique list",
+      "title": "Stop using copy and pasting to get a unique list",
       "app": "Excel",
       "tip": "UNIQUE, SORT, FILTER",
       "runtime": "1:49",
       "published": "2026-08-25",
       "videoFile": "TMTT-001-Excel-Dynamic-Arrays.mp4",
-      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/_layouts/15/stream.aspx?id=%2Fsites%2FCLCMainSite%2FShared%20Documents%2FCLC%20Training%2FTwo-Minute%20Training%2FTMTT-001-Excel-Dynamic-Arrays.mp4",
+      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/_layouts/15/stream.aspx?id=%2Fsites%2FCLCMainSite%2FShared%20Documents%2FCLC%20Training%2FTwo-Minute%20Training%2FTMTT-001%20Stop%20using%20copy%20and%20pasting%20to%20get%20a%20unique%20list.mp4",
       "captionsFile": "TMTT-001-captions.srt",
       "attachments": [
         "demo-workbook.xlsx"
       ],
-      "summary": "Three functions replace the copy-paste-dedupe-sort routine on any export: =UNIQUE(range), =SORT(UNIQUE(range)), and =FILTER(table, column = criteria)."
+      "summary": "Three functions replace the copy-paste-dedupe-sort routine on any export: =UNIQUE(range), =SORT(UNIQUE(range)), and =FILTER(table, column = criteria).",
+      "publishedFileName": "TMTT-001 Stop using copy and pasting to get a unique list.mp4"
     },
     {
       "number": 2,

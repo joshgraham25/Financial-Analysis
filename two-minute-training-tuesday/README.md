@@ -43,7 +43,7 @@ exactly the kind of mandatory training nobody watches.
 | --- | --- |
 | Hard stop at 2:00, aim for 1:45 | The name is a contract. Over 2:00 and you have broken it. |
 | One tip per episode | Two tips means neither gets remembered. Split it into two Tuesdays. |
-| Open with the pain, not the feature | "Stop copying and pasting to get a unique list" beats "Today we'll learn UNIQUE." |
+| Open with the pain, not the feature | "Stop using copy and pasting to get a unique list" beats "Today we'll learn UNIQUE." |
 | Real company data, never `Foo`/`Bar` | People adopt what they recognize. Use job numbers, cost centers, real vendors. |
 | No intro music, no logo animation | Eight seconds of branding on a 120-second video is 7% of the runtime. |
 | Show the finished result in the first 15 seconds | Viewers stay for a payoff they can already see. |

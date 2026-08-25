@@ -1,4 +1,4 @@
-# Episode 001 — Stop copying and pasting to get a unique list
+# Episode 001 — Stop using copy and pasting to get a unique list
 
 | | |
 | --- | --- |

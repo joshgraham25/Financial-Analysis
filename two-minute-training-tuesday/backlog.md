@@ -20,7 +20,7 @@ live in Excel stop watching.
 
 | # | App | Working title | The pain it kills |
 | --- | --- | --- | --- |
-| 001 | Excel | Stop copying and pasting to get a unique list | `UNIQUE`, `SORT`, `FILTER` — **rendered and voiced, ready to publish** |
+| 001 | Excel | Stop using copy and pasting to get a unique list | `UNIQUE`, `SORT`, `FILTER` — **rendered and voiced, ready to publish** |
 | 002 | Excel | Data Validation, basic then self-maintaining | Allow: List from a range, watch it go stale, then repoint Source at `=$K$5#` so it maintains itself — **scripted, ready to record** |
 | 003 | Outlook | Find any attachment in four seconds | `hasattachments:yes`, `from:`, `subject:` — search operators instead of scrolling |
 | 004 | Teams | Never lose a message again | Saved messages, plus `Ctrl+E` search with `from:` and `in:` filters |
