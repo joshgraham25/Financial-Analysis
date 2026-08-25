@@ -9,11 +9,11 @@
       "_comment": "Display name over an address Josh owns -- legitimate, and no Send As grant needed. Switching the address to the Mr. Bean finance alias later DOES need Send As on that mailbox; see distribution/admin-setup.md. Never put the Mr. Bean display name over this address -- that is the spoofing shape that renders as 'on behalf of' and can fail DMARC."
     },
     "sharePoint": {
-      "site": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite",
-      "library": "Shared Documents",
-      "folder": "CLC Training/Two-Minute Training Tuesday",
-      "folderUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/Shared%20Documents/CLC%20Training",
-      "_comment": "Verified 2026-08-24 by listing the folder: CLC Training is already the company's training-video home -- CLC University (5 GB), LEHS Training (13.7 GB), IQMS Training Videos (3.9 GB), Paulson Training Videos (12.8 GB), IQMS Training Guides. Viewer-facing, organised per programme, and where someone looking for training would actually look. The Thomas F Anderson Library was the first candidate but holds per-app DATA folders (Fleet, Finance_OPEX, Checkbook) with 'Finance- Locked' siblings -- app plumbing, not an audience space. Working files may still live there; the copies people watch live here."
+      "site": "https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson",
+      "library": "Two-Minute Training Tuesday",
+      "folder": "",
+      "folderUrl": "",
+      "_comment": "INTERIM home, pending access to CLC Training on the main site. A dedicated library on the TFA site -- deliberately NOT a folder inside the Thomas F Anderson Library, whose siblings are per-app DATA folders with 'Finance- Locked' / 'Management- Locked' ACLs; a staff-facing folder in there means fighting or breaking that inheritance. Set folderUrl once the library exists. Re-pointing after a migration is a one-file edit plus a manifest drop on the host: no redeploy. See distribution/admin-setup.md for the migration rule (do not delete the originals -- sent emails cannot be edited)."
     }
   },
   "episodes": [

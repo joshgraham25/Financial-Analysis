@@ -6,45 +6,31 @@ mail identity does, and only if the sender changes from Josh to the finance alia
 
 ---
 
-## 1. SharePoint — Josh can do this himself
+## 1. SharePoint — where the videos live
 
-**Home: `CLC Training` on the main site.**
+### Interim home (do this now): a new library on the TFA site
 
-> `https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite`
-> → `Shared Documents` → `CLC Training`
+Access to `CLC Training` on the main site is not available yet, so the series
+starts in its own document library on the site Josh already controls:
 
-Verified 2026-08-24 by listing the folder. It is already the company's
-training-video home:
+> `https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson`
+> → new document library: **Two-Minute Training Tuesday**
 
-| Existing folder | Size |
-| --- | --- |
-| Paulson Training Videos — English and Spanish | 12.8 GB |
-| LEHS Training | 13.7 GB |
-| CLC University | 5.0 GB |
-| IQMS Training Videos | 3.9 GB |
-| IQMS Training Guides (+ Spanish) | 0.3 GB |
-| CLC Training Information / IT Information | small |
+**A new library, deliberately NOT a folder inside the existing Thomas F Anderson
+Library.** That library holds per-app *data* folders — `Fleet`, `Finance_OPEX`,
+`Checkbook` — and its siblings include `Finance- Locked` and `Management-
+Locked`. A staff-facing folder in there means either fighting that inheritance or
+breaking it with a per-folder exception, which is precisely the arrangement that
+later produces "why can this person see that." A fresh library starts clean and
+is set read-for-all-staff in one place.
 
-So multi-gigabyte video libraries already live here, organised one folder per
-programme, and this is where a staff member looking for training would actually
-look.
+**Steps:**
 
-**This replaces the earlier plan to use the Thomas F Anderson Library.** That
-library holds per-app *data* folders — `Fleet`, `Finance_OPEX`, `Checkbook`, with
-`Finance- Locked` and `Management- Locked` siblings. It is app plumbing, not an
-audience-facing space, and its inherited permissions are unlikely to be right for
-"every employee can watch this." Working files can still live there if useful;
-the copies people watch belong in `CLC Training`.
-
-**Asks — all doable without an administrator:**
-
-1. Create a folder **`Two-Minute Training Tuesday`** inside `CLC Training`,
-   alongside `CLC University` and the rest.
-2. Inside it, one subfolder per application, matching
-   [`../production/publishing.md`](../production/publishing.md): `Excel/`,
-   `Outlook/`, `Teams/`, `ERP/`, `Windows/`.
-3. Add these columns and fill them on every upload — this is what keeps the
-   catalogue searchable at episode thirty instead of a junk drawer:
+1. Create a document library named **Two-Minute Training Tuesday**.
+2. Set it **read for all staff**, contribute for the producer.
+3. Add one folder per application: `Excel/`, `Outlook/`, `Teams/`, `ERP/`,
+   `Windows/` — matching [`../production/publishing.md`](../production/publishing.md).
+4. Add the four columns and fill them on every upload:
 
    | Column | Type | Example |
    | --- | --- | --- |
@@ -53,18 +39,47 @@ the copies people watch belong in `CLC Training`.
    | Tip | Single line of text | Data Validation, spill reference # |
    | Published | Date | 2026-08-25 |
 
-4. Upload each episode's MP4, its `.srt`, and its demo workbook. Then paste the
-   item URL into that episode's `videoUrl` in
-   [`../episodes.json`](../episodes.json), and set `published`.
-5. Check what the folder inherits for permissions — read for all staff is the
-   intent. Worth confirming rather than assuming, since sibling folders in other
-   libraries are explicitly restricted.
+5. Upload each episode's MP4, `.srt`, and demo workbook, then paste the item URL
+   into that episode's `videoUrl` in [`../episodes.json`](../episodes.json), set
+   `published`, and set `series.sharePoint.folderUrl` to the library root.
 
-**Claude cannot do this part.** The Microsoft 365 access available to the session
-is read-only — search and read, no upload and no folder creation. The one way to
-automate it would be the Hub uploading via Graph with `Sites.ReadWrite.All` on
-the existing certificate app registration, which is a build plus a permission
-grant, not a five-minute job.
+**Claude cannot do this part.** The session's Microsoft 365 access is read-only:
+search and read, no upload and no library or folder creation.
+
+### Eventual home: `CLC Training` on the main site
+
+Verified 2026-08-24 by listing it — this is already the company's training-video
+home, organised one folder per programme:
+
+| Existing folder | Size |
+| --- | --- |
+| Paulson Training Videos — English and Spanish | 12.8 GB |
+| LEHS Training | 13.7 GB |
+| CLC University | 5.0 GB |
+| IQMS Training Videos | 3.9 GB |
+| IQMS Training Guides (+ Spanish) | 0.3 GB |
+
+It is where a staff member looking for training would actually look, which is the
+only thing it buys over the interim library — the Hub is the front door people
+use day to day.
+
+### The migration rule, and it matters
+
+Re-pointing the Hub after a move is **one file**: update `videoUrl` in
+`episodes.json` and drop the manifest on the host. No redeploy, no rebuild — the
+section re-reads the manifest when its timestamp changes.
+
+What cannot be updated is **an email that has already been sent.** Those carry
+whatever link was current, and moving a file in SharePoint breaks them.
+
+> **When migrating: do not delete the originals.** Leave the interim library in
+> place, read-only. Old links keep resolving, new ones point at the new home, and
+> nothing mailed in month one dies in month four.
+
+Which also means: migrating is optional. If the interim library is permissioned
+correctly and people reach episodes through the Hub, the move buys discoverability
+and nothing else. Decide after seeing whether anyone browses SharePoint directly
+— not on a schedule.
 
 ## 2. Mail — the only real admin ask, and it is currently deferred
 

@@ -4,7 +4,7 @@ Three pieces, decided 2026-08-24:
 
 | Piece | Where it lives | Status |
 | --- | --- | --- |
-| Video hosting + back catalogue | SharePoint library in the **TFA** space | folder to create — [`admin-setup.md`](admin-setup.md) |
+| Video hosting + back catalogue | **New library on the TFA site** (interim), `CLC Training` later | library to create — [`admin-setup.md`](admin-setup.md) |
 | Browse/watch surface | A **section in the existing CLC Desktop Hub** | BUILT on `feat/tmtt-section`, not deployed |
 | Weekly email | Hub **Api** hosted service, drafts on a schedule, **you approve before it sends** | to build; sends as Josh for now, Mr. Bean needs Send As |
 
@@ -78,9 +78,11 @@ its own options section and its own `From`.
 
 ## Ordering
 
-1. **Create the SharePoint folder** — `Two_Minute_Training_Tuesday` in the
-   existing Thomas F Anderson Library, plus the per-app subfolders and the four
-   library columns. No admin needed; Josh has the access.
+1. **Create the SharePoint library** — a new `Two-Minute Training Tuesday`
+   document library on the TFA site (not a folder in the app-data library), plus
+   the per-app subfolders and the four columns. No admin needed. Migrating to
+   `CLC Training` later is a one-file manifest edit, provided the originals are
+   left in place — sent emails cannot be re-pointed.
 2. **Upload 001 and 002**, fill in their `videoUrl` and `published` in
    `episodes.json`.
 3. **Hub section** — read-only list, newest first, per-app filter, link out to
