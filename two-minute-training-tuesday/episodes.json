@@ -1,0 +1,53 @@
+{
+  "_comment": "The episode catalogue. One source of truth, read by both the Hub section and the weekly email job, so a title or link is never written down twice. Hand-maintained: add an entry when an episode publishes. `videoUrl` is the SharePoint item URL and stays empty until the file is uploaded -- the email job refuses to send an episode whose videoUrl is empty rather than mailing a dead link.",
+  "series": {
+    "name": "Two-Minute Training Tuesday",
+    "tagline": "One tip. One video. Under two minutes. Every Tuesday.",
+    "sender": {
+      "displayName": "Two-Minute Training Tuesday",
+      "address": "JoshGraham@creativeliquidcoatings.com",
+      "_comment": "Display name over an address Josh owns -- legitimate, and no Send As grant needed. Switching the address to the Mr. Bean finance alias later DOES need Send As on that mailbox; see distribution/admin-setup.md. Never put the Mr. Bean display name over this address -- that is the spoofing shape that renders as 'on behalf of' and can fail DMARC."
+    },
+    "sharePoint": {
+      "site": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite",
+      "library": "Shared Documents",
+      "folder": "CLC Training/Two-Minute Training Tuesday",
+      "folderUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/Shared%20Documents/CLC%20Training",
+      "_comment": "Verified 2026-08-24 by listing the folder: CLC Training is already the company's training-video home -- CLC University (5 GB), LEHS Training (13.7 GB), IQMS Training Videos (3.9 GB), Paulson Training Videos (12.8 GB), IQMS Training Guides. Viewer-facing, organised per programme, and where someone looking for training would actually look. The Thomas F Anderson Library was the first candidate but holds per-app DATA folders (Fleet, Finance_OPEX, Checkbook) with 'Finance- Locked' siblings -- app plumbing, not an audience space. Working files may still live there; the copies people watch live here."
+    }
+  },
+  "episodes": [
+    {
+      "number": 1,
+      "slug": "001-excel-dynamic-arrays",
+      "title": "Stop copy-pasting your vendor list",
+      "app": "Excel",
+      "tip": "UNIQUE, SORT, FILTER",
+      "runtime": "1:49",
+      "published": null,
+      "videoFile": "TMTT-001-Excel-Dynamic-Arrays.mp4",
+      "videoUrl": "",
+      "captionsFile": "TMTT-001-captions.srt",
+      "attachments": [
+        "demo-workbook.xlsx"
+      ],
+      "summary": "Three Excel functions replace the copy-paste-dedupe-sort routine on any export. =UNIQUE(range) returns the distinct values in a column, =SORT(UNIQUE(range)) makes it alphabetical, and =FILTER(table, column = criteria) returns every row matching a condition -- where the condition can point at a cell, so changing that one cell redraws the whole report."
+    },
+    {
+      "number": 2,
+      "slug": "002-self-maintaining-dropdowns",
+      "title": "Data Validation, the basic way and the way that maintains itself",
+      "app": "Excel",
+      "tip": "Data Validation, spill reference #",
+      "runtime": "1:52",
+      "published": null,
+      "videoFile": "TMTT-002-Data-Validation.mp4",
+      "videoUrl": "",
+      "captionsFile": "TMTT-002-captions.srt",
+      "attachments": [
+        "demo-workbook-solved.xlsx"
+      ],
+      "summary": "Every drop-down in Excel is the Data Validation feature. The basic way points Source at a range you selected, which goes stale silently when the data grows. Point it at an array formula's spill range instead -- Source: =$O$5# -- and the list maintains itself."
+    }
+  ]
+}

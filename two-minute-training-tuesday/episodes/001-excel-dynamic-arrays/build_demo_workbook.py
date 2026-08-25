@@ -10,8 +10,10 @@ be recorded without a single row of real customer or vendor data on screen.
 Output: demo-workbook.xlsx, or demo-workbook-solved.xlsx with --solved.
 
 --solved emits the state episode 002 opens on: 001's three formulas already in
-B5/D5/F7, the six cost centers typed as plain text into J5:J10 to be the basic
-Data Validation source, and column K left clear for the array formula. G4 keeps
+B5/D5/F7, the six cost centers typed as plain text into M5:M10 to be the basic
+Data Validation source, and column O left clear for the array formula. M and O
+are used rather than J and K because the FILTER in F7 spills six columns, F:K --
+a helper list inside that range would collide and throw #SPILL!. G4 keeps
 its hard-coded validation list on purpose -- that stale list is what 002 replaces
 on camera, so fixing it here would delete the episode's subject.
 
@@ -215,7 +217,8 @@ def write_report_sheet(ws, solved=False):
     if solved:
         write_solved_state(ws)
 
-    for col, width in zip("ABCDEFGHIJKL", (3, 26, 3, 26, 3, 15, 17, 19, 26, 20, 15, 15)):
+    for col, width in zip("ABCDEFGHIJKLMNO",
+                          (3, 26, 3, 26, 3, 15, 17, 19, 26, 20, 15, 3, 22, 3, 22)):
         ws.column_dimensions[col].width = width
     ws.sheet_view.showGridLines = False
 
@@ -223,18 +226,21 @@ def write_report_sheet(ws, solved=False):
 def write_solved_state(ws):
     """The state episode 002 opens on: 001 finished, and a typed list to break.
 
-    The J5:J10 list is deliberately plain text. It is the basic Data Validation
+    The M5:M10 list is deliberately plain text. It is the basic Data Validation
     source in 002, and the whole point is that it does not grow when the export
     does -- so it must not be a formula.
+
+    M, not J: the FILTER in F7 spills six columns (F:K), so anything parked in
+    J or K collides with it and Excel returns #SPILL! instead of a report.
     """
     ws["B5"] = "=UNIQUE(ERP_Export[Vendor])"
     ws["D5"] = "=SORT(UNIQUE(ERP_Export[Vendor]))"
     ws["F7"] = ('=FILTER(ERP_Export,ERP_Export[Cost Center]=G4,"No matches")')
 
-    ws["J4"] = "Cost centers (typed)"
-    ws["J4"].font = LABEL_FONT
+    ws["M4"] = "Cost centers (typed)"
+    ws["M4"].font = LABEL_FONT
     for offset, name in enumerate(COST_CENTERS):
-        cell = ws.cell(row=5 + offset, column=10, value=name)
+        cell = ws.cell(row=5 + offset, column=13, value=name)
         cell.border = Border(bottom=THIN, top=THIN, left=THIN, right=THIN)
 
 
@@ -321,7 +327,7 @@ def main():
           f"{len(COST_CENTERS)} cost centers")
     print(f"  table ERP_Export = 'ERP Export'!A1:F{last_row}")
     if args.solved:
-        print("  Report: 001 formulas in B5/D5/F7, typed list J5:J10, K clear")
+        print("  Report: 001 formulas in B5/D5/F7, typed list M5:M10, O clear")
         print("  G4 validation left hard-coded on purpose -- that is 002's subject")
 
 

@@ -7,7 +7,7 @@
 | **Tip** | **Data Validation** — a list from a range, then a list from an array formula |
 | **Target runtime** | 1:55 |
 | **Demo file** | `../001-excel-dynamic-arrays/demo-workbook-solved.xlsx` — generated, see setup |
-| **Recap card lines** | 1. `Data → Data Validation → Allow: List` · 2. Basic source: `=$J$5:$J$10` · 3. Live source: `=$K$5#` |
+| **Recap card lines** | 1. `Data → Data Validation → Allow: List` · 2. Basic source: `=$M$5:$M$10` · 3. Live source: `=$O$5#` |
 
 ## The pain, in one sentence
 
@@ -24,7 +24,7 @@ matters:
    plenty of people have never opened the dialog at all.
 2. **Break it** — add a cost center to the export, come back, and the drop-down
    has not changed. No error, no warning. It is simply wrong now.
-3. **Advanced** — repoint Source at an array formula's spill range, `=$K$5#`, and
+3. **Advanced** — repoint Source at an array formula's spill range, `=$O$5#`, and
    the same drop-down maintains itself.
 
 Teaching the basic version first is not padding. Without it the `#` looks like
@@ -59,7 +59,7 @@ python build_demo_workbook.py --solved
 
 That emits `demo-workbook-solved.xlsx` with exactly the state this script needs:
 001's three formulas in `B5`/`D5`/`F7`, the six cost centers typed as plain text
-into `J5:J10` under a `Cost centers (typed)` label, column `K` clear for the array
+into `M5:M10` under a `Cost centers (typed)` label, column `O` clear for the array
 formula, and **`G4` still carrying its hard-coded validation list** — that stale
 list is the episode's subject, so it is left broken on purpose.
 
@@ -68,7 +68,7 @@ Then check before rolling:
 - [ ] Open it once and let Excel calculate — the three spill ranges must be
       showing, not `#NAME?` (which means you are not on Microsoft 365)
 - [ ] On the **Report** sheet, `G4` reading `Powder Line 1`
-- [ ] The typed `J5:J10` list is in **entry order, not alphabetical** — that is
+- [ ] The typed `M5:M10` list is in **entry order, not alphabetical** — that is
       deliberate. When the array formula sorts it at 1:20, the difference is
       visible on screen and sells the point for free.
 - [ ] **Answer Key** sheet present but not clicked on camera
@@ -87,17 +87,17 @@ where each beat *starts*.
 | 0:00 | "Welcome to Two-Minute Training Tuesday." | Title card, 3.7 s |
 | 0:04 | "Last week this drop-down changed the whole report. Here's what I didn't tell you — I typed those six names in by hand." | On **Report**. Click **G4**, open the drop-down, close it. |
 | 0:12 | "The feature behind every drop-down in Excel is called Data Validation. Here's the basic way to build one." | Click **G4**. **Data** tab → pause on **Data Validation** so the button is seen → click it. |
-| 0:20 | "Allow: List. And for Source, just select the cells your list lives in." | **Allow** → **List**. Click into **Source**, clear it, then drag-select **J5:J10** on the sheet. |
+| 0:20 | "Allow: List. And for Source, just select the cells your list lives in." | **Allow** → **List**. Click into **Source**, clear it, then drag-select **M5:M10** on the sheet. |
 | 0:30 | "OK. That's a working drop-down, and it's how most of ours are built." | **OK.** Open the **G4** drop-down. Six names. Close it. |
 | 0:38 | "Now watch it fail." | Click the **ERP Export** tab. |
 | 0:42 | "New line on the export. New cost center — Powder Line 3." | On the first empty row under the table, type a date, a job number, and **Powder Line 3**. Type it, do not paste it. |
 | 0:52 | "Back to the report. Open the drop-down." | Click the **Report** tab. Open the **G4** drop-down. |
 | 0:57 | "Still six. The export knows about Powder Line 3. The drop-down doesn't, and it will never tell you." | Hold on the open drop-down a full second. Close it. |
-| 1:05 | "So point Source at a formula instead of at cells I typed." | Click **K5**. |
+| 1:05 | "So point Source at a formula instead of at cells I typed." | Click **O5**. |
 | 1:10 | "SORT and UNIQUE from last week, on the cost center column." | Type `=SORT(UNIQUE(` then click the **ERP Export** tab and the **Cost Center** column header. Close both parens. |
 | 1:20 | "Enter. Seven — it read the data, including the row I just added." | **Enter.** Let it spill. Pause. |
 | 1:27 | "Same dialog. New Source." | Click **G4**. **Data** → **Data Validation**. Click into **Source** and clear it. |
-| 1:34 | "K5, hash. The hash means this cell and everything the formula spilled into — however many that turns out to be." | Type `=$K$5#`. Pause so it is readable. **OK.** |
+| 1:34 | "O5, hash. The hash means this cell and everything the formula spilled into — however many that turns out to be." | Type `=$O$5#`. Pause so it is readable. **OK.** |
 | 1:44 | "There it is. Powder Line 3, and I never touched the drop-down." | Open the **G4** drop-down — seven names. Pick **Powder Line 3**. Let the report redraw. |
 | 1:52 | "Next week: Outlook. Find any attachment in four seconds." | Recap card, 4 s |
 
@@ -120,8 +120,8 @@ ordinary get typed is what makes the update feel real rather than staged.
 
 ```
 Data → Data Validation → Allow: List
-Basic source:  =$J$5:$J$10
-Live source:   =$K$5#
+Basic source:  =$M$5:$M$10
+Live source:   =$O$5#
 ```
 
 ## Written summary for the post
@@ -129,13 +129,13 @@ Live source:   =$K$5#
 > Every drop-down in Excel is the **Data Validation** feature, and there are two
 > ways to feed it. The basic way: select the cell, then **Data → Data Validation
 > → Allow: List**, and set **Source** by selecting the range your list sits in,
-> like `=$J$5:$J$10`. That works, and it is how most of our spreadsheets are
+> like `=$M$5:$M$10`. That works, and it is how most of our spreadsheets are
 > built — but it goes stale silently the moment someone adds a cost center,
 > because the range you selected does not grow.
 >
 > The better way points Source at an array formula instead. Put
-> `=SORT(UNIQUE(ERP_Export[Cost Center]))` in a cell — say `K5` — and set
-> **Source** to `=$K$5#`. That `#` is a *spill reference*: it means "this cell and
+> `=SORT(UNIQUE(ERP_Export[Cost Center]))` in a cell — say `O5` — and set
+> **Source** to `=$O$5#`. That `#` is a *spill reference*: it means "this cell and
 > every cell this formula filled." The list now grows and shrinks with the data on
 > its own, so a new cost center in the export shows up in the drop-down with no
 > edit. You can hide the helper column; the reference still works.
@@ -148,7 +148,7 @@ Live source:   =$K$5#
 - **Say this on camera:** needs **Microsoft 365**. The basic range version works
   in any Excel; the `#` in a Data Validation source is the part older versions
   choke on.
-- **Absolute reference matters.** `=$K$5#`, not `=K5#`. Data Validation stores the
+- **Absolute reference matters.** `=$O$5#`, not `=K5#`. Data Validation stores the
   source relative to the selected cell, so a relative reference silently points
   somewhere else when the rule is copied. Four seconds well spent — the failure is
   an empty drop-down with no error.
