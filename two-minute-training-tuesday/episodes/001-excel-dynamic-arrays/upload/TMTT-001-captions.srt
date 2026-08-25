@@ -1,0 +1,95 @@
+1
+00:00:00,300 --> 00:00:03,600
+Welcome to Two-Minute Training Tuesday.
+
+2
+00:00:03,700 --> 00:00:06,700
+This is an example export file.
+
+3
+00:00:06,800 --> 00:00:10,800
+Three hundred and eighty lines.
+
+4
+00:00:11,000 --> 00:00:14,400
+You need a unique list of the vendors we actually bought from.
+
+5
+00:00:14,500 --> 00:00:18,300
+Instead of copy, paste, Remove Duplicates
+
+6
+00:00:18,400 --> 00:00:20,100
+Here's a better way.
+
+7
+00:00:21,000 --> 00:00:25,500
+One formula: UNIQUE — and the vendor column.
+
+8
+00:00:25,600 --> 00:00:29,900
+Excel writes the table reference for you.
+
+9
+00:00:30,700 --> 00:00:35,900
+Fifteen vendors, out of three hundred and eighty lines.
+
+10
+00:00:36,000 --> 00:00:41,400
+I never told it fifteen. It took exactly the space it needed.
+
+11
+00:00:41,500 --> 00:00:46,400
+Every cell in that list belongs to the one formula in B5.
+
+12
+00:00:46,500 --> 00:00:49,200
+That's a spill range.
+
+13
+00:00:49,300 --> 00:00:54,500
+It isn't sorted — so wrap the whole thing in SORT.
+
+14
+00:00:54,600 --> 00:00:58,900
+One more function around the outside. Nothing else changes.
+
+15
+00:00:59,700 --> 00:01:03,500
+Alphabetical. Still one formula.
+
+16
+00:01:03,600 --> 00:01:06,700
+Now the most powerful one.
+
+17
+00:01:06,800 --> 00:01:13,000
+FILTER — give it the whole table...
+
+18
+00:01:13,100 --> 00:01:20,900
+...then the rule: cost center equals this cell.
+
+19
+00:01:22,000 --> 00:01:27,500
+A hundred and thirty-six lines — your whole report, sorted by that one filter.
+
+20
+00:01:27,600 --> 00:01:30,900
+Similar to a pivot table. And here's the part that matters.
+
+21
+00:01:31,600 --> 00:01:35,500
+Change the cost center...
+
+22
+00:01:37,000 --> 00:01:41,500
+...and the whole report redraws itself.
+
+23
+00:01:41,600 --> 00:01:45,500
+No copying. No pasting. No re-sorting.
+
+24
+00:01:45,900 --> 00:01:49,100
+Next week: how we built that drop-down.

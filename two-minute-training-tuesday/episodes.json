@@ -12,7 +12,7 @@
       "site": "https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson",
       "library": "Two-Minute Training Tuesday",
       "folder": "",
-      "folderUrl": "",
+      "folderUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson/Two%20Minute%20Training%20Tuesday",
       "_comment": "INTERIM home, pending access to CLC Training on the main site. A dedicated library on the TFA site -- deliberately NOT a folder inside the Thomas F Anderson Library, whose siblings are per-app DATA folders with 'Finance- Locked' / 'Management- Locked' ACLs; a staff-facing folder in there means fighting or breaking that inheritance. Set folderUrl once the library exists. Re-pointing after a migration is a one-file edit plus a manifest drop on the host: no redeploy. See distribution/admin-setup.md for the migration rule (do not delete the originals -- sent emails cannot be edited)."
     }
   },
@@ -24,14 +24,14 @@
       "app": "Excel",
       "tip": "UNIQUE, SORT, FILTER",
       "runtime": "1:49",
-      "published": null,
+      "published": "2026-08-25",
       "videoFile": "TMTT-001-Excel-Dynamic-Arrays.mp4",
-      "videoUrl": "",
+      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson/_layouts/15/stream.aspx?id=%2Fsites%2FThomasFAnderson%2FTwo%20Minute%20Training%20Tuesday%2FTMTT%2D001%2DExcel%2DDynamic%2DArrays%2Emp4",
       "captionsFile": "TMTT-001-captions.srt",
       "attachments": [
         "demo-workbook.xlsx"
       ],
-      "summary": "Three Excel functions replace the copy-paste-dedupe-sort routine on any export. =UNIQUE(range) returns the distinct values in a column, =SORT(UNIQUE(range)) makes it alphabetical, and =FILTER(table, column = criteria) returns every row matching a condition -- where the condition can point at a cell, so changing that one cell redraws the whole report."
+      "summary": "Three functions replace the copy-paste-dedupe-sort routine on any export: =UNIQUE(range), =SORT(UNIQUE(range)), and =FILTER(table, column = criteria)."
     },
     {
       "number": 2,
@@ -47,7 +47,7 @@
       "attachments": [
         "demo-workbook-solved.xlsx"
       ],
-      "summary": "Every drop-down in Excel is the Data Validation feature. The basic way points Source at a range you selected, which goes stale silently when the data grows. Point it at an array formula's spill range instead -- Source: =$O$5# -- and the list maintains itself."
+      "summary": "Every drop-down in Excel is Data Validation. Point Source at a range and it goes stale; point it at =$O$5# and the list maintains itself."
     }
   ]
 }
