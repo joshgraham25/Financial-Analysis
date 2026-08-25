@@ -118,11 +118,23 @@ Getting there cost two wrong turns, both recorded so they are not repeated:
    but redirects to the folder listing for video instead of playing, so it is not
    an escape hatch. **Once an episode ships, its published filename is fixed.**
 
-**Mail: no new mailbox needed.** Sending as `Two-Minute Training Tuesday
-<JoshGraham@…>` — a display name over an address Josh owns — needs no grant and
-passes DMARC. "Mr. Bean" turned out to be the Hub's existing Finance Assistant
-persona rather than a mailbox; sending genuinely as an alias would need a shared
-mailbox (not a distribution list) plus Send As.
+**Mail: no new mailbox needed, and now proven.** Sending as `Two-Minute Training
+Tuesday <JoshGraham@…>` — a display name over an address Josh owns — needs no
+grant, and a real send **landed in the Inbox** on 2026-08-25 despite the host not
+being in CLC's SPF record and there being no DKIM signature. That was the one
+genuine deliverability unknown; it is closed. "Mr. Bean" turned out to be the
+Hub's existing Finance Assistant persona rather than a mailbox.
+
+**Two defects the first real group send exposed**, both fixed and both now
+asserted by tests rather than described in prose:
+
+- Recipients were on the **To** line, so all seven could see each other and one
+  Reply All would have hit the list. They go in **Bcc** now, with the sender on
+  the To line so the message is not header-less.
+- **From** was the shared app-token mailbox the OTP codes use, while the manifest
+  documented a real person. Documentation and implementation disagreed and the
+  implementation won silently. Sender identity now belongs to the feature's own
+  options, and `Reply-To` is set so the footer's "just reply" is true.
 
 **Host gotcha:** `~/.config/clc-shared/smtp.env.sh` uses plain assignments, not
 `export`, so sourcing it in a shell does not put `Smtp__Host` in the environment
@@ -130,8 +142,10 @@ of a child process. Use `set -a; . file; set +a`.
 
 ## Still open
 
-- **Episode 002 is not uploaded.** `TMTT-002-Data-Validation.mp4` is rendered and
-  voiced, waiting in `episodes/001-excel-dynamic-arrays/upload/`.
+- **Episode 002 is being SCREEN-RECORDED by Josh**, not rendered — the synthetic
+  cut was not showing everything he wanted. The script, shot list and generated
+  demo workbook all still apply; `render/` is parked, not deleted, and the
+  synthetic MP4 in that folder is not the deliverable.
 - **001's video cards keep the previous wording** ("Stop copying and pasting") and
   that is FINE — Josh, 2026-08-25. Do not re-render to close the one-word gap: it
   costs a manual upload, a rename and a videoUrl update, for a card on screen a few
@@ -140,5 +154,8 @@ of a child process. Use `set -a; . file; set +a`.
   2026-08-25). It is rendered and voiced but not uploaded, and should not be.
 - **Scheduling the send.** The composition works; the weekly draft-and-hold job
   and its approval step do not exist yet.
-- **A recipient distribution group.** Nothing goes company-wide without one, and
-  it must not be an address list in config.
+- **A recipient distribution group.** Josh is requesting one; until it exists the
+  seven-person pilot list in host config stands. It must not stay an address list
+  in config.
+- **Open decisions live in [`../OPEN-DECISIONS.md`](../OPEN-DECISIONS.md)**, which
+  is the durable channel for anything needing Josh rather than code.

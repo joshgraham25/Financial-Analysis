@@ -23,6 +23,11 @@
       "title": "Stop using copy and pasting to get a unique list",
       "app": "Excel",
       "tip": "UNIQUE, SORT, FILTER",
+      "recap": [
+        "=UNIQUE(range)",
+        "=SORT(UNIQUE(range))",
+        "=FILTER(table, column = criteria)"
+      ],
       "runtime": "1:49",
       "published": "2026-08-25",
       "videoFile": "TMTT-001-Excel-Dynamic-Arrays.mp4",
@@ -41,6 +46,11 @@
       "title": "Data Validation, the basic way and the way that maintains itself",
       "app": "Excel",
       "tip": "Data Validation, spill reference #",
+      "recap": [
+        "Data → Data Validation → Allow: List",
+        "Basic source:  =$M$5:$M$10",
+        "Live source:   =$O$5#"
+      ],
       "runtime": "1:52",
       "published": null,
       "videoFile": "TMTT-002-Data-Validation.mp4",

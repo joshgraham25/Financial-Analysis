@@ -9,6 +9,25 @@
 | **Demo file** | `../001-excel-dynamic-arrays/demo-workbook-solved.xlsx` — generated, see setup |
 | **Recap card lines** | 1. `Data → Data Validation → Allow: List` · 2. Basic source: `=$M$5:$M$10` · 3. Live source: `=$O$5#` |
 
+## This one is being SCREEN-RECORDED, not rendered
+
+Josh, 2026-08-25: the synthetic render "isn't showing everything I want", so 002 is recorded for
+real from the Excel UI, following [`../../production/recording-sop.md`](../../production/recording-sop.md).
+
+What that changes:
+
+- **`render/` is parked, not deleted.** `TMTT-002-Data-Validation.mp4` and its voiced cut in this
+  folder are the synthetic attempt. They are NOT the deliverable and must not be uploaded. The
+  renderer stays because a later episode may want it and because it holds the fixed card block.
+- **The Say column is now narration to speak, not a caption track.** The synthetic pipeline
+  (`make_narration.py`, `make_voiceover.py`) generated audio from captions; a real recording gets a
+  real voice, so the timings below are a guide rather than the record.
+- **The demo file still applies**, and is still generated rather than hand-built:
+  `python ../001-excel-dynamic-arrays/build_demo_workbook.py --solved`.
+
+Everything below — the structure, the runtime warning, the setup checklist, the proof steps — holds
+for a real recording unchanged. That was the point of writing it as a shot list.
+
 ## The pain, in one sentence
 
 > The drop-down on your report was typed in by hand, so the day somebody adds a
