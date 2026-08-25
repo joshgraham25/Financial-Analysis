@@ -13,7 +13,7 @@
       "library": "Two-Minute Training Tuesday",
       "folder": "",
       "folderUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson/Two%20Minute%20Training%20Tuesday",
-      "_comment": "INTERIM home, pending access to CLC Training on the main site. A dedicated library on the TFA site -- deliberately NOT a folder inside the Thomas F Anderson Library, whose siblings are per-app DATA folders with 'Finance- Locked' / 'Management- Locked' ACLs; a staff-facing folder in there means fighting or breaking that inheritance. Set folderUrl once the library exists. Re-pointing after a migration is a one-file edit plus a manifest drop on the host: no redeploy. See distribution/admin-setup.md for the migration rule (do not delete the originals -- sent emails cannot be edited)."
+      "_comment": "INTERIM home, pending access to CLC Training. NOTE ON LINKS: this site is a PRIVATE M365 group site -- Visitors is empty and Members holds one person -- so a path-based URL only opens for someone who already has site access, which nobody else does. videoUrl must therefore be the 'anyone in the organisation with the link' share URL (the :v:/s/... form with the ?e= token that SharePoint's Copy link produces). A path-based link was tried first and broke the moment the mail was forwarded. The durable fix is to grant the library read to all staff, or to move to CLC Training where all-staff read already exists; until then, share links are load-bearing and must not be 'tidied' into path URLs."
     }
   },
   "episodes": [
@@ -26,7 +26,7 @@
       "runtime": "1:49",
       "published": "2026-08-25",
       "videoFile": "TMTT-001-Excel-Dynamic-Arrays.mp4",
-      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson/_layouts/15/stream.aspx?id=%2Fsites%2FThomasFAnderson%2FTwo%20Minute%20Training%20Tuesday%2FTMTT%2D001%2DExcel%2DDynamic%2DArrays%2Emp4",
+      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/:v:/s/ThomasFAnderson/IQBZvzlbbQBhRpvD6SYQWW8FATO2QuQ2_oHX87YOQEiMu68?e=FZa3kq",
       "captionsFile": "TMTT-001-captions.srt",
       "attachments": [
         "demo-workbook.xlsx"
