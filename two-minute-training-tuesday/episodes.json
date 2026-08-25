@@ -9,11 +9,11 @@
       "_comment": "Display name over an address Josh owns -- legitimate, and no Send As grant needed. Switching the address to the Mr. Bean finance alias later DOES need Send As on that mailbox; see distribution/admin-setup.md. Never put the Mr. Bean display name over this address -- that is the spoofing shape that renders as 'on behalf of' and can fail DMARC."
     },
     "sharePoint": {
-      "site": "https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson",
-      "library": "Two-Minute Training Tuesday",
-      "folder": "",
-      "folderUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson/Two%20Minute%20Training%20Tuesday",
-      "_comment": "INTERIM home, pending access to CLC Training. NOTE ON LINKS: this site is a PRIVATE M365 group site -- Visitors is empty and Members holds one person -- so a path-based URL only opens for someone who already has site access, which nobody else does. videoUrl must therefore be the 'anyone in the organisation with the link' share URL (the :v:/s/... form with the ?e= token that SharePoint's Copy link produces). A path-based link was tried first and broke the moment the mail was forwarded. The durable fix is to grant the library read to all staff, or to move to CLC Training where all-staff read already exists; until then, share links are load-bearing and must not be 'tidied' into path URLs."
+      "site": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite",
+      "library": "Shared Documents",
+      "folder": "CLC Training/Two-Minute Training",
+      "folderUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FCLCMainSite%2FShared%20Documents%2FCLC%20Training%2FTwo-Minute%20Training",
+      "_comment": "Home as of 2026-08-25: CLC Training on the main site, alongside CLC University, LEHS, IQMS and Paulson -- where staff already look for training. Read access is granted, so videoUrl is a PATH-BASED stream.aspx link: it authorises against each viewer's own permissions, so it survives forwarding and needs no per-item share token. This replaced both the interim TFA library and the ':v:/s/...?e=' share links that library required while it was private to one member."
     }
   },
   "episodes": [
@@ -26,7 +26,7 @@
       "runtime": "1:49",
       "published": "2026-08-25",
       "videoFile": "TMTT-001-Excel-Dynamic-Arrays.mp4",
-      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/:v:/s/ThomasFAnderson/IQBZvzlbbQBhRpvD6SYQWW8FATO2QuQ2_oHX87YOQEiMu68?e=FZa3kq",
+      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/_layouts/15/stream.aspx?id=%2Fsites%2FCLCMainSite%2FShared%20Documents%2FCLC%20Training%2FTwo-Minute%20Training%2FTMTT-001-Excel-Dynamic-Arrays.mp4",
       "captionsFile": "TMTT-001-captions.srt",
       "attachments": [
         "demo-workbook.xlsx"
