@@ -127,6 +127,18 @@ function wrapText(text, font, maxWidth) {
 /* ===========================================================================
    TIMELINE
    =========================================================================== */
+/* Everything the title and recap cards show. Hardcoding these is how this episode
+   first shipped displaying episode 001's title and recap -- the renderer was copied
+   and the card strings were not. Keep them here, together, and obvious. */
+const CARD = {
+  number: "002",
+  app: "Excel",
+  title: "Data Validation that maintains itself",
+  recap: ["Data → Data Validation → Allow: List",
+          "Basic source:  =$M$5:$M$10",
+          "Live source:   =$O$5#"],
+};
+
 const T = {
   titleEnd:      3.7,
   /* act 0 -- last week's drop-down, and the confession */
@@ -832,20 +844,24 @@ function drawCard(kind) {
   ctx.letterSpacing = "0px";
 
   ctx.fillStyle = MUTED; ctx.font = "400 30px " + SANS;
-  ctx.fillText("Episode 001  ·  Excel" + (kind === "recap" ? "  ·  Recap" : ""), x, 224);
+  ctx.fillText(`Episode ${CARD.number}  ·  ${CARD.app}` + (kind === "recap" ? "  ·  Recap" : ""), x, 224);
 
   if (kind === "title") {
     const font = "600 104px " + SANS;
-    const lines = wrapText("Stop copy-pasting your vendor list", font, W - x - 132);
+    const lines = wrapText(CARD.title, font, W - x - 132);
     ctx.fillStyle = "#fff"; ctx.font = font;
     let y = H / 2 - ((lines.length - 1) * 126) / 2 + 36;
     for (const l of lines) { ctx.fillText(l, x, y); y += 126; }
   } else {
-    ctx.fillStyle = "#fff"; ctx.font = "600 64px " + SANS;
-    ctx.fillText("Stop copy-pasting your vendor list", x, 380);
-    const items = ["=UNIQUE(range)", "=SORT(UNIQUE(range))", "=FILTER(table, column = criteria)"];
-    let y = 500;
-    items.forEach((item, i) => {
+    /* Wrapped, not fillText: a long title silently ran off the frame otherwise. */
+    const titleFont = "600 64px " + SANS;
+    const titleLines = wrapText(CARD.title, titleFont, W - x - 132);
+    ctx.fillStyle = "#fff"; ctx.font = titleFont;
+    let ty = 380;
+    for (const l of titleLines) { ctx.fillText(l, x, ty); ty += 78; }
+
+    let y = ty + 62;
+    CARD.recap.forEach((item, i) => {
       ctx.fillStyle = ACCENT; ctx.font = "700 46px " + SANS;
       ctx.fillText((i + 1) + ".", x, y);
       ctx.fillStyle = "#fff"; ctx.font = "400 52px " + MONO;

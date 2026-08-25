@@ -4,7 +4,7 @@
 
 **Subject / first line**
 
-> Two-Minute Training Tuesday #001 — Stop copy-pasting your vendor list
+> Two-Minute Training Tuesday #001 — Stop copying and pasting to get a unique list
 
 **Body**
 
@@ -37,7 +37,7 @@ Shorter. The feed punishes length.
 
 > **Two-Minute Training Tuesday #001** is up 🎬
 >
-> Stop copy-pasting your vendor list. `UNIQUE`, `SORT`, and `FILTER` do the
+> Stop copying and pasting to get a unique list. `UNIQUE`, `SORT`, and `FILTER` do the
 > copy-paste-dedupe-sort routine in one formula that updates itself.
 >
 > 1:49. Excel demo on a real job cost export.

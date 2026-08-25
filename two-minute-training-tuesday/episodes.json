@@ -20,7 +20,7 @@
     {
       "number": 1,
       "slug": "001-excel-dynamic-arrays",
-      "title": "Stop copy-pasting your vendor list",
+      "title": "Stop copying and pasting to get a unique list",
       "app": "Excel",
       "tip": "UNIQUE, SORT, FILTER",
       "runtime": "1:49",

@@ -1,4 +1,4 @@
-# Episode 001 — Stop copy-pasting your vendor list
+# Episode 001 — Stop copying and pasting to get a unique list
 
 | | |
 | --- | --- |
