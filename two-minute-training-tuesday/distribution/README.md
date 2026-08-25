@@ -132,9 +132,12 @@ of a child process. Use `set -a; . file; set +a`.
 
 - **Episode 002 is not uploaded.** `TMTT-002-Data-Validation.mp4` is rendered and
   voiced, waiting in `episodes/001-excel-dynamic-arrays/upload/`.
-- **001's video cards still show the previous wording** ("Stop copying and
-  pasting"). A re-render costs an upload and a rename, so it waits for the title
-  to be final.
+- **001's video cards keep the previous wording** ("Stop copying and pasting") and
+  that is FINE — Josh, 2026-08-25. Do not re-render to close the one-word gap: it
+  costs a manual upload, a rename and a videoUrl update, for a card on screen a few
+  seconds carrying a phrase the narration never speaks.
+- **Episode 002 needs substantial rework** before it goes anywhere (Josh,
+  2026-08-25). It is rendered and voiced but not uploaded, and should not be.
 - **Scheduling the send.** The composition works; the weekly draft-and-hold job
   and its approval step do not exist yet.
 - **A recipient distribution group.** Nothing goes company-wide without one, and

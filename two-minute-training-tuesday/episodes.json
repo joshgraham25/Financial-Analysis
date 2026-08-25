@@ -32,7 +32,8 @@
         "demo-workbook.xlsx"
       ],
       "summary": "Three functions replace the copy-paste-dedupe-sort routine on any export: =UNIQUE(range), =SORT(UNIQUE(range)), and =FILTER(table, column = criteria).",
-      "publishedFileName": "TMTT-001 Stop using copy and pasting to get a unique list.mp4"
+      "publishedFileName": "TMTT-001 Stop using copy and pasting to get a unique list.mp4",
+      "_comment": "The title here is the current wording. The PUBLISHED video's title and recap cards still read 'Stop copying and pasting to get a unique list' -- one word out. Accepted by Josh 2026-08-25: do NOT re-render to fix it. A re-render costs a manual SharePoint upload plus a rename (and a videoUrl update), for a card on screen a few seconds carrying a phrase the narration never speaks."
     },
     {
       "number": 2,
