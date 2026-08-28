@@ -1,3 +1,11 @@
 # Derived voiceover cuts -- regenerate with make_voiceover.py
 two-minute-training-tuesday/episodes/*/TMTT-*-voiced-*.mp4
 two-minute-training-tuesday/episodes/*/TMTT-*-narration.m4a
+
+# Office lock files -- present only while a workbook is open in Excel
+~$*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
