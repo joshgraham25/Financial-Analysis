@@ -97,7 +97,7 @@ out of the 0:09 pain beat so the runtime holds.
 
 ## Written summary for the post
 
-> Three Excel functions replace the copy-paste-dedupe-sort routine on any export.
+> Three Excel functions replace the copy, paste, Remove Duplicates, sort routine on any export.
 > `=UNIQUE(range)` returns the distinct values in a column. Wrap it in `SORT` —
 > `=SORT(UNIQUE(range))` — to get it alphabetical. And
 > `=FILTER(table, column = criteria)` returns every row matching a condition,

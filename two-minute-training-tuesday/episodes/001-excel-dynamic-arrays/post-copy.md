@@ -38,7 +38,7 @@ Shorter. The feed punishes length.
 > **Two-Minute Training Tuesday #001** is up 🎬
 >
 > Stop using copy and pasting to get a unique list. `UNIQUE`, `SORT`, and `FILTER` do the
-> copy-paste-dedupe-sort routine in one formula that updates itself.
+> copy, paste, Remove Duplicates, sort routine in one formula that updates itself.
 >
 > 1:49. Excel demo on a real job cost export.
 >
