@@ -36,6 +36,58 @@ Not started, deliberately: 002 comes first. The backlog has roughly six months o
 
 → *(open — say when to script it)*
 
+### 4. A Spanish version — three questions, and one of them changes everything
+
+Josh asked for a Spanish version on 2026-09-01. CLC clearly has the audience: `CLC Training` already
+holds *IQMS Training Guides - Spanish* and *Paulson Training Videos - English and Spanish*.
+
+**4a. Do the Spanish-speaking staff run Excel in Spanish, or in English?** `Blocked`
+
+This is the one that changes the size of the job. Excel **localises function names**:
+
+| English | Spanish |
+| --- | --- |
+| `=UNIQUE(range)` | `=UNICOS(rango)` |
+| `=SORT(UNIQUE(range))` | `=ORDENAR(UNICOS(rango))` |
+| `=FILTER(table, column = criteria)` | `=FILTRAR(tabla, columna = criterio)` |
+| Remove Duplicates | Quitar duplicados |
+
+- **If their Excel UI is Spanish:** a translated video showing `=UNIQUE(...)` teaches a formula that
+  returns `#¿NOMBRE?`. The formulas, the recap card, the demo workbook and the on-screen Excel chrome
+  all have to change — that is a genuinely different episode, not a translation.
+- **If their Excel UI is English:** only the words change. Formulas stay as they are, and this is
+  much cheaper.
+- **If it is mixed:** say the English formula out loud and show it on screen, because that is what
+  their keyboard will accept, and translate only the prose around it.
+
+→ *(open)*
+
+**4b. Subtitles, or a Spanish voiceover?** `Decision`
+
+The pipeline can do either for episode 001. Subtitles are cheap and keep one video; a dubbed version
+is a second file, and the neural voices available include Mexican Spanish (`es-MX-JorgeNeural`,
+`es-MX-DaliaNeural`), so it would not sound robotic.
+
+Note this only applies to **001**, which is synthetically rendered. **002 onward Josh is recording
+himself**, so a Spanish version of those means either subtitles or recording a second take.
+
+→ *(open)*
+
+**4c. One bilingual email, or two separate sends?** `Decision`
+
+- **One email, English then Spanish below it.** Everyone gets one message; nobody is on the wrong
+  list; it is visibly one series. Costs length.
+- **Two sends to two lists.** Cleaner for each reader, but needs a Spanish-speaker distribution list
+  that does not exist yet, and doubles the approval step every week.
+- Recommendation: **one bilingual email**, because a list that has to be maintained by hand is the
+  thing most likely to rot — the same reason the recipient list became `AllUsers@`.
+
+→ *(open)*
+
+**Also needed regardless:** a native speaker to review the Spanish before it goes company-wide. A
+draft is in `distribution/first-announcement.md`; machine-assisted translation is fine for a draft
+and not fine for the first thing the whole company reads in Spanish.
+
 ---
 
 ## Settled
