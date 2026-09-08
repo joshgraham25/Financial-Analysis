@@ -52,14 +52,16 @@
         "Live source:   =$M$5#"
       ],
       "runtime": "1:43",
-      "published": null,
+      "published": "2026-09-08",
       "videoFile": "TMTT-002-Self-Maintaining-Dropdowns.mp4",
-      "videoUrl": "",
-      "captionsFile": "TMTT-002-captions.srt",
+      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/_layouts/15/stream.aspx?id=%2Fsites%2FCLCMainSite%2FShared%20Documents%2FCLC%20Training%2FTwo-Minute%20Training%2FTMTT-002-Self-Maintaining-Dropdowns.mp4",
+      "captionsFile": "TMTT-002-Self-Maintaining-Dropdowns.srt",
       "attachments": [
         "demo-workbook-solved.xlsx"
       ],
-      "summary": "Every drop-down in Excel is Data Validation. Point Source at a range and it goes stale; point it at =$M$5# and the list maintains itself."
+      "summary": "Every drop-down in Excel is Data Validation. Point Source at a range and it goes stale; point it at =$M$5# and the list maintains itself.",
+      "publishedFileName": "TMTT-002-Self-Maintaining-Dropdowns.mp4",
+      "_comment": "Uploaded 2026-09-08, 5,961,396 bytes -- byte-identical to the repo copy. Unlike 001 the published name is the repo filename rather than the episode title; shorter, and it keeps the SharePoint name and the repo name the same thing. THAT NAME IS NOW FIXED: videoUrl encodes it, so renaming the file in SharePoint breaks the link silently while the Watch button keeps rendering. captionsFile is the SRT generated from this cut's beats.md -- NOT TMTT-002-captions.srt, which belongs to the retired synthetic render and is seconds out of step with this picture."
     },
     {
       "number": 3,

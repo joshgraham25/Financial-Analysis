@@ -1,0 +1,75 @@
+1
+00:00:03,200 --> 00:00:12,050
+Last week's drop-down used Data Validation — with a hard-coded source.
+
+2
+00:00:12,200 --> 00:00:19,050
+Instead of hard-coding it, point Source at a list of cells.
+
+3
+00:00:19,200 --> 00:00:22,350
+Select M5 through M10.
+
+4
+00:00:22,500 --> 00:00:25,750
+Every cost center, in the drop-down.
+
+5
+00:00:25,900 --> 00:00:35,250
+But that list was typed by hand. Add a cost center and it goes stale.
+
+6
+00:00:35,400 --> 00:00:37,850
+So make it a formula.
+
+7
+00:00:38,000 --> 00:00:47,750
+SORT, UNIQUE, the table, and the column we want.
+
+8
+00:00:47,900 --> 00:00:51,550
+A spill error — not enough empty cells below.
+
+9
+00:00:51,700 --> 00:00:53,350
+Clear those out.
+
+10
+00:00:53,500 --> 00:00:59,250
+The list builds itself, sorted alphabetically.
+
+11
+00:00:59,400 --> 00:01:06,950
+Now add a row to the export, with a new cost center —
+
+12
+00:01:07,100 --> 00:01:08,750
+Powder Line 2.
+
+13
+00:01:08,900 --> 00:01:11,350
+Fill in the rest of the line.
+
+14
+00:01:11,500 --> 00:01:16,950
+Back on the report, the live list grew to seven.
+
+15
+00:01:17,100 --> 00:01:18,850
+But the drop-down still doesn't have it.
+
+16
+00:01:19,000 --> 00:01:24,950
+We could edit Data Validation every time. That's the manual work again.
+
+17
+00:01:25,100 --> 00:01:35,250
+So point Source at the array instead: M5, hash. Now it pulls every value, always.
+
+18
+00:01:35,400 --> 00:01:36,850
+That's it for this week.
+
+19
+00:01:37,000 --> 00:01:42,120
+Next week: Search Folders in Outlook — a folder that fills itself.
