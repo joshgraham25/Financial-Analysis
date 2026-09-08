@@ -22,71 +22,51 @@ after they leave, so nothing goes company-wide until it is a real group.
 
 → **Josh is requesting one.** Waiting on the group's address. Until it exists the pilot list stands.
 
-### 2. Episode 002
+### 2. Episode 002 — done, awaiting upload
 
-→ **Josh is recording it himself** — the synthetic render was not showing everything he wanted. The
-script, the shot list and the generated demo workbook all still apply; see the note at the top of
-`episodes/002-self-maintaining-dropdowns/script.md`. Nothing for me to do until there is a recording
-to publish.
+→ **Recorded by Josh 2026-09-08 in real Excel, cut with the new overlay pipeline** (1:43,
+`TMTT-002-Self-Maintaining-Dropdowns.mp4`). The synthetic render is retired. **Blocked on
+one thing only: the file needs uploading to SharePoint**, because the connector available
+here caps uploads at 1 MB and the video is 6 MB. Once it is up, its item URL goes in
+`episodes.json` as `videoUrl` — the weekly job refuses to send an episode with an empty
+one rather than mailing a dead link.
 
-### 3. Episode 003 and beyond
+### 3. Episode 003 — scripted, ready to record
 
-Not started, deliberately: 002 comes first. The backlog has roughly six months of ranked ideas, and
-002's outro already promises Outlook attachment search as 003.
+→ **Search Folders in Outlook**, "The Outlook folder that fills itself". Scripted
+2026-09-08: shot list in `episodes/003-outlook-search-folders/script.md`, lines to read in
+`lines.md`, catalogue entry added. Replaces the attachment-search episode the backlog had
+listed — 002's outro already promises Search Folders, and attachment search folds in as
+one of the demo criteria. Read the privacy section at the top of the script before
+recording: unlike Excel with a generated workbook, this is a tour of a real mailbox.
 
-→ *(open — say when to script it)*
+### 4. A Spanish version — ON HOLD
 
-### 4. A Spanish version — three questions, and one of them changes everything
+→ **Josh, 2026-09-08: on hold until somebody asks about it.** The work is done and sitting
+in the repo — `TMTT-001-ES-Listas-Sin-Duplicados.mp4`, Spanish captions, Spanish narration,
+and `--lang es` through the whole pipeline — so reviving it costs nothing but the two
+checks below. Nothing is published and nothing is scheduled.
 
-Josh asked for a Spanish version on 2026-09-01. CLC clearly has the audience: `CLC Training` already
-holds *IQMS Training Guides - Spanish* and *Paulson Training Videos - English and Spanish*.
+If it is revived, these still apply, and 4a is the one that decides the size of the job:
 
 **4a. Do the Spanish-speaking staff run Excel in Spanish, or in English?** `Blocked`
 
-This is the one that changes the size of the job. Excel **localises function names**:
+Excel localises function names, so the rendered cut shows `=UNICOS`, `=ORDENAR` and
+`=FILTRAR`. If their Excel UI is English those formulas return `#¿NOMBRE?` and teach the
+wrong thing — `make_video.py --lang en` re-renders with English formulas in minutes, so it
+is cheap either way, but it cannot ship until this is known.
 
-| English | Spanish |
-| --- | --- |
-| `=UNIQUE(range)` | `=UNICOS(rango)` |
-| `=SORT(UNIQUE(range))` | `=ORDENAR(UNICOS(rango))` |
-| `=FILTER(table, column = criteria)` | `=FILTRAR(tabla, columna = criterio)` |
-| Remove Duplicates | Quitar duplicados |
+**4b. Subtitles or a dubbed voiceover** — settled by building it: the cut is fully dubbed
+with `es-MX-JorgeNeural` plus Spanish subtitles. Applies to 001 only; 002 onward are real
+recordings, so a Spanish version of those means subtitles or a second take.
 
-- **If their Excel UI is Spanish:** a translated video showing `=UNIQUE(...)` teaches a formula that
-  returns `#¿NOMBRE?`. The formulas, the recap card, the demo workbook and the on-screen Excel chrome
-  all have to change — that is a genuinely different episode, not a translation.
-- **If their Excel UI is English:** only the words change. Formulas stay as they are, and this is
-  much cheaper.
-- **If it is mixed:** say the English formula out loud and show it on screen, because that is what
-  their keyboard will accept, and translate only the prose around it.
+**4c. One bilingual email, or two sends?** `Decision` — recommendation stands: one
+bilingual email, because a hand-maintained language list is the thing most likely to rot,
+which is the same reason the recipient list became `AllUsers@`.
 
-→ *(open)*
-
-**4b. Subtitles, or a Spanish voiceover?** `Decision`
-
-The pipeline can do either for episode 001. Subtitles are cheap and keep one video; a dubbed version
-is a second file, and the neural voices available include Mexican Spanish (`es-MX-JorgeNeural`,
-`es-MX-DaliaNeural`), so it would not sound robotic.
-
-Note this only applies to **001**, which is synthetically rendered. **002 onward Josh is recording
-himself**, so a Spanish version of those means either subtitles or recording a second take.
-
-→ *(open)*
-
-**4c. One bilingual email, or two separate sends?** `Decision`
-
-- **One email, English then Spanish below it.** Everyone gets one message; nobody is on the wrong
-  list; it is visibly one series. Costs length.
-- **Two sends to two lists.** Cleaner for each reader, but needs a Spanish-speaker distribution list
-  that does not exist yet, and doubles the approval step every week.
-- Recommendation: **one bilingual email**, because a list that has to be maintained by hand is the
-  thing most likely to rot — the same reason the recipient list became `AllUsers@`.
-
-→ *(open)*
-
-**Also needed regardless:** a native speaker to review the Spanish before it goes company-wide. A
-draft is in `distribution/first-announcement.md`; machine-assisted translation is fine for a draft
-and not fine for the first thing the whole company reads in Spanish.
+**Also needed regardless:** a native speaker to review the Spanish before it goes
+company-wide. Machine-assisted translation is fine for a draft and not fine for the first
+thing the whole company reads in Spanish.
 
 ---
 

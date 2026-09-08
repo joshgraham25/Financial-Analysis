@@ -51,15 +51,35 @@
         "Basic source:  =$M$5:$M$10",
         "Live source:   =$M$5#"
       ],
-      "runtime": "1:52",
+      "runtime": "1:43",
       "published": null,
-      "videoFile": "TMTT-002-Data-Validation.mp4",
+      "videoFile": "TMTT-002-Self-Maintaining-Dropdowns.mp4",
       "videoUrl": "",
       "captionsFile": "TMTT-002-captions.srt",
       "attachments": [
         "demo-workbook-solved.xlsx"
       ],
-      "summary": "Every drop-down in Excel is Data Validation. Point Source at a range and it goes stale; point it at =$O$5# and the list maintains itself."
+      "summary": "Every drop-down in Excel is Data Validation. Point Source at a range and it goes stale; point it at =$M$5# and the list maintains itself."
+    },
+    {
+      "number": 3,
+      "slug": "003-outlook-search-folders",
+      "title": "The Outlook folder that fills itself",
+      "app": "Outlook",
+      "tip": "Search Folders",
+      "recap": [
+        "Folder → New Search Folder",
+        "Custom: words in subject or body",
+        "Mail never moves — it is a saved search"
+      ],
+      "runtime": null,
+      "published": null,
+      "videoFile": null,
+      "videoUrl": "",
+      "captionsFile": null,
+      "attachments": [],
+      "summary": "A Search Folder is a saved search that looks like a folder, so mail collects itself instead of being filed by hand. It finds the emails you forgot to file — and because nothing moves, deleting from it deletes the real message.",
+      "_comment": "Scripted 2026-09-08, not yet recorded. This entry exists ahead of the recording on purpose: overlay_episode.py reads the title and recap card text from here, and refuses to run for an episode that is not in the catalogue. runtime, videoFile and captionsFile stay null until there is a cut; videoUrl stays empty so the weekly email job skips it rather than mailing a dead link."
     }
   ]
 }

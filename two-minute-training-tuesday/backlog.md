@@ -18,11 +18,16 @@ live in Excel stop watching.
 
 ## Queued
 
+Struck-through numbers are done. `=$M$5#` in 002 is correct and `=$K$5#` was not: the
+helper list moved from J/K to M when it turned out J:K sits inside 001's `F:K` FILTER
+spill and threw `#SPILL!`.
+
 | # | App | Working title | The pain it kills |
 | --- | --- | --- | --- |
-| 001 | Excel | Stop using copy and pasting to get a unique list | `UNIQUE`, `SORT`, `FILTER` — **rendered and voiced, ready to publish** |
-| 002 | Excel | Data Validation, basic then self-maintaining | Allow: List from a range, watch it go stale, then repoint Source at `=$K$5#` so it maintains itself — **scripted, ready to record** |
-| 003 | Outlook | Find any attachment in four seconds | `hasattachments:yes`, `from:`, `subject:` — search operators instead of scrolling |
+| ~~001~~ | Excel | Stop using copy and pasting to get a unique list | `UNIQUE`, `SORT`, `FILTER` — **published 2026-08-25 and emailed** |
+| ~~002~~ | Excel | Data Validation, basic then self-maintaining | Allow: List from a range, watch it go stale, then repoint Source at `=$M$5#` so it maintains itself — **recorded and cut 2026-09-08, awaiting upload** |
+| 003 | Outlook | The Outlook folder that fills itself | **Search Folders** — a saved search that looks like a folder, so mail collects itself instead of being filed by hand. The mail never moves, which is the difference from a rule. **Scripted 2026-09-08, ready to record** |
+| — | Outlook | ~~Find any attachment in four seconds~~ | Folded into 003 as one of the demo criteria ("anything with a big attachment"), rather than its own episode. It is a one-off trick; Search Folders is a habit |
 | 004 | Teams | Never lose a message again | Saved messages, plus `Ctrl+E` search with `from:` and `in:` filters |
 | 005 | Excel | XLOOKUP, and why you can delete VLOOKUP | Looking left, exact-match default, and the "if not found" argument |
 | 006 | ERP | *(fill in: the one report everybody exports and hand-edits)* | Ask the three heaviest users what they re-key every week |
