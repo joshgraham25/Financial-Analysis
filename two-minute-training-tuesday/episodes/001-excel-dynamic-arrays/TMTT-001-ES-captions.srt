@@ -1,0 +1,95 @@
+1
+00:00:00,300 --> 00:00:03,600
+Bienvenidos a Two-Minute Training Tuesday.
+
+2
+00:00:03,700 --> 00:00:06,700
+Este es un export de costos del ERP.
+
+3
+00:00:06,800 --> 00:00:10,800
+Trescientas ochenta líneas.
+
+4
+00:00:11,000 --> 00:00:14,400
+Necesitas los proveedores, sin duplicados.
+
+5
+00:00:14,500 --> 00:00:18,300
+En vez de copiar, pegar, Quitar duplicados
+
+6
+00:00:18,400 --> 00:00:20,100
+Hay algo mejor.
+
+7
+00:00:21,000 --> 00:00:25,500
+Una fórmula: UNICOS, y la columna de proveedor.
+
+8
+00:00:25,600 --> 00:00:29,900
+Excel escribe la referencia por ti.
+
+9
+00:00:30,700 --> 00:00:35,900
+Quince proveedores, de trescientas ochenta líneas.
+
+10
+00:00:36,000 --> 00:00:41,400
+Nunca le dije quince. Tomó el espacio que necesitaba.
+
+11
+00:00:41,500 --> 00:00:46,400
+Toda esa lista pertenece a la fórmula en B5.
+
+12
+00:00:46,500 --> 00:00:49,200
+Eso es un rango desbordado.
+
+13
+00:00:49,300 --> 00:00:54,500
+No está ordenada. Envuélvela en ORDENAR.
+
+14
+00:00:54,600 --> 00:00:58,900
+Una función más por fuera. Nada más cambia.
+
+15
+00:00:59,700 --> 00:01:03,500
+Alfabético. Sigue siendo una fórmula.
+
+16
+00:01:03,600 --> 00:01:06,700
+Ahora la más potente.
+
+17
+00:01:06,800 --> 00:01:13,000
+FILTRAR: dale toda la tabla...
+
+18
+00:01:13,100 --> 00:01:20,900
+...y la regla: centro de costo igual a esta celda.
+
+19
+00:01:22,000 --> 00:01:27,500
+Ciento treinta y seis líneas: tu informe, filtrado.
+
+20
+00:01:27,600 --> 00:01:30,900
+Como una tabla dinámica. Y lo importante:
+
+21
+00:01:31,600 --> 00:01:35,500
+Cambia el centro de costo...
+
+22
+00:01:37,000 --> 00:01:41,500
+...y el informe se vuelve a dibujar solo.
+
+23
+00:01:41,600 --> 00:01:45,500
+Sin copiar, pegar ni reordenar.
+
+24
+00:01:45,900 --> 00:01:49,100
+La próxima semana: adjuntos de Outlook en segundos.

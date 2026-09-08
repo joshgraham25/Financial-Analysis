@@ -28,6 +28,7 @@ EPISODE_HTML = HERE / "episode.html"
 WORKBOOK = HERE.parent / "demo-workbook.xlsx"
 BRAND_JSON = HERE.parent.parent.parent / "brand.json"
 OUT_MP4 = HERE.parent / "TMTT-001-Excel-Dynamic-Arrays.mp4"
+OUT_MP4_ES = HERE.parent / "TMTT-001-ES-Listas-Sin-Duplicados.mp4"
 OUT_MP4_CLEAN = HERE.parent / "TMTT-001-Excel-Dynamic-Arrays-no-captions.mp4"
 
 FPS = 20
@@ -53,7 +54,7 @@ def read_brand():
     return {k: v for k, v in raw.items() if not k.startswith("_")}
 
 
-def open_page(pw, rows, brand, captions=True):
+def open_page(pw, rows, brand, captions=True, lang="en"):
     browser = pw.chromium.launch(
         executable_path=CHROME if Path(CHROME).exists() else None,
         args=["--force-device-scale-factor=1", "--hide-scrollbars"],
@@ -62,6 +63,7 @@ def open_page(pw, rows, brand, captions=True):
     page.add_init_script(
         f"window.__ROWS__ = {json.dumps(rows)};"
         f"window.__BRAND__ = {json.dumps(brand)};"
+        f"window.__LANG__ = {json.dumps(lang)};"
         f"window.__NO_CAPTIONS__ = {json.dumps(not captions)};"
     )
     page.goto(EPISODE_HTML.as_uri())
@@ -83,6 +85,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--probe", help="comma-separated timestamps to render as PNGs instead")
     ap.add_argument("--outdir", default=None, help="where probe PNGs land")
+    ap.add_argument("--lang", choices=("en", "es"), default="en",
+                    help="string set for the Excel UI, labels, formulas and cards")
     ap.add_argument("--no-captions", action="store_true",
                     help="render a clean picture, for adding your own captions in Clipchamp")
     args = ap.parse_args()
@@ -93,7 +97,7 @@ def main():
     print(f"brand: {brand or 'built-in defaults'}")
 
     with sync_playwright() as pw:
-        browser, page = open_page(pw, rows, brand, captions=not args.no_captions)
+        browser, page = open_page(pw, rows, brand, captions=not args.no_captions, lang=args.lang)
         duration = page.evaluate("window.EPISODE_END")
 
         if args.probe:
@@ -120,7 +124,8 @@ def main():
                 print(f"  {i}/{total}", flush=True)
         browser.close()
 
-    out_path = OUT_MP4_CLEAN if args.no_captions else OUT_MP4
+    out_path = (OUT_MP4_CLEAN if args.no_captions
+                else (OUT_MP4_ES if args.lang == "es" else OUT_MP4))
     print("encoding with", FFMPEG)
     subprocess.run(
         [

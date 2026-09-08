@@ -9,17 +9,23 @@ this, and re-render the video.
 """
 
 import re
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 EPISODE_HTML = HERE / "render" / "episode.html"
-NARRATION_MD = HERE / "narration.md"
-SRT = HERE / "TMTT-001-captions.srt"
+LANG = "es" if "--lang=es" in sys.argv or "--lang" in sys.argv and "es" in sys.argv else "en"
+SUFFIX = "-ES" if LANG == "es" else ""
+NARRATION_MD = HERE / ("narration-es.md" if LANG == "es" else "narration.md")
+SRT = HERE / ("TMTT-001-ES-captions.srt" if LANG == "es" else "TMTT-001-captions.srt")
 
 
 def read_cues():
     src = EPISODE_HTML.read_text(encoding="utf-8")
-    block = re.search(r"const CAPTIONS = \[(.*?)\n\];", src, re.S)
+    # Captions are per-language now (CAPTIONS_BY_LANG), so read the requested set.
+    # The old single-array form is still accepted for any episode not yet localised.
+    block = (re.search("^  " + LANG + ": " + chr(92) + "[(.*?)^  " + chr(92) + "],", src, re.S | re.M)
+             or re.search(r"const CAPTIONS = \[(.*?)\n\];", src, re.S))
     if not block:
         raise SystemExit(f"could not find the CAPTIONS array in {EPISODE_HTML}")
     cues = re.findall(r"\[\s*([\d.]+),\s*([\d.]+),\s*\"(.*?)\"\]", block.group(1))

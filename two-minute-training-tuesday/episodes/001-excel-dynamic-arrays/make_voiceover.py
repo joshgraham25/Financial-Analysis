@@ -43,8 +43,25 @@ VIDEO_OUT = HERE / "TMTT-001-Excel-Dynamic-Arrays-voiced.mp4"
 AUDIO_OUT = HERE / "TMTT-001-narration.m4a"
 
 DEFAULT_VOICE = "en-US-AndrewNeural"  # calm, mid-paced. Instruction, not marketing.
+DEFAULT_VOICE_ES = "es-MX-JorgeNeural"  # Mexican Spanish, same register as Andrew.
 PAD = 0.15  # seconds of air to leave before the next beat starts
 ROW = re.compile(r"^\|\s*([\d.]+)\s*\|\s*([\d.]+)s\s*\|\s*(\d+)\s*\|\s*(.+?)\s*\|$")
+
+
+def use_language(lang: str) -> None:
+    """Point the module at one language's narration table and picture.
+
+    The Spanish cut is a separate render (render/make_video.py --lang es), so it
+    gets its own beat table, its own input picture, and its own output name --
+    never overwriting the English one.
+    """
+    global NARRATION, VIDEO_IN, VIDEO_OUT, AUDIO_OUT
+    if lang != "es":
+        return
+    NARRATION = HERE / "narration-es.md"
+    VIDEO_IN = HERE / "TMTT-001-ES-Listas-Sin-Duplicados.mp4"
+    VIDEO_OUT = HERE / "TMTT-001-ES-Listas-Sin-Duplicados-voiced.mp4"
+    AUDIO_OUT = HERE / "TMTT-001-ES-narration.m4a"
 
 
 def ffmpeg() -> str:
@@ -183,6 +200,8 @@ def mux(video: Path, audio: Path, out: Path, ff: str) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--lang", choices=("en", "es"), default="en",
+                    help="which narration table and rendered picture to voice")
     ap.add_argument("--engine", choices=("edge", "sapi"), default="edge",
                     help="edge = neural, needs network; sapi = offline David/Zira")
     ap.add_argument("--voice", default=None,
@@ -195,6 +214,7 @@ def main() -> None:
     ap.add_argument("--keep-audio", action="store_true",
                     help="also write the bare narration track")
     args = ap.parse_args()
+    use_language(args.lang)
 
     if args.list_voices and args.engine == "sapi":
         print(subprocess.run(
@@ -210,7 +230,7 @@ def main() -> None:
 
         async def show():
             mgr = await edge_tts.VoicesManager.create()
-            for v in mgr.find(Language="en"):
+            for v in mgr.find(Language=args.lang):
                 print(f"{v['ShortName']:34s} {v['Gender']:6s} {v['Locale']}")
         asyncio.run(show())
         return
@@ -219,7 +239,8 @@ def main() -> None:
     if not VIDEO_IN.exists():
         sys.exit(f"{VIDEO_IN.name} not found. Render it first: render/make_video.py")
 
-    voice = args.voice or (DEFAULT_VOICE if args.engine == "edge" else "David")
+    edge_default = DEFAULT_VOICE_ES if args.lang == "es" else DEFAULT_VOICE
+    voice = args.voice or (edge_default if args.engine == "edge" else "David")
     if args.engine == "sapi":
         voice = sapi_voice_name(voice)
 
@@ -232,7 +253,7 @@ def main() -> None:
         track = tmp / "narration.m4a"
         mix(rows, track, ff, duration(VIDEO_IN))
         slug = voice.replace("Microsoft ", "").replace(" Desktop", "")
-        slug = slug.replace("Neural", "").replace("en-US-", "").replace(" ", "")
+        slug = re.sub(r"^[a-z]{2}-[A-Z]{2}-", "", slug.replace("Neural", "")).replace(" ", "")
         out_video = VIDEO_OUT.with_name(
             f"{VIDEO_OUT.stem}-{slug.lower()}{VIDEO_OUT.suffix}")
         mux(VIDEO_IN, track, out_video, ff)

@@ -123,14 +123,83 @@ function wrapText(text, font, maxWidth) {
 /* ===========================================================================
    TIMELINE
    =========================================================================== */
+/* ===========================================================================
+   LANGUAGE
+   Two string sets over ONE set of geometry and picture timings, so the Spanish
+   cut cannot drift from the English one. make_video.py injects window.__LANG__.
+
+   WHAT IS TRANSLATED: the Excel UI chrome, the sheet names and report labels we
+   author ourselves, the captions, the cards, and the FUNCTION NAMES -- Excel
+   localises those, so a Spanish viewer typing =UNIQUE gets #¿NOMBRE?.
+
+   WHAT IS NOT: the exported DATA -- vendor names, cost centres, and the column
+   headers. That is what the ERP actually emits, so a Spanish-speaking employee
+   sees those same English words in their own export. Translating them would
+   teach a structured reference that does not exist. Flip `translateData` if that
+   assumption is ever wrong.
+
+   ARGUMENT SEPARATOR: comma, as en-US and es-MX Windows both use. Spain's
+   locale uses semicolons; if this ever ships to an es-ES install, that changes.
+   =========================================================================== */
+const LANG = (window.__LANG__ === "es") ? "es" : "en";
+
+const STRINGS = {
+  en: {
+    ribbon: ["File", "Home", "Insert", "Draw", "Page Layout", "Formulas", "Data", "Review", "View", "Help"],
+    sheets: ["ERP Export", "Report", "Answer Key"],
+    ready: "Ready",
+    rowsSuffix: " rows",
+    headers: ["Date", "Job Number", "Cost Center", "Vendor", "Category", "Amount"],
+    reportTitle: "Vendor spend report",
+    label1: "1. Every vendor we used",
+    label2: "2. Same list, alphabetical",
+    labelCostCentre: "Cost center",
+    label3: "3. Every line for that cost center",
+    hint: "Type the three formulas below. Nothing here is hard-coded.",
+    episodeWord: "Episode",
+    recapWord: "Recap",
+    uniq: "=UNIQUE(ERP_Export[Vendor])",
+    sort: "=SORT(UNIQUE(ERP_Export[Vendor]))",
+    filt: '=FILTER(ERP_Export,ERP_Export[Cost Center]=G4,"No matches")',
+    card: {
+      title: "Stop using copy and pasting to get a unique list",
+      recap: ["=UNIQUE(range)", "=SORT(UNIQUE(range))", "=FILTER(table, column = criteria)"],
+    },
+  },
+  es: {
+    ribbon: ["Archivo", "Inicio", "Insertar", "Dibujar", "Disposición de página", "Fórmulas", "Datos", "Revisar", "Vista", "Ayuda"],
+    sheets: ["Exportación ERP", "Informe", "Respuestas"],
+    ready: "Listo",
+    rowsSuffix: " filas",
+    headers: ["Date", "Job Number", "Cost Center", "Vendor", "Category", "Amount"],
+    reportTitle: "Informe de gasto por proveedor",
+    label1: "1. Todos los proveedores que usamos",
+    label2: "2. La misma lista, en orden alfabético",
+    labelCostCentre: "Centro de costo",
+    label3: "3. Todas las líneas de ese centro de costo",
+    hint: "Escribe las tres fórmulas abajo. Aquí nada está fijo.",
+    episodeWord: "Episodio",
+    recapWord: "Resumen",
+    uniq: "=UNICOS(ERP_Export[Vendor])",
+    sort: "=ORDENAR(UNICOS(ERP_Export[Vendor]))",
+    filt: '=FILTRAR(ERP_Export,ERP_Export[Cost Center]=G4,"Sin resultados")',
+    card: {
+      title: "Deja de copiar y pegar para obtener una lista sin duplicados",
+      recap: ["=UNICOS(rango)", "=ORDENAR(UNICOS(rango))", "=FILTRAR(tabla, columna = criterio)"],
+    },
+  },
+};
+
+const S = STRINGS[LANG];
+
 /* Everything the title and recap cards show. Hardcoding these is how episode 002
    shipped displaying episode 001's title and recap -- the renderer was copied and
    the card strings were not. Keep them here, together, and obvious. */
 const CARD = {
   number: "001",
   app: "Excel",
-  title: "Stop using copy and pasting to get a unique list",
-  recap: ["=UNIQUE(range)", "=SORT(UNIQUE(range))", "=FILTER(table, column = criteria)"],
+  title: S.card.title,
+  recap: S.card.recap,
 };
 
 const T = {
@@ -152,13 +221,14 @@ const T = {
   recapStart: 105.5,  end: 109.5,
 };
 
-const UNIQ_F = "=UNIQUE(ERP_Export[Vendor])";
-const SORT_F = "=SORT(UNIQUE(ERP_Export[Vendor]))";
-const FILT_F = '=FILTER(ERP_Export,ERP_Export[Cost Center]=G4,"No matches")';
+const UNIQ_F = S.uniq;
+const SORT_F = S.sort;
+const FILT_F = S.filt;
 
 const COST_CENTERS = ["Powder Line 1", "Liquid Line 2", "Prep & Blast", "Maintenance", "QC Lab", "Shipping"];
 
-const CAPTIONS = [
+const CAPTIONS_BY_LANG = {
+  en: [
   [0.3, 3.6, "Welcome to Two-Minute Training Tuesday."],
   [3.7, 6.7, "This is an example export file."],
   [6.8, 10.8, "Three hundred and eighty lines."],
@@ -183,7 +253,39 @@ const CAPTIONS = [
   [97.0, 101.5, "...and the whole report redraws itself."],
   [101.6, 105.5, "No copying. No pasting. No re-sorting."],
   [105.9, 109.1, "Next week: how we built that drop-down."],
-];
+  ],
+  /* Same windows as English on purpose. Spanish runs longer, so the SUBTITLE is condensed
+     rather than the picture slowed -- normal subtitling practice, and it keeps one timeline
+     and one set of geometry for both cuts. */
+  es: [
+  [0.3, 3.6, "Bienvenidos a Two-Minute Training Tuesday."],
+  [3.7, 6.7, "Este es un export de costos del ERP."],
+  [6.8, 10.8, "Trescientas ochenta líneas."],
+  [11.0, 14.4, "Necesitas los proveedores, sin duplicados."],
+  [14.5, 18.3, "En vez de copiar, pegar, Quitar duplicados"],
+  [18.4, 20.1, "Hay algo mejor."],
+  [21.0, 25.5, "Una fórmula: UNICOS, y la columna de proveedor."],
+  [25.6, 29.9, "Excel escribe la referencia por ti."],
+  [30.7, 35.9, "Quince proveedores, de trescientas ochenta líneas."],
+  [36.0, 41.4, "Nunca le dije quince. Tomó el espacio que necesitaba."],
+  [41.5, 46.4, "Toda esa lista pertenece a la fórmula en B5."],
+  [46.5, 49.2, "Eso es un rango desbordado."],
+  [49.3, 54.5, "No está ordenada. Envuélvela en ORDENAR."],
+  [54.6, 58.9, "Una función más por fuera. Nada más cambia."],
+  [59.7, 63.5, "Alfabético. Sigue siendo una fórmula."],
+  [63.6, 66.7, "Ahora la más potente."],
+  [66.8, 73.0, "FILTRAR: dale toda la tabla..."],
+  [73.1, 80.9, "...y la regla: centro de costo igual a esta celda."],
+  [82.0, 87.5, "Ciento treinta y seis líneas: tu informe, filtrado."],
+  [87.6, 90.9, "Como una tabla dinámica. Y lo importante:"],
+  [91.6, 95.5, "Cambia el centro de costo..."],
+  [97.0, 101.5, "...y el informe se vuelve a dibujar solo."],
+  [101.6, 105.5, "Sin copiar, pegar ni reordenar."],
+  [105.9, 109.1, "La próxima semana: adjuntos de Outlook en segundos."],
+  ],
+};
+
+const CAPTIONS = CAPTIONS_BY_LANG[LANG];
 
 /* Mouse pointer keyframes: [t, x, y]. Linear-eased between neighbours. */
 const CURSOR = [
@@ -343,7 +445,7 @@ function stateAt(t) {
    CELL CONTENT
    =========================================================================== */
 function erpCell(c, r) {
-  if (r === 1) return {text: ["Date","Job Number","Cost Center","Vendor","Category","Amount"][c],
+  if (r === 1) return {text: S.headers[c],
                        bold: true, color: "#fff", fill: TABLE_HDR, align: c === 5 ? "right" : "left"};
   const row = ROWS[r - 2];
   if (!row) return null;
@@ -355,13 +457,13 @@ function erpCell(c, r) {
 function reportCell(c, r, s) {
   const K = c + "," + r;
   const statics = {
-    "1,1": {text: "Vendor spend report", bold: true, size: 22, color: TABLE_HDR},
-    "1,2": {text: "Type the three formulas below. Nothing here is hard-coded.", italic: true, color: "#777", size: 15},
-    "1,4": {text: "1. Every vendor we used", bold: true, color: TABLE_HDR},
-    "3,4": {text: "2. Same list, alphabetical", bold: true, color: TABLE_HDR},
-    "5,4": {text: "Cost center", bold: true, color: TABLE_HDR},
+    "1,1": {text: S.reportTitle, bold: true, size: 22, color: TABLE_HDR},
+    "1,2": {text: S.hint, italic: true, color: "#777", size: 15},
+    "1,4": {text: S.label1, bold: true, color: TABLE_HDR},
+    "3,4": {text: S.label2, bold: true, color: TABLE_HDR},
+    "5,4": {text: S.labelCostCentre, bold: true, color: TABLE_HDR},
     "6,4": {text: s.costCenter, bold: true, fill: INPUT_FILL, box: true},
-    "5,6": {text: "3. Every line for that cost center", bold: true, color: TABLE_HDR},
+    "5,6": {text: S.label3, bold: true, color: TABLE_HDR},
   };
   if (statics[K]) return statics[K];
 
@@ -391,7 +493,7 @@ function drawChrome(s) {
   ctx.fillText("demo-workbook.xlsx  —  Excel", 24, TITLEBAR_H / 2);
 
   /* ribbon tab strip (collapsed ribbon, per the style guide) */
-  const tabs = ["File", "Home", "Insert", "Draw", "Page Layout", "Formulas", "Data", "Review", "View", "Help"];
+  const tabs = S.ribbon;
   let x = 24;
   ctx.font = "400 17px " + SANS;
   tabs.forEach((tab, i) => {
@@ -446,8 +548,8 @@ function drawSheetBar(s) {
   ctx.strokeStyle = CHROME_LINE;
   ctx.beginPath(); ctx.moveTo(0, y + 0.5); ctx.lineTo(W, y + 0.5); ctx.stroke();
 
-  const names = ["ERP Export", "Report", "Answer Key"];
-  const activeName = s.sheet === "erp" ? "ERP Export" : "Report";
+  const names = S.sheets;
+  const activeName = s.sheet === "erp" ? S.sheets[0] : S.sheets[1];
   let x = 60;
   ctx.font = "400 17px " + SANS; ctx.textBaseline = "middle";
   for (const n of names) {
@@ -465,7 +567,9 @@ function drawSheetBar(s) {
   }
   ctx.textAlign = "left";
 
-  const label = s.sheet === "erp" ? "380 rows" : "Ready";
+  // Derived from the injected rows, not hardcoded, and localised. 002 already fixed the
+  // hardcoded form; 001 still had it.
+  const label = s.sheet === "erp" ? ROWS.length + S.rowsSuffix : S.ready;
   ctx.fillStyle = "#666"; ctx.font = "400 16px " + SANS;
   ctx.textAlign = "right";
   ctx.fillText(label, W - 40, y + SHEETBAR_H / 2);
@@ -719,7 +823,7 @@ function drawCard(kind) {
   ctx.letterSpacing = "0px";
 
   ctx.fillStyle = MUTED; ctx.font = "400 30px " + SANS;
-  ctx.fillText(`Episode ${CARD.number}  ·  ${CARD.app}` + (kind === "recap" ? "  ·  Recap" : ""), x, 224);
+  ctx.fillText(`${S.episodeWord} ${CARD.number}  ·  ${CARD.app}` + (kind === "recap" ? `  ·  ${S.recapWord}` : ""), x, 224);
 
   if (kind === "title") {
     const font = "600 104px " + SANS;
