@@ -10,12 +10,18 @@ be recorded without a single row of real customer or vendor data on screen.
 Output: demo-workbook.xlsx, or demo-workbook-solved.xlsx with --solved.
 
 --solved emits the state episode 002 opens on: 001's three formulas already in
-B5/D5/F7, the six cost centers typed as plain text into M5:M10 to be the basic
-Data Validation source, and column O left clear for the array formula. M and O
-are used rather than J and K because the FILTER in F7 spills six columns, F:K --
-a helper list inside that range would collide and throw #SPILL!. G4 keeps
-its hard-coded validation list on purpose -- that stale list is what 002 replaces
-on camera, so fixing it here would delete the episode's subject.
+B5/D5/F7, and the six cost centers typed as plain text into M5:M10 to be the
+basic Data Validation source. On camera the array formula REPLACES that typed
+list in M5, so the list the viewer has been looking at is the one that becomes
+self-maintaining -- which is why nothing is reserved in column O. (An earlier
+layout put the live list beside the typed one in O; Josh recorded it in place
+2026-09-08, and it reads better, so the workbook follows the recording.)
+
+M, not J: the FILTER in F7 spills six columns, F:K, so a helper list parked
+inside that range collides with it and Excel returns #SPILL! instead of a report.
+
+G4 keeps its hard-coded validation list on purpose -- that stale list is what
+002 replaces on camera, so fixing it here would delete the episode's subject.
 
 Sheets
 ------
@@ -223,6 +229,11 @@ def write_report_sheet(ws, solved=False):
     ws.sheet_view.showGridLines = False
 
 
+# Blank but bordered rows under the typed list, so the box still fits when the
+# array formula replaces the list and spills more values than were typed.
+GROWTH_ROOM = 3
+
+
 def write_solved_state(ws):
     """The state episode 002 opens on: 001 finished, and a typed list to break.
 
@@ -232,6 +243,12 @@ def write_solved_state(ws):
 
     M, not J: the FILTER in F7 spills six columns (F:K), so anything parked in
     J or K collides with it and Excel returns #SPILL! instead of a report.
+
+    The border runs past the typed rows on purpose. In 002 the array formula
+    replaces this list in M5 and spills SEVEN values, and a box sized to exactly
+    six left the seventh outside it -- visible on screen, and the last thing
+    before the recap card. GROWTH_ROOM covers a few more cost centres than the
+    episode adds, so the box still fits when the list grows.
     """
     ws["B5"] = "=UNIQUE(ERP_Export[Vendor])"
     ws["D5"] = "=SORT(UNIQUE(ERP_Export[Vendor]))"
@@ -239,9 +256,12 @@ def write_solved_state(ws):
 
     ws["M4"] = "Cost centers (typed)"
     ws["M4"].font = LABEL_FONT
-    for offset, name in enumerate(COST_CENTERS):
-        cell = ws.cell(row=5 + offset, column=13, value=name)
-        cell.border = Border(bottom=THIN, top=THIN, left=THIN, right=THIN)
+    box = Border(bottom=THIN, top=THIN, left=THIN, right=THIN)
+    for offset in range(len(COST_CENTERS) + GROWTH_ROOM):
+        cell = ws.cell(row=5 + offset, column=13)
+        if offset < len(COST_CENTERS):
+            cell.value = COST_CENTERS[offset]
+        cell.border = box
 
 
 def write_answer_key(ws, last_row):
@@ -327,7 +347,8 @@ def main():
           f"{len(COST_CENTERS)} cost centers")
     print(f"  table ERP_Export = 'ERP Export'!A1:F{last_row}")
     if args.solved:
-        print("  Report: 001 formulas in B5/D5/F7, typed list M5:M10, O clear")
+        print(f"  Report: 001 formulas in B5/D5/F7, typed list M5:M10, "
+              f"box to M{4 + len(COST_CENTERS) + GROWTH_ROOM} for growth")
         print("  G4 validation left hard-coded on purpose -- that is 002's subject")
 
 
