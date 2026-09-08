@@ -192,6 +192,9 @@ def main() -> None:
     ap.add_argument("--max-rate", type=int, default=20,
                     help="ceiling when a beat has to be sped up to fit")
     ap.add_argument("--list-voices", action="store_true")
+    ap.add_argument("--out", default=None,
+                    help="output filename, instead of one derived from the voice. "
+                         "Use this when the derived name is locked by a player.")
     ap.add_argument("--keep-audio", action="store_true",
                     help="also write the bare narration track")
     args = ap.parse_args()
@@ -233,8 +236,9 @@ def main() -> None:
         mix(rows, track, ff, duration(VIDEO_IN))
         slug = voice.replace("Microsoft ", "").replace(" Desktop", "")
         slug = slug.replace("Neural", "").replace("en-US-", "").replace(" ", "")
-        out_video = VIDEO_OUT.with_name(
-            f"{VIDEO_OUT.stem}-{slug.lower()}{VIDEO_OUT.suffix}")
+        out_video = (VIDEO_OUT.with_name(args.out) if args.out
+                     else VIDEO_OUT.with_name(
+                         f"{VIDEO_OUT.stem}-{slug.lower()}{VIDEO_OUT.suffix}"))
         mux(VIDEO_IN, track, out_video, ff)
         if args.keep_audio:
             shutil.copy(track, AUDIO_OUT)

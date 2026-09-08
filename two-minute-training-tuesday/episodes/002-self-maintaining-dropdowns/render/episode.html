@@ -80,7 +80,9 @@ const VEND_FIRST_SEEN = (() => {
   return out;
 })();
 const VEND_SORTED = [...VEND_FIRST_SEEN].sort((a, b) => a.localeCompare(b));
-const filteredBy = cc => ROWS.filter(r => r[2] === cc);
+/* Filtering reads the export INCLUDING the row typed in act 2, once it exists.
+   FILTER in the real workbook would see it, so the render has to as well. */
+const filteredBy = (cc, rows) => (rows || ROWS).filter(r => r[2] === cc);
 
 /* ---------- sheets ---------- */
 const ERP_COLS    = [190, 210, 250, 340, 260, 200];
@@ -90,6 +92,13 @@ const REPORT_F_X  = REPORT_COLS.slice(0, 5).reduce((a, b) => a + b, 0);  // 860
    the helper lists in M and O on the right. */
 const REPORT_VIEW_X = 1000;
 const NEW_CC = "Powder Line 3";
+/* The export row typed on camera in act 2. All six columns, because a real
+   export row has all six -- and because FILTER reads this row: with only the
+   first three filled it matched nothing and the report looked frozen.
+   Vendor and category are ones already in the data, so only the COST CENTER
+   list grows. That is what the narration claims ("seven"), and a new vendor
+   would silently lengthen 001's two spills as well. */
+const NEW_ROW = ["08/17/2026", "J-27011", NEW_CC, "Tiger Drylac", "Powder Coating", 4210.75];
 
 const money = n => "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
 const colName = i => String.fromCharCode(65 + i);
@@ -141,20 +150,22 @@ const CARD = {
 
 const T = {
   titleEnd:      3.7,
+  /* the Data tab, its ribbon, and the Data Validation split-button menu */
+  ribbonOpen:   14.7,  dvMenu:      18.1,
   /* act 0 -- last week's drop-down, and the confession */
   dd0Open:       4.8,  dd0Close:      8.2,
   /* act 1 -- basic Data Validation from a range */
-  dlgOpen:      17.0,  dlgAllow:     22.0,
-  srcType:      25.0,  srcTypeEnd:   30.5,  dlgOK:        31.0,
-  dd1Open:      32.0,  dd1Close:     37.5,
+  dlgOpen:      19,  dlgAllow:     24,
+  srcType:      27,  srcTypeEnd:   32.5,  dlgOK:        33,
+  dd1Open:      34,  dd1Close:     39.5,
   /* act 2 -- break it */
-  erpSwitch:    39.0,  newRowType:   41.5,  newRowEnd:    49.5,
-  reportBack:   51.0,  dd2Open:      52.5,  dd2Close:     63.0,
+  erpSwitch:    41,  newRowType:   43.5,  newRowEnd:    51.5,
+  reportBack:   53,  dd2Open:      54.5,  dd2Close:     65,
   /* act 3 -- the array formula */
-  o5Click:      64.5,  arrType:      69.5,  arrTypeEnd:   78.5,  arrEnter:  79.0,
-  dlg2Open:     86.5,  src2Type:     91.0,  src2TypeEnd:  96.5,  dlg2OK:    98.0,
-  dd3Open:      99.0,  dd3Pick:     103.0,
-  recapStart:  107.5,  end:         112.5,
+  o5Click:      66.5,  arrType:      71.5,  arrTypeEnd:   80.5,  arrEnter:  81,
+  dlg2Open:     88.5,  src2Type:     93,  src2TypeEnd:  98.5,  dlg2OK:    100,
+  dd3Open:      101,  dd3Pick:     105,
+  recapStart:  109.5,  end:         114.5,
 };
 
 /* What gets typed into the Source box, and into O5. */
@@ -176,25 +187,219 @@ const CAPTIONS = [
   [0.3, 3.6, "Welcome to Two-Minute Training Tuesday."],
   [3.8, 8.4, "Last week this drop-down changed the whole report."],
   [8.5, 13.4, "Here's what I didn't tell you — I typed those six names in by hand."],
-  [13.5, 18.2, "The feature behind every drop-down in Excel is called Data Validation."],
-  [18.3, 21.3, "Here's the basic way to build one."],
-  [21.4, 24.0, "Allow: List."],
-  [24.1, 29.5, "And for Source, just select the cells your list lives in."],
-  [30.6, 36.0, "That's a working drop-down, and it's how most of ours are built."],
-  [38.0, 40.4, "Now watch it fail."],
-  [40.5, 46.4, "New line on the export. New cost center — Powder Line 3."],
-  [50.0, 54.4, "Back to the report. Open the drop-down."],
-  [54.5, 62.0, "Still six. The export knows about Powder Line 3. The drop-down doesn't, and it will never tell you."],
-  [63.5, 68.5, "So point Source at a formula instead of at cells I typed."],
-  [68.6, 74.5, "SORT and UNIQUE from last week, on the cost center column."],
-  [79.5, 85.5, "Enter. Seven — it read the data, including the row I just added."],
-  [85.6, 89.9, "Same dialog. New Source."],
-  [90.0, 97.0, "O5, hash. This cell and everything the formula spilled into."],
-  [97.5, 103.4, "There it is. Powder Line 3, and I never touched the drop-down."],
-  [107.7, 112.0, "Next week: Outlook. Find any attachment in four seconds."],
+  [13.5, 20.2, "The feature behind every drop-down lives on the Data tab."],
+  [20.3, 23.3, "Data Validation. Here's the basic way to build one."],
+  [23.4, 26, "Allow: List."],
+  [26.1, 31.5, "And for Source, just select the cells your list lives in."],
+  [32.6, 38, "That's a working drop-down, and it's how most of ours are built."],
+  [40, 42.4, "Now watch it fail."],
+  [42.5, 48.4, "New line on the export. New cost center — Powder Line 3."],
+  [52, 56.4, "Back to the report. Open the drop-down."],
+  [56.5, 64, "Still six. The export knows about Powder Line 3. The drop-down doesn't, and it will never tell you."],
+  [65.5, 70.5, "So point Source at a formula instead of at cells I typed."],
+  [70.6, 76.5, "SORT and UNIQUE from last week, on the cost center column."],
+  [81.5, 87.5, "Enter. Seven — it read the data, including the row I just added."],
+  [87.6, 91.9, "Same dialog. New Source."],
+  [92, 99, "O5, hash. This cell and everything the formula spilled into."],
+  [99.5, 105.4, "There it is. Powder Line 3, and I never touched the drop-down."],
+  [109.7, 114, "Next week: the Outlook folder that fills itself."],
 ];
 
 /* Mouse pointer keyframes: [t, x, y]. Linear-eased between neighbours. */
+const DLG = (() => {
+  const w = 760, h = 560, x = (W - w) / 2, y = 290;
+  const yp = y + 94;                       // top of the tab panel
+  const left = x + 38;                     // content inset
+  return {
+    x, y, w, h, yp, left,
+    allowBox:  {x: left, y: yp + 82,  w: 260, h: 40},
+    dataBox:   {x: left, y: yp + 172, w: 260, h: 40},
+    sourceBox: {x: left, y: yp + 212, w: 560, h: 40},
+    pickBtn:   {x: left + 572, y: yp + 212, w: 46, h: 40},
+    clearBtn:  {x: x + 30,      y: y + h - 58, w: 124, h: 44},
+    okBtn:     {x: x + w - 284, y: y + h - 58, w: 120, h: 44},
+    cancelBtn: {x: x + w - 150, y: y + h - 58, w: 120, h: 44},
+  };
+})();
+/** Centre of a DLG control, for CURSOR keyframes. */
+const dlgAt = (k) => [DLG[k].x + DLG[k].w / 2, DLG[k].y + DLG[k].h / 2];
+
+/* ===========================================================================
+   THE DATA TAB RIBBON
+
+   Rule 0: Data Validation cannot appear out of nowhere -- the viewer has to see
+   where it lives. So the Data tab's ribbon is drawn with its real groups, in
+   the real order, carrying the real button labels:
+
+     Get & Transform Data | Queries & Connections | Data Types |
+     Sort & Filter | Data Tools | Forecast | Outline
+
+   Data Validation sits in Data Tools, and it is a SPLIT button: clicking it
+   opens a menu of three commands, and "Data Validation..." is the first. The
+   episode clicks through that path rather than teleporting into the dialog.
+
+   It is drawn as a floating overlay over the grid, which is what Excel does
+   when the ribbon display is set to Show Tabs: the tab strip stays, clicking a
+   tab pops the ribbon over the sheet, and running a command collapses it again.
+   That matches the collapsed strip this renderer already draws, so the sheet
+   geometry does not move.
+
+   KNOWN LIMITATION, flagged deliberately: the button ICONS are simplified
+   glyphs. Layout, grouping, order and wording are Excel's; the 16px artwork is
+   not. Swapping in a screenshot of the real ribbon is the way to close that
+   last gap -- see production/style-guide.md Rule 0.
+
+   Widths are computed from label lengths with a fixed per-character estimate
+   rather than ctx.measureText, so the table can be built at load time and the
+   CURSOR keyframes can read real control centres out of it.
+   =========================================================================== */
+const RIBBON_H = 150;
+const RIBBON_Y = TITLEBAR_H + TABSTRIP_H;
+
+const RIB_GROUPS = [
+  {name: "Get & Transform Data", cols: [
+    ["Get Data"],
+    ["From Text/CSV", "From Web", "From Table/Range"],
+    ["Recent Sources", "Existing Connections"]]},
+  {name: "Queries & Connections", cols: [
+    ["Refresh All"],
+    ["Queries & Connections", "Properties", "Edit Links"]]},
+  {name: "Data Types", cols: [["Stocks", "Geography"]]},
+  {name: "Sort & Filter", cols: [
+    ["Sort A to Z", "Sort Z to A", "Sort"],
+    ["Filter", "Clear", "Reapply"],
+    ["Advanced"]]},
+  {name: "Data Tools", cols: [
+    ["Text to Columns", "Flash Fill", "Remove Duplicates"],
+    ["Data Validation", "Consolidate", "Relationships"],
+    ["Manage Data Model"]]},
+  {name: "Forecast", cols: [["What-If Analysis", "Forecast Sheet"]]},
+  {name: "Outline", cols: [["Group", "Ungroup", "Subtotal"]]},
+];
+
+const RIB_ITEM_H = 34;
+const ribItemW = (label) => 39 + label.length * 6.6;
+
+/* Lay the ribbon out once, and remember where Data Validation landed. */
+const RIB = (() => {
+  const groups = [];
+  let x = 24, dv = null;
+  for (const g of RIB_GROUPS) {
+    const gx = x;
+    const cols = [];
+    for (const col of g.cols) {
+      const cw = Math.max(...col.map(ribItemW));
+      const items = col.map((label, i) => {
+        const box = {label, x, y: RIBBON_Y + 10 + i * RIB_ITEM_H, w: cw, h: RIB_ITEM_H};
+        if (label === "Data Validation") dv = box;
+        return box;
+      });
+      cols.push(items);
+      x += cw;
+    }
+    groups.push({name: g.name, x: gx, w: x - gx, cols});
+    x += 16;   // group separator
+  }
+  /* The split-button menu hangs off the bottom-left of the Data Validation
+     button, as a Windows menu does. */
+  const menu = {x: dv.x, y: dv.y + dv.h, w: 320, itemH: 42,
+                items: ["Data Validation...", "Circle Invalid Data",
+                        "Clear Validation Circles"]};
+  return {groups, dv, menu, width: x};
+})();
+
+const ribAt = (k) => k === "dv"
+  ? [RIB.dv.x + RIB.dv.w / 2, RIB.dv.y + RIB.dv.h / 2]
+  : [RIB.menu.x + 30, RIB.menu.y + RIB.menu.itemH / 2];
+
+function drawRibbon(s) {
+  const y = RIBBON_Y;
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.18)"; ctx.shadowBlur = 16; ctx.shadowOffsetY = 4;
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, y, W, RIBBON_H);
+  ctx.restore();
+  ctx.strokeStyle = CHROME_LINE; ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, y + RIBBON_H - 0.5); ctx.lineTo(W, y + RIBBON_H - 0.5); ctx.stroke();
+
+  ctx.textBaseline = "middle";
+  for (const g of RIB.groups) {
+    for (const col of g.cols) {
+      for (const b of col) {
+        const hot = b === RIB.dv && s.dvHot;
+        if (hot) {
+          ctx.fillStyle = "#e8f1ea";
+          ctx.fillRect(b.x + 2, b.y + 1, b.w - 4, b.h - 2);
+          ctx.strokeStyle = "#b8d3c1";
+          ctx.strokeRect(b.x + 2.5, b.y + 1.5, b.w - 5, b.h - 3);
+        }
+        icon(b.x + 8, b.y + b.h / 2 - 8);
+        ctx.fillStyle = "#242424"; ctx.font = "400 13px " + SANS;
+        ctx.textAlign = "left";
+        ctx.fillText(b.label, b.x + 30, b.y + b.h / 2 + 1);
+        /* Data Validation is a split button, so it carries a chevron. */
+        if (b === RIB.dv) {
+          ctx.strokeStyle = "#444"; ctx.lineWidth = 1.4;
+          const cx = b.x + b.w - 13, cy = b.y + b.h / 2;
+          ctx.beginPath();
+          ctx.moveTo(cx - 4, cy - 2); ctx.lineTo(cx, cy + 2); ctx.lineTo(cx + 4, cy - 2);
+          ctx.stroke(); ctx.lineWidth = 1;
+        }
+      }
+    }
+    /* group name, centred, with the separator rule to its right */
+    ctx.fillStyle = "#616161"; ctx.font = "400 12px " + SANS;
+    ctx.textAlign = "center";
+    ctx.fillText(g.name, g.x + g.w / 2, y + RIBBON_H - 18);
+    ctx.strokeStyle = "#e3e3e3";
+    ctx.beginPath();
+    ctx.moveTo(g.x + g.w + 7.5, y + 12);
+    ctx.lineTo(g.x + g.w + 7.5, y + RIBBON_H - 30);
+    ctx.stroke();
+  }
+  ctx.textAlign = "left";
+
+  if (s.dvMenu) drawDvMenu();
+
+  /* A generic 16px command glyph. See the limitation noted above. */
+  function icon(ix, iy) {
+    ctx.fillStyle = "#e9eef0";
+    ctx.fillRect(ix, iy, 16, 16);
+    ctx.strokeStyle = "#9fb3ba";
+    ctx.strokeRect(ix + 0.5, iy + 0.5, 15, 15);
+    ctx.fillStyle = "#7d9aa3";
+    ctx.fillRect(ix + 3, iy + 4, 10, 2);
+    ctx.fillRect(ix + 3, iy + 8, 10, 2);
+    ctx.fillRect(ix + 3, iy + 12, 6, 2);
+  }
+}
+
+/* The three commands behind the Data Validation split button. */
+function drawDvMenu() {
+  const m = RIB.menu, h = m.items.length * m.itemH + 12;
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.28)"; ctx.shadowBlur = 18; ctx.shadowOffsetY = 6;
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(m.x, m.y, m.w, h);
+  ctx.restore();
+  ctx.strokeStyle = "#c8c8c8"; ctx.lineWidth = 1;
+  ctx.strokeRect(m.x + 0.5, m.y + 0.5, m.w - 1, h - 1);
+  ctx.textBaseline = "middle"; ctx.textAlign = "left";
+  m.items.forEach((label, i) => {
+    const iy = m.y + 6 + i * m.itemH;
+    if (i === 0) {   // the one being clicked
+      ctx.fillStyle = "#e8f1ea";
+      ctx.fillRect(m.x + 3, iy, m.w - 6, m.itemH);
+    }
+    ctx.fillStyle = "#e9eef0"; ctx.fillRect(m.x + 14, iy + m.itemH / 2 - 8, 16, 16);
+    ctx.strokeStyle = "#9fb3ba";
+    ctx.strokeRect(m.x + 14.5, iy + m.itemH / 2 - 7.5, 15, 15);
+    ctx.fillStyle = INK; ctx.font = "400 18px " + SANS;
+    ctx.fillText(label, m.x + 44, iy + m.itemH / 2 + 1);
+  });
+}
+
 const CURSOR = [
   [0.0, 960, 620],
   [4.4, 300, 296],
@@ -202,31 +407,34 @@ const CURSOR = [
   [13.0, 300, 296],
   [14.5, 470, 63],
   [16.8, 470, 63],
-  [17.4, 900, 430],
-  [21.8, 900, 430],
-  [22.4, 1010, 500],
-  [24.8, 1010, 500],
-  [30.4, 1150, 690],
-  [31.4, 300, 296],
-  [37.5, 300, 296],
-  [38.8, 226, 1057],
-  [41.0, 226, 1057],
-  [41.6, 500, 900],
-  [49.5, 900, 900],
-  [50.8, 400, 1057],
-  [52.3, 300, 296],
-  [63.0, 300, 296],
-  [64.3, 1620, 380],
-  [69.3, 1620, 380],
-  [78.5, 1620, 380],
-  [86.2, 300, 296],
-  [86.8, 470, 63],
-  [87.6, 1010, 500],
-  [96.5, 1010, 500],
-  [97.8, 1150, 690],
-  [98.8, 300, 296],
-  [102.6, 360, 456],
-  [107.0, 360, 456],
+  [17.6, ...ribAt("dv")],
+  [18.1, ...ribAt("dv")],
+  [18.8, ...ribAt("dvItem")],
+  [19.4, ...dlgAt("allowBox")],
+  [23.8, ...dlgAt("allowBox")],
+  [24.4, ...dlgAt("sourceBox")],
+  [26.8, ...dlgAt("sourceBox")],
+  [32.4, ...dlgAt("okBtn")],
+  [33.4, 300, 296],
+  [39.5, 300, 296],
+  [40.8, 226, 1057],
+  [43, 226, 1057],
+  [43.6, 400, 900],
+  [51.5, 1300, 900],
+  [52.8, 400, 1057],
+  [54.3, 300, 296],
+  [65, 300, 296],
+  [66.3, 1620, 380],
+  [71.3, 1620, 380],
+  [80.5, 1620, 380],
+  [88.2, 300, 296],
+  [88.8, 470, 63],
+  [89.6, ...dlgAt("sourceBox")],
+  [98.5, ...dlgAt("sourceBox")],
+  [99.8, ...dlgAt("okBtn")],
+  [100.8, 300, 296],
+  [104.6, 360, 456],
+  [109, 360, 456],
 ];
 
 function cursorAt(t) {
@@ -251,6 +459,7 @@ function stateAt(t) {
     active: null, editing: null, formulaBar: "", greyFormula: false,
     selRange: null, spills: [], dropdown: null, costCenter: "Powder Line 1",
     reveal: {}, dialog: null, arr: false, newRow: 0,
+    ribbon: "Home", ribbonPanel: false, dvHot: false, dvMenu: false,
   };
 
   if (t < T.titleEnd) { s.card = "title"; return s; }
@@ -258,19 +467,23 @@ function stateAt(t) {
 
   /* How much of the new export row has been typed. Three cells, left to right. */
   s.newRow = t < T.newRowType ? 0
-           : t >= T.newRowEnd ? 3
-           : Math.floor(clamp01((t - T.newRowType) / (T.newRowEnd - T.newRowType)) * 3.999);
+           : t >= T.newRowEnd ? NEW_ROW.length
+           : Math.floor(clamp01((t - T.newRowType) / (T.newRowEnd - T.newRowType))
+                        * (NEW_ROW.length + 0.999));
 
   /* ---- act 2 lives on the export sheet ---- */
   if (t >= T.erpSwitch && t < T.reportBack) {
     s.sheet = "erp";
     s.scrollY = 366 * ROW_H;
     const row = ROWS.length + 2;            // first empty row under the table
-    const typed = ["08/17/2026", "J-27011", NEW_CC];
+    const typed = NEW_ROW;
     /* Sit on the cell just filled, not the next empty one -- otherwise the
        formula bar shows a value for a cell the viewer can see is blank. */
     s.active = [Math.max(0, s.newRow - 1), row];
-    if (s.newRow > 0) s.formulaBar = typed[s.newRow - 1];
+    if (s.newRow > 0) {
+      const v = typed[s.newRow - 1];
+      s.formulaBar = typeof v === "number" ? String(v) : v;
+    }
     return s;
   }
 
@@ -282,7 +495,8 @@ function stateAt(t) {
   s.spills.push({col: 1, row: 5, cols: 1, values: VEND_FIRST_SEEN.map(v => [v])});
   s.spills.push({col: 3, row: 5, cols: 1, values: VEND_SORTED.map(v => [v])});
   s.costCenter = t < T.dd3Pick ? "Powder Line 1" : NEW_CC;
-  const rows = filteredBy(s.costCenter);
+  const rows = filteredBy(s.costCenter,
+                          t >= T.newRowEnd ? [...ROWS, NEW_ROW] : ROWS);
   s.spills.push({col: 5, row: 7, cols: 6, values: rows.map(r => r.slice()), money: 5});
   s.reveal.uniq = 1; s.reveal.sort = 1;
   s.reveal.filt = t < T.dd3Pick ? 1 : clamp01((t - T.dd3Pick) / 0.7);
@@ -312,6 +526,14 @@ function stateAt(t) {
       s.formulaBar = ARR_F;
     }
   }
+
+  /* The ribbon follows the cursor's click on the Data tab at 14.5. Excel stays
+     on Data afterwards, but the floating panel collapses once a command runs --
+     so the panel is only up between the tab click and the dialog opening. */
+  s.ribbon = t >= T.ribbonOpen ? "Data" : "Home";
+  s.ribbonPanel = t >= T.ribbonOpen && t < T.dlgOpen;
+  s.dvHot = t >= 17.4 && t < T.dlgOpen;
+  s.dvMenu = t >= T.dvMenu && t < T.dlgOpen;
 
   /* the Data Validation dialog, twice */
   const dlg = (open, allowAt, typeFrom, typeTo, closeAt, target) => {
@@ -356,7 +578,8 @@ function erpCell(c, r, s) {
   if (!row) {
     /* the line typed on camera in act 2, one cell at a time */
     if (s && s.newRow > 0 && r === ROWS.length + 2 && c < s.newRow) {
-      return {text: ["08/17/2026", "J-27011", NEW_CC][c]};
+      const v = NEW_ROW[c];
+      return c === 5 ? {text: money(v), align: "right"} : {text: String(v)};
     }
     return null;
   }
@@ -414,17 +637,21 @@ function drawChrome(s) {
 
   /* ribbon tab strip (collapsed ribbon, per the style guide) */
   const tabs = ["File", "Home", "Insert", "Draw", "Page Layout", "Formulas", "Data", "Review", "View", "Help"];
+  /* Which tab is lit is state, not a constant: the episode clicks Data to reach
+     Data Validation, and Excel stays on Data from then on. Leaving this pinned
+     to Home showed a Data-tab feature being used from the Home tab. */
+  const activeTab = tabs.indexOf(s.ribbon || "Home");
   let x = 24;
   ctx.font = "400 17px " + SANS;
   tabs.forEach((tab, i) => {
     const w = ctx.measureText(tab).width + 34;
-    if (i === 1) {
+    if (i === activeTab) {
       ctx.fillStyle = "#fff";
       ctx.fillRect(x, TITLEBAR_H + 4, w, TABSTRIP_H - 4);
       ctx.fillStyle = XL_GREEN;
       ctx.fillRect(x, TITLEBAR_H + 4, w, 3);
     }
-    ctx.fillStyle = i === 1 ? XL_GREEN : "#444";
+    ctx.fillStyle = i === activeTab ? XL_GREEN : "#444";
     ctx.textAlign = "center";
     ctx.fillText(tab, x + w / 2, TITLEBAR_H + TABSTRIP_H / 2 + 2);
     x += w;
@@ -703,96 +930,217 @@ function drawGrid(s) {
 
 /* ===========================================================================
    THE DATA VALIDATION DIALOG
-   Excel's own modal, faked. Two fields matter -- Allow and Source -- so the
-   rest is drawn as furniture and never interacted with.
-   =========================================================================== */
-function drawDialog(d) {
-  const w = 720, h = 470, x = (W - w) / 2, y = 300;
 
+   A faithful redraw of Excel's real modal, not an approximation. Per the hard
+   rule in production/style-guide.md, every control the real dialog has is
+   drawn here, in the real dialog's layout:
+
+     - Labels sit ABOVE their controls, not beside them.
+     - "Ignore blank" and "In-cell dropdown" stack to the RIGHT of the Allow
+       combo. Neither is decorative: both are checked by default, and
+       "In-cell dropdown" is the reason an arrow appears in the cell at all.
+     - Allow decides WHICH rows exist, and Excel hides rather than greys:
+         "Any value" -> Ignore blank only. No Data row, no Source row.
+         "List"      -> Ignore blank + In-cell dropdown + Source. No Data row.
+         numeric     -> the Data row appears ("between" and friends).
+       The previous version greyed a permanently visible "Data: between" row --
+       a state real Excel never shows.
+     - The Source box has the range-picker button on its right.
+     - "Apply these changes to all other cells with the same settings" sits
+       inside the tab panel; "Clear All" is bottom-left, OK/Cancel bottom-right.
+
+   Geometry is exported as DLG so the cursor keyframes aim at real controls
+   rather than at hand-guessed coordinates.
+   =========================================================================== */
+
+/* Windows dialog greys, sampled off a real Excel dialog rather than invented. */
+const DLG_FACE       = "#f0f0f0";  // dialog and button face
+const DLG_EDGE       = "#a0a0a0";  // dialog outer border
+const DLG_LINE       = "#d4d0c8";  // etched group separator
+const DLG_FIELD      = "#ffffff";
+const DLG_FIELD_EDGE = "#9d9d9d";
+const DLG_BTN_EDGE   = "#adadad";
+const DLG_TAB_OFF    = "#e4e4e4";
+
+function drawDialog(d) {
+  const {x, y, w, h, yp, left} = DLG;
+  const list = d.allow === "List";
+  const numeric = !list && d.allow !== "Any value";
+
+  /* body */
   ctx.save();
   ctx.shadowColor = "rgba(0,0,0,0.32)"; ctx.shadowBlur = 30; ctx.shadowOffsetY = 10;
-  ctx.fillStyle = "#f0f0f0";
+  ctx.fillStyle = DLG_FACE;
   ctx.fillRect(x, y, w, h);
   ctx.restore();
-  ctx.strokeStyle = "#a0a0a0"; ctx.lineWidth = 1;
+  ctx.strokeStyle = DLG_EDGE; ctx.lineWidth = 1;
   ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
 
-  /* title bar */
-  ctx.fillStyle = "#fff";
-  ctx.fillRect(x + 1, y + 1, w - 2, 52);
+  /* title bar -- the same face as the body, a thin rule under it, a close box */
+  ctx.textBaseline = "middle"; ctx.textAlign = "left";
   ctx.fillStyle = INK;
-  ctx.font = "600 22px " + SANS; ctx.textBaseline = "middle"; ctx.textAlign = "left";
-  ctx.fillText("Data Validation", x + 22, y + 28);
-  ctx.strokeStyle = CHROME_LINE;
-  ctx.beginPath(); ctx.moveTo(x + 1, y + 53.5); ctx.lineTo(x + w - 1, y + 53.5); ctx.stroke();
+  ctx.font = "600 21px " + SANS;
+  ctx.fillText("Data Validation", x + 22, y + 26);
+  ctx.strokeStyle = DLG_LINE;
+  ctx.beginPath(); ctx.moveTo(x + 1, y + 47.5); ctx.lineTo(x + w - 1, y + 47.5); ctx.stroke();
+  ctx.strokeStyle = "#5a5a5a"; ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(x + w - 38, y + 20); ctx.lineTo(x + w - 24, y + 33);
+  ctx.moveTo(x + w - 24, y + 20); ctx.lineTo(x + w - 38, y + 33);
+  ctx.stroke();
+  ctx.lineWidth = 1;
 
-  /* tab strip */
+  /* tab control: the selected tab merges into the panel below it */
   const tabs = ["Settings", "Input Message", "Error Alert"];
-  let tx = x + 22;
+  const tabTop = y + 56, tabH = 38;
   ctx.font = "400 18px " + SANS;
-  tabs.forEach((label, i) => {
-    const tw = ctx.measureText(label).width + 36;
-    if (i === 0) {
-      ctx.fillStyle = "#fff"; ctx.fillRect(tx, y + 66, tw, 40);
-      ctx.strokeStyle = "#b8b8b8"; ctx.strokeRect(tx + 0.5, y + 66.5, tw - 1, 40);
-    }
-    ctx.fillStyle = i === 0 ? INK : "#6b6b6b";
-    ctx.fillText(label, tx + 18, y + 87);
+  let tx = x + 16;
+  const geo = tabs.map((label) => {
+    const tw = ctx.measureText(label).width + 40;
+    const g = {label, x: tx, w: tw};
     tx += tw;
+    return g;
+  });
+  const panelTop = tabTop + tabH, panelBot = y + h - 76;
+  ctx.fillStyle = DLG_FACE;
+  ctx.fillRect(x + 16, panelTop, w - 32, panelBot - panelTop);
+  ctx.strokeStyle = DLG_BTN_EDGE;
+  ctx.strokeRect(x + 16.5, panelTop + 0.5, w - 33, panelBot - panelTop - 1);
+  geo.forEach((g, i) => {
+    const on = i === 0;
+    const ty = on ? tabTop : tabTop + 4, th = on ? tabH : tabH - 4;
+    ctx.fillStyle = on ? DLG_FACE : DLG_TAB_OFF;
+    ctx.fillRect(g.x, ty, g.w, th);
+    ctx.strokeStyle = DLG_BTN_EDGE;
+    ctx.strokeRect(g.x + 0.5, ty + 0.5, g.w - 1, th - 1);
+    if (on) {  // erase the panel's top border under the active tab
+      ctx.strokeStyle = DLG_FACE;
+      ctx.beginPath();
+      ctx.moveTo(g.x + 1, panelTop + 0.5); ctx.lineTo(g.x + g.w - 1, panelTop + 0.5);
+      ctx.stroke();
+    }
+    ctx.fillStyle = on ? INK : "#5f5f5f";
+    ctx.font = "400 18px " + SANS;
+    ctx.fillText(g.label, g.x + 20, ty + th / 2 + 1);
   });
 
-  ctx.fillStyle = "#4a4a4a"; ctx.font = "600 18px " + SANS;
-  ctx.fillText("Validation criteria", x + 30, y + 138);
-
-  /* Allow */
+  /* "Validation criteria", with the etched rule running to the panel edge */
   ctx.fillStyle = INK; ctx.font = "400 19px " + SANS;
-  ctx.fillText("Allow:", x + 30, y + 190);
-  field(x + 150, y + 172, 260, 38, d.allow, false, true);
+  const gl = "Validation criteria";
+  ctx.fillText(gl, left, yp + 26);
+  const glEnd = left + ctx.measureText(gl).width + 14;
+  ctx.strokeStyle = DLG_LINE;
+  ctx.beginPath(); ctx.moveTo(glEnd, yp + 26.5); ctx.lineTo(x + w - 38, yp + 26.5); ctx.stroke();
 
-  /* Data (furniture -- greyed when Allow is not List) */
-  ctx.fillStyle = d.allow === "List" ? INK : "#9a9a9a";
-  ctx.fillText("Data:", x + 30, y + 246);
-  field(x + 150, y + 228, 260, 38, "between", d.allow !== "List", true);
+  /* Allow -- label above the combo, checkboxes stacked to its right */
+  label("Allow:", left, yp + 66);
+  combo(DLG.allowBox, d.allow);
+  check(left + 300, yp + 92, "Ignore blank", true);
+  if (list) check(left + 300, yp + 132, "In-cell dropdown", true);
 
-  /* Source -- the field the episode is about */
-  ctx.fillStyle = d.allow === "List" ? INK : "#9a9a9a";
-  ctx.fillText("Source:", x + 30, y + 302);
-  field(x + 150, y + 284, 470, 38, d.source, d.allow !== "List", false, d.caret);
+  /* Data -- present only for the numeric/date criteria, exactly as Excel does */
+  if (numeric) {
+    label("Data:", left, yp + 156);
+    combo(DLG.dataBox, "between");
+  }
 
-  /* buttons */
-  button(x + w - 250, y + h - 68, 100, 40, "OK", true);
-  button(x + w - 138, y + h - 68, 108, 40, "Cancel", false);
+  /* Source -- the field this episode is about */
+  if (list) {
+    label("Source:", left, yp + 196);
+    field(DLG.sourceBox, d.source, d.caret);
+    pickButton(DLG.pickBtn);
+  }
 
-  function field(fx, fy, fw, fh, text, disabled, combo, caret) {
-    ctx.fillStyle = disabled ? "#eaeaea" : "#fff";
-    ctx.fillRect(fx, fy, fw, fh);
-    ctx.strokeStyle = "#9d9d9d"; ctx.lineWidth = 1;
-    ctx.strokeRect(fx + 0.5, fy + 0.5, fw - 1, fh - 1);
-    ctx.fillStyle = disabled ? "#9a9a9a" : INK;
-    ctx.font = (combo ? "400 18px " + SANS : "400 18px " + MONO);
-    ctx.fillText(text, fx + 10, fy + fh / 2 + 1);
+  /* the footer checkbox lives inside the tab panel */
+  check(left, panelBot - 46,
+        "Apply these changes to all other cells with the same settings", false);
+
+  button(DLG.clearBtn,  "Clear All", false);
+  button(DLG.okBtn,     "OK",        true);
+  button(DLG.cancelBtn, "Cancel",    false);
+
+  function label(text, lx, ly) {
+    ctx.fillStyle = INK; ctx.font = "400 19px " + SANS; ctx.textAlign = "left";
+    ctx.fillText(text, lx, ly);
+  }
+
+  /* A combo box: white field plus a flat drop-button with a chevron. */
+  function combo(b, text) {
+    ctx.fillStyle = DLG_FIELD; ctx.fillRect(b.x, b.y, b.w, b.h);
+    ctx.strokeStyle = DLG_FIELD_EDGE; ctx.strokeRect(b.x + 0.5, b.y + 0.5, b.w - 1, b.h - 1);
+    const bw = 34;
+    ctx.fillStyle = "#e9e9e9";
+    ctx.fillRect(b.x + b.w - bw, b.y + 1, bw - 1, b.h - 2);
+    ctx.strokeStyle = "#cfcfcf";
+    ctx.beginPath();
+    ctx.moveTo(b.x + b.w - bw - 0.5, b.y + 1); ctx.lineTo(b.x + b.w - bw - 0.5, b.y + b.h - 1);
+    ctx.stroke();
+    ctx.strokeStyle = "#3c3c3c"; ctx.lineWidth = 1.8;
+    const cx = b.x + b.w - bw / 2, cy = b.y + b.h / 2 - 1;
+    ctx.beginPath();
+    ctx.moveTo(cx - 5, cy - 2); ctx.lineTo(cx, cy + 3); ctx.lineTo(cx + 5, cy - 2);
+    ctx.stroke();
+    ctx.lineWidth = 1;
+    ctx.fillStyle = INK; ctx.font = "400 19px " + SANS; ctx.textAlign = "left";
+    ctx.fillText(text, b.x + 10, b.y + b.h / 2 + 1);
+  }
+
+  /* A plain text field. Formulas are monospaced, as they are in the real box. */
+  function field(b, text, caret) {
+    ctx.fillStyle = DLG_FIELD; ctx.fillRect(b.x, b.y, b.w, b.h);
+    ctx.strokeStyle = DLG_FIELD_EDGE; ctx.strokeRect(b.x + 0.5, b.y + 0.5, b.w - 1, b.h - 1);
+    ctx.fillStyle = INK; ctx.font = "400 19px " + MONO; ctx.textAlign = "left";
+    ctx.fillText(text, b.x + 10, b.y + b.h / 2 + 1);
     if (caret) {
-      const cx = fx + 10 + ctx.measureText(text).width + 2;
-      ctx.fillStyle = INK;
-      ctx.fillRect(cx, fy + 8, 2, fh - 16);
-    }
-    if (combo) {
-      ctx.fillStyle = disabled ? "#b0b0b0" : "#555";
-      ctx.beginPath();
-      ctx.moveTo(fx + fw - 24, fy + fh / 2 - 3);
-      ctx.lineTo(fx + fw - 12, fy + fh / 2 - 3);
-      ctx.lineTo(fx + fw - 18, fy + fh / 2 + 4);
-      ctx.closePath(); ctx.fill();
+      ctx.fillRect(b.x + 10 + ctx.measureText(text).width + 2, b.y + 8, 2, b.h - 16);
     }
   }
 
-  function button(bx, by, bw, bh, label, primary) {
-    ctx.fillStyle = primary ? "#e6e6e6" : "#f5f5f5";
-    ctx.fillRect(bx, by, bw, bh);
-    ctx.strokeStyle = primary ? "#6f6f6f" : "#a8a8a8";
-    ctx.strokeRect(bx + 0.5, by + 0.5, bw - 1, bh - 1);
-    ctx.fillStyle = INK; ctx.font = "400 18px " + SANS; ctx.textAlign = "center";
-    ctx.fillText(label, bx + bw / 2, by + bh / 2 + 1);
+  /* The range picker: a grid with a red arrow, the icon Excel actually uses. */
+  function pickButton(b) {
+    ctx.fillStyle = DLG_FACE; ctx.fillRect(b.x, b.y, b.w, b.h);
+    ctx.strokeStyle = DLG_BTN_EDGE; ctx.strokeRect(b.x + 0.5, b.y + 0.5, b.w - 1, b.h - 1);
+    const gx = b.x + 9, gy = b.y + 11, cw = 7, ch = 5;
+    ctx.strokeStyle = "#8a8a8a";
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        ctx.strokeRect(gx + c * cw + 0.5, gy + r * ch + 0.5, cw, ch);
+      }
+    }
+    ctx.strokeStyle = "#c0392b"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(b.x + 34, b.y + 12); ctx.lineTo(b.x + 25, b.y + 23); ctx.stroke();
+    ctx.fillStyle = "#c0392b";
+    ctx.beginPath();
+    ctx.moveTo(b.x + 22, b.y + 28); ctx.lineTo(b.x + 31, b.y + 25); ctx.lineTo(b.x + 25, b.y + 18);
+    ctx.closePath(); ctx.fill();
+    ctx.lineWidth = 1;
+  }
+
+  /* Classic Windows checkbox: white box, grey border, dark tick. */
+  function check(cx0, cy0, text, on) {
+    const sz = 22;
+    ctx.fillStyle = DLG_FIELD; ctx.fillRect(cx0, cy0, sz, sz);
+    ctx.strokeStyle = DLG_FIELD_EDGE; ctx.strokeRect(cx0 + 0.5, cy0 + 0.5, sz - 1, sz - 1);
+    if (on) {
+      ctx.strokeStyle = "#1f1f1f"; ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.moveTo(cx0 + 5, cy0 + 11); ctx.lineTo(cx0 + 9, cy0 + 16); ctx.lineTo(cx0 + 17, cy0 + 6);
+      ctx.stroke();
+      ctx.lineWidth = 1;
+    }
+    ctx.fillStyle = INK; ctx.font = "400 19px " + SANS; ctx.textAlign = "left";
+    ctx.fillText(text, cx0 + sz + 10, cy0 + sz / 2 + 1);
+  }
+
+  function button(b, text, primary) {
+    ctx.fillStyle = DLG_FACE; ctx.fillRect(b.x, b.y, b.w, b.h);
+    /* The default button carries a heavier border -- Excel's OK, focused. */
+    ctx.strokeStyle = primary ? "#0078d4" : DLG_BTN_EDGE;
+    ctx.lineWidth = primary ? 2 : 1;
+    ctx.strokeRect(b.x + 0.5, b.y + 0.5, b.w - 1, b.h - 1);
+    ctx.lineWidth = 1;
+    ctx.fillStyle = INK; ctx.font = "400 19px " + SANS; ctx.textAlign = "center";
+    ctx.fillText(text, b.x + b.w / 2, b.y + b.h / 2 + 1);
     ctx.textAlign = "left";
   }
 }
@@ -888,6 +1236,7 @@ function drawFrame(t) {
   drawChrome(s);
   drawGrid(s);
   drawSheetBar(s);
+  if (s.ribbonPanel) drawRibbon(s);
   if (s.dialog) drawDialog(s.dialog);
   drawCaption(t);
   drawCursor(t);

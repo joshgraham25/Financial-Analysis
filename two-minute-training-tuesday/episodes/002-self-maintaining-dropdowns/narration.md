@@ -5,7 +5,7 @@ burned-in captions. This is the voiceover script for it, generated directly from
 the video's caption track, so **the timings below are the video's real timings**
 — not the estimates in `script.md`.
 
-183 words over 112 seconds — about 98 words per minute, a
+183 words over 114 seconds — about 96 words per minute, a
 deliberately slow, clear pace for a technical demo.
 
 This file is generated. Edit the wording in `render/episode.html` (the
@@ -39,7 +39,7 @@ to ten minutes of audio, so a two-minute episode is well inside the limit.
 Paste this whole block into text to speech for one continuous take. It matches
 the on-screen captions word for word.
 
-> Welcome to Two-Minute Training Tuesday. Last week this drop-down changed the whole report. Here's what I didn't tell you — I typed those six names in by hand. The feature behind every drop-down in Excel is called Data Validation. Here's the basic way to build one. Allow: List. And for Source, just select the cells your list lives in. That's a working drop-down, and it's how most of ours are built. Now watch it fail. New line on the export. New cost center — Powder Line 3. Back to the report. Open the drop-down. Still six. The export knows about Powder Line 3. The drop-down doesn't, and it will never tell you. So point Source at a formula instead of at cells I typed. SORT and UNIQUE from last week, on the cost center column. Enter. Seven — it read the data, including the row I just added. Same dialog. New Source. O5, hash. This cell and everything the formula spilled into. There it is. Powder Line 3, and I never touched the drop-down. Next week: Outlook. Find any attachment in four seconds.
+> Welcome to Two-Minute Training Tuesday. Last week this drop-down changed the whole report. Here's what I didn't tell you — I typed those six names in by hand. The feature behind every drop-down lives on the Data tab. Data Validation. Here's the basic way to build one. Allow: List. And for Source, just select the cells your list lives in. That's a working drop-down, and it's how most of ours are built. Now watch it fail. New line on the export. New cost center — Powder Line 3. Back to the report. Open the drop-down. Still six. The export knows about Powder Line 3. The drop-down doesn't, and it will never tell you. So point Source at a formula instead of at cells I typed. SORT and UNIQUE from last week, on the cost center column. Enter. Seven — it read the data, including the row I just added. Same dialog. New Source. O5, hash. This cell and everything the formula spilled into. There it is. Powder Line 3, and I never touched the drop-down. Next week: the Outlook folder that fills itself.
 
 ## Beat-by-beat, with the video's real timings
 
@@ -51,22 +51,22 @@ timecode. More work, much tighter sync.
 | 0.3 | 3.3s | 5 | Welcome to Two-Minute Training Tuesday. |
 | 3.8 | 4.6s | 8 | Last week this drop-down changed the whole report. |
 | 8.5 | 4.9s | 15 | Here's what I didn't tell you — I typed those six names in by hand. |
-| 13.5 | 4.7s | 11 | The feature behind every drop-down in Excel is called Data Validation. |
-| 18.3 | 3.0s | 7 | Here's the basic way to build one. |
-| 21.4 | 2.6s | 2 | Allow: List. |
-| 24.1 | 5.4s | 11 | And for Source, just select the cells your list lives in. |
-| 30.6 | 5.4s | 12 | That's a working drop-down, and it's how most of ours are built. |
-| 38.0 | 2.4s | 4 | Now watch it fail. |
-| 40.5 | 5.9s | 12 | New line on the export. New cost center — Powder Line 3. |
-| 50.0 | 4.4s | 7 | Back to the report. Open the drop-down. |
-| 54.5 | 7.5s | 18 | Still six. The export knows about Powder Line 3. The drop-down doesn't, and it will never tell you. |
-| 63.5 | 5.0s | 12 | So point Source at a formula instead of at cells I typed. |
-| 68.6 | 5.9s | 11 | SORT and UNIQUE from last week, on the cost center column. |
-| 79.5 | 6.0s | 13 | Enter. Seven — it read the data, including the row I just added. |
-| 85.6 | 4.3s | 4 | Same dialog. New Source. |
-| 90.0 | 7.0s | 10 | O5, hash. This cell and everything the formula spilled into. |
-| 97.5 | 5.9s | 12 | There it is. Powder Line 3, and I never touched the drop-down. |
-| 107.7 | 4.3s | 9 | Next week: Outlook. Find any attachment in four seconds. |
+| 13.5 | 6.7s | 10 | The feature behind every drop-down lives on the Data tab. |
+| 20.3 | 3.0s | 9 | Data Validation. Here's the basic way to build one. |
+| 23.4 | 2.6s | 2 | Allow: List. |
+| 26.1 | 5.4s | 11 | And for Source, just select the cells your list lives in. |
+| 32.6 | 5.4s | 12 | That's a working drop-down, and it's how most of ours are built. |
+| 40.0 | 2.4s | 4 | Now watch it fail. |
+| 42.5 | 5.9s | 12 | New line on the export. New cost center — Powder Line 3. |
+| 52.0 | 4.4s | 7 | Back to the report. Open the drop-down. |
+| 56.5 | 7.5s | 18 | Still six. The export knows about Powder Line 3. The drop-down doesn't, and it will never tell you. |
+| 65.5 | 5.0s | 12 | So point Source at a formula instead of at cells I typed. |
+| 70.6 | 5.9s | 11 | SORT and UNIQUE from last week, on the cost center column. |
+| 81.5 | 6.0s | 13 | Enter. Seven — it read the data, including the row I just added. |
+| 87.6 | 4.3s | 4 | Same dialog. New Source. |
+| 92.0 | 7.0s | 10 | O5, hash. This cell and everything the formula spilled into. |
+| 99.5 | 5.9s | 12 | There it is. Powder Line 3, and I never touched the drop-down. |
+| 109.7 | 4.3s | 8 | Next week: the Outlook folder that fills itself. |
 
 ## If you would rather record it yourself
 

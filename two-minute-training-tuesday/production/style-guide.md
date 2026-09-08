@@ -3,6 +3,57 @@
 Consistency is what makes a series feel like a series instead of a folder of
 screen recordings. These are the defaults; break one only when the tip needs it.
 
+## Rule 0 — every screen must be the real screen
+
+**Josh, 2026-09-08, and this one is not negotiable: a rendered episode must show
+the exact same windows, dialogs and controls the viewer will see in the real
+application. One hundred percent. Not "close enough", not "the parts that
+matter".**
+
+This applies to every synthetic render, forever, and it is the first thing to
+check before a re-render — ahead of timing, captions or voice.
+
+**Why it is the hardest rule in this guide:** somebody follows the video with
+their own file open. If our dialog has fields theirs does not, or is missing a
+checkbox theirs has, they stop trusting the video and — worse — they stop
+trusting that the tip works. A training video that is 90% accurate teaches
+people to double-check us.
+
+**What "the real screen" means in practice:**
+
+- **Every control the real dialog has, we draw.** No omitting a checkbox because
+  the episode never clicks it. If Excel shows `Ignore blank`, `In-cell dropdown`,
+  a range-picker button, `Clear All`, and `Apply these changes to all other cells
+  with the same settings`, all of them are on screen.
+- **The real layout.** Excel's dialogs put labels *above* their controls, not
+  beside them. Getting this wrong is what made the first cut of 002 read as
+  "a dialog someone drew from memory" — which is exactly what it was.
+- **Real conditional behaviour, and hide rather than grey.** Excel *removes*
+  rows that do not apply. `Allow: Any value` shows only `Ignore blank` — no
+  `Data`, no `Source`. `Allow: List` adds `In-cell dropdown` and `Source` and
+  still has no `Data` row. Greying out a permanently-visible `Data: between`
+  row, as the first cut did, shows a state Excel never produces.
+- **Chrome follows the action.** If the cursor clicks the **Data** tab to reach
+  Data Validation, the ribbon must show **Data** active for the rest of the
+  sequence. 002's first cut ran the whole feature with **Home** underlined.
+- **Real fonts and real greys.** Segoe UI, Windows dialog face `#f0f0f0`, field
+  borders `#9d9d9d`, the focused default button with its blue border.
+- **Formulas in the real dialect.** Localised builds localise function names —
+  see the Spanish cut of 001 (`=UNICOS`, `=ORDENAR`, `=FILTRAR`). Showing
+  `=UNIQUE` to someone running Spanish Excel teaches a formula that returns
+  `#¿NOMBRE?`.
+
+**How to satisfy it:** open the real dialog, screenshot it, and draw from the
+screenshot — never from memory. Then probe the render at every state the dialog
+passes through (`make_video.py --probe 19,29,93`) and compare side by side. A
+state that is never probed is a state nobody has checked.
+
+**Where the geometry lives:** each renderer exports a `DLG` object of control
+rectangles, and the cursor keyframes read their targets from it via `dlgAt()`.
+Hand-typed cursor coordinates drift away from the controls they are supposed to
+be clicking the moment the dialog is re-laid-out; deriving them means the cursor
+lands on the real button by construction.
+
 ## Runtime
 
 | | |
