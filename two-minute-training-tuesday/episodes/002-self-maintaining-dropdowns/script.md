@@ -118,7 +118,7 @@ where each beat *starts*.
 | 1:27 | "Same dialog. New Source." | Click **G4**. **Data** → **Data Validation**. Click into **Source** and clear it. |
 | 1:34 | "O5, hash. The hash means this cell and everything the formula spilled into — however many that turns out to be." | Type `=$O$5#`. Pause so it is readable. **OK.** |
 | 1:44 | "There it is. Powder Line 3, and I never touched the drop-down." | Open the **G4** drop-down — seven names. Pick **Powder Line 3**. Let the report redraw. |
-| 1:52 | "Next week: Outlook. Find any attachment in four seconds." | Recap card, 4 s |
+| 1:54 | "Next week: the Outlook folder that fills itself." | Recap card, 4 s |
 
 ## Proof step
 
@@ -183,4 +183,9 @@ Live source:   =$O$5#
 
 ## Next-episode hook
 
-> "Next week: Outlook. Find any attachment in four seconds, without scrolling."
+> "Next week: the Outlook folder that fills itself."
+>
+> Episode 003 is **Search Folders** (Josh, 2026-09-08), not attachment search. A
+> Search Folder is a saved search that looks like a folder, so mail collects
+> itself instead of being filed by hand -- the same "maintains itself" lesson
+> this episode teaches. Attachment search folds in as one of the demo criteria.

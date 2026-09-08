@@ -1,0 +1,84 @@
+1
+00:00:01,470 --> 00:00:11,390
+So last week our cost center drop down used data validation, but it was a hard coded source.
+
+2
+00:00:11,790 --> 00:00:19,070
+So rather than hard coding the source, what we can do is we can select the source to be a list of cells.
+
+3
+00:00:19,710 --> 00:00:22,350
+So we'll go ahead and select N5 through N10.
+
+4
+00:00:26,030 --> 00:00:29,790
+So as you can see, our cost centers are all listed there.
+
+5
+00:00:29,910 --> 00:00:39,951
+But this list over here was just manually typed in as well and isn't going to help when a new cell is entered into the table.
+
+6
+00:00:40,911 --> 00:00:43,231
+So let's go ahead and change this to an array.
+
+7
+00:00:43,831 --> 00:00:54,431
+So we're going to do equals sort unique our table, then our column that we want to pull back.
+
+8
+00:00:58,751 --> 00:01:02,111
+We're getting a spill error because there's not enough cells below.
+
+9
+00:01:03,231 --> 00:01:04,510
+So now we fix that.
+
+10
+00:01:04,991 --> 00:01:13,871
+So now you can see if we click back because we selected those cells, they're automatically updated and now that they're sorted alphabetically.
+
+11
+00:01:13,871 --> 00:01:24,431
+So if we go back to our list and add in an additional row and we add a new
+
+12
+00:01:26,991 --> 00:01:28,271
+outer line 2.
+
+13
+00:01:28,751 --> 00:01:30,991
+We'll go ahead and copy the same data here.
+
+14
+00:01:33,110 --> 00:01:40,511
+If we go back, you can see that we have an extra cell because this cell right here is not formatted and this is on 11.
+
+15
+00:01:41,231 --> 00:01:42,670
+But it's not in the list.
+
+16
+00:01:43,151 --> 00:01:51,072
+And while we could go into data validation and adjust it to 11, anytime a new cell is going to come in there, we're going to have to manually adjust that.
+
+17
+00:01:51,072 --> 00:01:51,392
+So
+
+18
+00:01:51,832 --> 00:02:06,992
+What's better to do instead is to select it as an array instead by putting a hashtag at the end of the five and then it will dynamically always update to pull in all of the values in this array over here.
+
+19
+00:02:08,872 --> 00:02:09,991
+And that is all for this week.
+
+20
+00:02:10,032 --> 00:02:20,312
+Next week we will be covering search folders in Outlook and how we can have a folder automatically populated itself.
+
+21
+00:02:21,712 --> 00:02:23,232
+Without any rule sets.
+

@@ -1,5 +1,5 @@
 # Derived voiceover cuts -- regenerate with make_voiceover.py
-two-minute-training-tuesday/episodes/*/TMTT-*-voiced-*.mp4
+two-minute-training-tuesday/episodes/*/TMTT-*-voiced*.mp4
 two-minute-training-tuesday/episodes/*/TMTT-*-narration.m4a
 
 # Office lock files -- present only while a workbook is open in Excel
@@ -9,3 +9,14 @@ two-minute-training-tuesday/episodes/*/TMTT-*-narration.m4a
 .DS_Store
 Thumbs.db
 *.swp
+
+# Raw screen recordings and intermediates from the overlay pipeline. The raw
+# captures are tens of MB and live in Downloads/OneDrive already; the retimed
+# intermediate and the check stills are both regenerable from them.
+two-minute-training-tuesday/episodes/*/raw-*.webm
+two-minute-training-tuesday/episodes/*/raw-*.mp4
+two-minute-training-tuesday/episodes/*/Video Project*.mp4
+two-minute-training-tuesday/episodes/*/overlay-check/
+
+# Files staged for a manual SharePoint upload -- copies, not sources.
+two-minute-training-tuesday/distribution/_upload/

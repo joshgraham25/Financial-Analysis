@@ -198,3 +198,82 @@ See [`publishing.md`](publishing.md).
 | Audio drifts out of sync on a long take | Long single recordings occasionally drift | Keep takes under about 5 minutes. Two-minute episodes should never hit this. |
 | Video feels frantic | Speaking too fast to hit 2:00 | The script is too long. Cut a step, don't talk faster. |
 | Captions mangle formula names | Auto-caption doesn't know Excel | Always proofread. Consider spelling it out once verbally: "UNIQUE — U, N, I, Q, U, E". |
+
+---
+
+## The overlay pipeline (from 2026-09-08 — this is now the default)
+
+**Josh records the real application; `overlay_episode.py` adds the wrapper.** The
+synthetic renderer is retired for new episodes: a drawn Excel is a drawing of Excel, and
+Rule 0 in the style guide asks for one hundred percent. A recording is the only thing
+that gets there.
+
+### What Josh does
+
+1. **Record silent.** No microphone. The voiceover is generated from the beats table so
+   it stays in sync and can be re-cut without re-recording. (If you do narrate, the tool
+   keeps your audio and shifts it past the title card — but then the caption times have
+   to be matched to your speech by hand, which is the slow way.)
+2. **1920x1080.** Record the whole screen at 1080p. Anything else gets letterboxed.
+3. **Nothing but the app.** No captions, no text, no transitions, no music, no zooms in
+   Clipchamp. Export the raw capture. Every overlay is added afterwards, from the
+   catalogue and the beats file, so it is identical across episodes.
+4. **Follow the shot list** in the episode's `script.md`, in order, and **pause for about
+   a second between beats.** The pauses are what make caption placement easy and what
+   stop the video feeling rushed.
+5. **Keep it under 1:53.** The title card (2.5 s) and recap card (4.0 s) add 6.5 s, and
+   the ceiling is 2:00.
+6. **Export MP4 1080p** and drop it in the episode folder as `raw-recording.mp4`.
+
+Housekeeping before recording: close Outlook and Teams notifications, use the generated
+demo workbook (not a real one), and check nothing in frame carries customer or employee
+names — this ends up in a company-wide library.
+
+### What the tool does
+
+```bash
+python production/overlay_episode.py --episode 2 --video raw-recording.mp4 --check
+python production/overlay_episode.py --episode 2 --video raw-recording.mp4
+```
+
+`--check` writes the two cards plus overlaid stills into `<episode>/overlay-check/` and
+stops. **Always run it first** — it is seconds, and it shows whether the beat times match
+what is actually on screen. Then drop `--check` for the real encode.
+
+Title and recap text come from `episodes.json`, so they are written once and cannot drift
+from the email or the Hub. Captions come from `<episode>/beats.md`, whose times are the
+**recording's own clock** — each caption runs until the next beat starts.
+
+The tool refuses to run if a beat starts after the recording ends, which is the failure
+you get from reusing a previous script's timecodes.
+
+### Record in your own voice, ship Andrew's (Josh's idea, 2026-09-08)
+
+Recording silent means guessing where the captions go. So don't: **talk through the
+script while you record**, and your voice becomes the metronome without ever shipping.
+
+```bash
+python production/beats_from_speech.py --video raw-recording.mp4 --lines lines.md
+python production/overlay_episode.py --episode 2 --video raw-recording.mp4 --check
+python production/overlay_episode.py --episode 2 --video raw-recording.mp4
+```
+
+`beats_from_speech.py` finds where each line starts by detecting the pauses between
+them, pairs those times with the script lines, and writes `beats.md`. Then
+`overlay_episode.py` speaks those lines in Andrew's voice at those exact times, and your
+scratch audio is discarded -- generated audio wins over the recording's own track.
+
+**It calibrates the pause threshold itself.** Verified against a known 19-beat track: at
+0.4 s it found 29 stretches (internal pauses split lines) and at 0.9 s it found 18 (two
+lines ran together). Neither is usable, and neither is guessable in advance -- so it
+detects every pause once and then picks the pause length that yields exactly as many
+stretches as there are script lines. It chose 0.70 s and matched all 19 to within 0.4 s
+of their real starts.
+
+If it cannot find a threshold that matches, it prints the detected stretches beside the
+script lines and stops rather than silently mis-pairing. That means a line got split or
+two ran together: re-record that stretch, or pass `--min-gap` yourself.
+
+**While recording:** pause about a second between lines, and don't pause mid-line. That
+pause is the entire signal. Speaking naturally is fine -- the words are never used, only
+their timing.
