@@ -76,6 +76,14 @@ SERIES = "Two-Minute Training Tuesday"
 
 TITLE_CARD_S = 2.5
 RECAP_CARD_S = 4.0
+# Screen recordings of spreadsheets are fine stationary detail -- the opposite of
+# what x264's default tuning is built for. CRF 18 with -tune stillimage keeps text
+# crisp; CRF 20 with the default tune produced a 464 kbps master that SharePoint's
+# player rendered blurry until viewers went full screen.
+FINAL_CRF = 18
+FINAL_PRESET = "slow"
+FINAL_TUNE = "stillimage"
+
 CAPTION_GAP = 0.15          # air between one caption and the next
 CAPTION_MIN = 1.2
 
@@ -403,12 +411,18 @@ def build(args) -> None:
         cmd += ["-filter_complex", ";".join(chain), "-map", "[out]"]
         if audio_out:
             cmd += ["-map", audio_out, "-c:a", "aac", "-b:a", "160k"]
-        cmd += ["-c:v", "libx264", "-preset", "slow", "-crf", "20",
+        cmd += ["-c:v", "libx264", "-preset", args.preset,
+                "-crf", str(args.crf), "-tune", args.tune,
                 "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(out_path)]
         print(f"{len(beats)} captions onto {body:.1f}s of recording")
         subprocess.run(cmd, check=True)
         actual = probe_duration(out_path)
-        print(f"wrote {out_path.name} ({out_path.stat().st_size / 1e6:.1f} MB, {actual:.1f}s)")
+        mb = out_path.stat().st_size / 1e6
+        kbps = (out_path.stat().st_size * 8 / actual) / 1000
+        print(f"wrote {out_path.name} ({mb:.1f} MB, {actual:.1f}s, {kbps:.0f} kbps)")
+        if kbps < 1500:
+            print("WARNING: under ~1.5 Mbps at 1080p is where screen text starts to "
+                  "smear in SharePoint's player. Lower --crf.")
         if actual > 120:
             print(f"WARNING: {actual:.1f}s is over the 2:00 ceiling in style-guide.md")
         if long:
@@ -448,6 +462,12 @@ def main() -> None:
     ap.add_argument("--beats", default=None, help="beats table (default: <episode>/beats.md)")
     ap.add_argument("--check", action="store_true",
                     help="write the cards and a few overlaid stills, then stop")
+    ap.add_argument("--crf", type=int, default=FINAL_CRF,
+                    help=f"quality, lower is better (default {FINAL_CRF})")
+    ap.add_argument("--preset", default=FINAL_PRESET,
+                    help=f"x264 preset (default {FINAL_PRESET})")
+    ap.add_argument("--tune", default=FINAL_TUNE,
+                    help=f"x264 tune (default {FINAL_TUNE}; 'film' for real footage)")
     ap.add_argument("--voice", default=DEFAULT_VOICE,
                     help=f"Edge neural voice (default {DEFAULT_VOICE})")
     ap.add_argument("--silent", action="store_true",

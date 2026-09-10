@@ -72,6 +72,9 @@ MAX_SPEECH_SPEED = 1.5  # Josh: 2:00 +/- 30s is fine, so retime gently.
 GENTLE_FIRST = 7        # Josh's review: the opening felt "rushed and jittery".
 GENTLE_SPEED = 1.15     # Nearly real time while the viewer gets oriented.
 MAX_GAP_SPEED = 8.0
+# The intermediate feeds stage two, which encodes again. Keep it near lossless:
+# every bit of softness here is permanent by the time SharePoint sees it.
+INTERMEDIATE_CRF = 14
 # Episode 002's screen-share banner: measured off the frames, clear of the sheet
 # tabs (which live at x < 330), so nothing the episode uses gets hidden.
 DEFAULT_COVER = "730,986,460,44"
@@ -239,6 +242,9 @@ def main() -> None:
                          f"(default {GENTLE_FIRST})")
     ap.add_argument("--gentle-speed", type=float, default=GENTLE_SPEED,
                     help=f"the opening's speed cap (default {GENTLE_SPEED})")
+    ap.add_argument("--crf", type=int, default=INTERMEDIATE_CRF,
+                    help=f"quality of the intermediate, lower is better "
+                         f"(default {INTERMEDIATE_CRF}, near lossless)")
     ap.add_argument("--cover", default=DEFAULT_COVER,
                     help="x,y,w,h to paint white; 'none' to disable")
     args = ap.parse_args()
@@ -302,7 +308,8 @@ def main() -> None:
         subprocess.run(
             [ff, "-y", "-hide_banner", "-loglevel", "error", "-i", str(video),
              "-filter_complex", ";".join(chain), "-map", "[out]",
-             "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+             "-c:v", "libx264", "-preset", "medium",
+             "-crf", str(args.crf), "-tune", "stillimage",
              "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(out_path)],
             check=True)
 
