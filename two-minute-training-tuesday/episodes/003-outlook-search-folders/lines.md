@@ -21,11 +21,11 @@ A Search Folder fixes that. It's a folder that fills itself.
 On the Folder tab — New Search Folder.
 Scroll to the bottom. Create a custom Search Folder.
 Choose. Name it Training ideas.
-Criteria. The words two minute, in the subject or body.
+Criteria. The words Two-Minute Training, in the subject.
 Browse — the whole mailbox, including subfolders.
 OK, OK, OK.
 There it is, under Search Folders.
-Every email that mentions it — including the ones I never filed.
+Every email about it — including the ones I never filed.
 Here's the part people miss.
 That email is still sitting in my Inbox. Nothing moved.
 A Search Folder is a saved search, not a place.

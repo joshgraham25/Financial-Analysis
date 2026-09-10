@@ -28,33 +28,34 @@ spill and threw `#SPILL!`.
 | ~~002~~ | Excel | Data Validation, basic then self-maintaining | Allow: List from a range, watch it go stale, then repoint Source at `=$M$5#` so it maintains itself — **recorded and cut 2026-09-08, awaiting upload** |
 | 003 | Outlook | The Outlook folder that fills itself | **Search Folders** — a saved search that looks like a folder, so mail collects itself instead of being filed by hand. The mail never moves, which is the difference from a rule. **Scripted 2026-09-08, ready to record** |
 | — | Outlook | ~~Find any attachment in four seconds~~ | Folded into 003 as one of the demo criteria ("anything with a big attachment"), rather than its own episode. It is a one-off trick; Search Folders is a habit |
-| 004 | Teams | Never lose a message again | Saved messages, plus `Ctrl+E` search with `from:` and `in:` filters |
-| 005 | Excel | XLOOKUP, and why you can delete VLOOKUP | Looking left, exact-match default, and the "if not found" argument |
-| 006 | ERP | *(fill in: the one report everybody exports and hand-edits)* | Ask the three heaviest users what they re-key every week |
-| 007 | Outlook | Rules that actually reduce your inbox | One rule, one folder, built live — not twelve rules nobody maintains |
-| 008 | Excel | Paste values without touching the mouse | `Ctrl+Alt+V` then `V`, plus paste-transpose |
-| 009 | Windows | The clipboard remembers the last 25 things | `Win+V` history, and pinning an item you paste all day |
-| 010 | Teams | Stop scheduling meetings that could be a channel post | @mentions, replies-in-thread, and marking a post Important |
-| 011 | Excel | Flash Fill reads your mind | Splitting names, job numbers, and part codes without a formula |
-| 012 | Outlook | Two calendars, one view | Overlay mode and shared calendar permissions |
-| 013 | Excel | Freeze the panes, keep your place | Freeze Panes vs. Split, and why the wrong cell selection breaks it |
-| 014 | Windows | Snap layouts and virtual desktops | `Win+Z`, `Win+Ctrl+D` — one desktop for the ERP, one for email |
-| 015 | Excel | TEXTSPLIT and TEXTJOIN | Turning one messy cell into columns and back |
-| 016 | Teams | Record and caption your own walkthrough | So anyone can answer their own "how do I" question — the meta-episode |
-| 017 | Outlook | Delay send, and unsend | Deferred delivery and the recall window |
-| 018 | Excel | Conditional formatting that flags the exception | One rule on one column: negative margin, past-due, over budget |
-| 019 | ERP | *(fill in: the export → Excel handoff everybody does manually)* | |
-| 020 | Excel | PivotTables in 90 seconds | Not a tour of PivotTables — one specific question answered with one |
-| 021 | Outlook | Quick Steps | The three-click routine you do forty times a day, on one button |
-| 022 | Excel | Named ranges make formulas readable | `=Amount * TaxRate` instead of `=F2*$K$1` |
-| 023 | Teams | Loop components vs. attachments | When to send a living document instead of `v3_final.xlsx` |
-| 024 | Excel | SUMIFS with more than one condition | Cost center *and* month *and* category, without filtering by hand |
-| 025 | Windows | PowerToys PowerRename | Renaming 200 files by pattern — *check IT policy on install first* |
-| 026 | Excel | Why your numbers won't add up | Text-formatted numbers out of the ERP export, and the three ways to fix them |
-| 027 | Outlook | Categories and a search folder | A view of "everything waiting on me" that maintains itself |
-| 028 | Excel | Tables, and why every export should be one | Structured references, auto-expand, and formulas that follow new rows |
-| 029 | Teams | Channel files are just SharePoint | Sync a channel folder to File Explorer and stop emailing attachments |
-| 030 | Excel | Group and outline | Collapsible detail rows on a report someone else has to read |
+| 004 | Excel | **Get rid of the blank rows** | **Requested by Athena Lakis, 2026-09-01**, replying to 001 — a request beats a tip we chose, per the rules above. Filtering blanks out, or `FILTER` with a not-blank test, instead of sorting and deleting by hand |
+| 005 | Teams | Never lose a message again | Saved messages, plus `Ctrl+E` search with `from:` and `in:` filters |
+| 006 | Excel | XLOOKUP, and why you can delete VLOOKUP | Looking left, exact-match default, and the "if not found" argument |
+| 007 | ERP | *(fill in: the one report everybody exports and hand-edits)* | Ask the three heaviest users what they re-key every week |
+| 008 | Outlook | Rules that actually reduce your inbox | One rule, one folder, built live — not twelve rules nobody maintains |
+| 009 | Excel | Paste values without touching the mouse | `Ctrl+Alt+V` then `V`, plus paste-transpose |
+| 010 | Windows | The clipboard remembers the last 25 things | `Win+V` history, and pinning an item you paste all day |
+| 011 | Teams | Stop scheduling meetings that could be a channel post | @mentions, replies-in-thread, and marking a post Important |
+| 012 | Excel | Flash Fill reads your mind | Splitting names, job numbers, and part codes without a formula |
+| 013 | Outlook | Two calendars, one view | Overlay mode and shared calendar permissions |
+| 014 | Excel | Freeze the panes, keep your place | Freeze Panes vs. Split, and why the wrong cell selection breaks it |
+| 015 | Windows | Snap layouts and virtual desktops | `Win+Z`, `Win+Ctrl+D` — one desktop for the ERP, one for email |
+| 016 | Excel | TEXTSPLIT and TEXTJOIN | Turning one messy cell into columns and back |
+| 017 | Teams | Record and caption your own walkthrough | So anyone can answer their own "how do I" question — the meta-episode |
+| 018 | Outlook | Delay send, and unsend | Deferred delivery and the recall window |
+| 019 | Excel | Conditional formatting that flags the exception | One rule on one column: negative margin, past-due, over budget |
+| 020 | ERP | *(fill in: the export → Excel handoff everybody does manually)* | |
+| 021 | Excel | PivotTables in 90 seconds | Not a tour of PivotTables — one specific question answered with one |
+| 022 | Outlook | Quick Steps | The three-click routine you do forty times a day, on one button |
+| 023 | Excel | Named ranges make formulas readable | `=Amount * TaxRate` instead of `=F2*$K$1` |
+| 024 | Teams | Loop components vs. attachments | When to send a living document instead of `v3_final.xlsx` |
+| 025 | Excel | SUMIFS with more than one condition | Cost center *and* month *and* category, without filtering by hand |
+| 026 | Windows | PowerToys PowerRename | Renaming 200 files by pattern — *check IT policy on install first* |
+| 027 | Excel | Why your numbers won't add up | Text-formatted numbers out of the ERP export, and the three ways to fix them |
+| 028 | Outlook | Categories and a search folder | A view of "everything waiting on me" that maintains itself |
+| 029 | Excel | Tables, and why every export should be one | Structured references, auto-expand, and formulas that follow new rows |
+| 030 | Teams | Channel files are just SharePoint | Sync a channel folder to File Explorer and stop emailing attachments |
+| 031 | Excel | Group and outline | Collapsible detail rows on a report someone else has to read |
 
 ## Notes on the ERP episodes
 

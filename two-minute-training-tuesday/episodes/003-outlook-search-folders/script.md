@@ -7,7 +7,7 @@
 | **Tip** | **Search Folders** — a saved search that looks and behaves like a folder |
 | **Target runtime** | 1:45 (ceiling 2:30 — Josh, 2026-09-08: "2:00 plus or minus 30 seconds") |
 | **Recorded** | Real Outlook, per [`../../production/recording-sop.md`](../../production/recording-sop.md) |
-| **Recap card lines** | 1. `Folder → New Search Folder` · 2. Custom: words in subject or body · 3. Mail never moves — it is a saved search |
+| **Recap card lines** | 1. `Folder → New Search Folder` · 2. Custom: words in the **subject** · 3. Mail never moves — it is a saved search |
 
 ## Read this before you hit record — Outlook is not Excel
 
@@ -25,6 +25,27 @@ tour of your mail.
   sat in every frame with the tenant hostname and had to be painted over in post.
 - Zoom: **Outlook's list at 100% is small.** Use `Ctrl+Scroll` in the message list, or
   drop the display resolution, so the folder names and subjects are readable on a phone.
+
+## Verified against the real mailbox, 2026-09-10 — read this, it changes the criteria
+
+**Searching for "two minute" does not work, and would have wrecked the demo on camera.**
+Outlook's search is word-based, not phrase-based, so "two minute" matched five unrelated
+messages: a Power BI newsletter ("**Two** settings... **two** finance benchmarks"), an
+"Introduction to Julia" thread, paint booth specs, and an insurance wellness campaign. A
+Search Folder built that way looks like junk the moment you scroll it.
+
+**Use `Two-Minute Training` in the SUBJECT field only.** That returns a clean set: the
+series emails and the replies to them.
+
+**The payoff beat has a real proof shot.** Athena Lakis replied to 001 with the subject
+*"RE: Two-Minute Training Tuesday #001 — training request - remove blanks"* — an actual
+training request, sitting in the Inbox rather than the Ideas folder. That is precisely the
+"including the ones I never filed" claim, demonstrated with a real message instead of
+asserted. Frame that one when you scroll the results.
+
+Her name and subject line will be legible. It is an internal colleague asking for a tip,
+which is harmless — but it is a real person on a company-wide video, so say so or blur it
+if you would rather not.
 
 ## The pain, in one sentence
 
@@ -47,7 +68,7 @@ what made 002's cost-centre drop-down land.
 he moved it. The ones he forgot are still in the Inbox, unfound.
 
 **Act 2 — build it (0:25–1:05).** `Folder → New Search Folder → Create a custom Search
-Folder`. Name it, set the criteria to words in subject or body, browse the whole mailbox
+Folder`. Name it, set the criteria to words in the subject, browse the whole mailbox
 including subfolders. Three OKs.
 
 **Act 3 — the part people miss (1:05–1:35).** The new folder holds every matching email,
@@ -72,11 +93,11 @@ Your voice is the metronome; Andrew speaks the final cut.
 | 0:25 | "On the Folder tab — New Search Folder." | `Folder` ribbon tab → **New Search Folder** |
 | 0:31 | "Scroll to the bottom. Create a custom Search Folder." | The preset list, then **Custom** |
 | 0:37 | "Choose. Name it Training ideas." | Name box |
-| 0:43 | "Criteria. The words two minute, in the subject or body." | Criteria dialog |
+| 0:43 | "Criteria. The words Two-Minute Training — in the subject only." | Criteria dialog, **In: subject field only** |
 | 0:51 | "Browse — the whole mailbox, including subfolders." | Browse, tick subfolders |
 | 0:58 | "OK, OK, OK." | Three dialogs closing |
 | 1:03 | "There it is, under Search Folders." | The new folder, populated |
-| 1:09 | "Every email that mentions it — including the ones I never filed." | Scroll: more than the Ideas folder held |
+| 1:09 | "Every email about it — including the ones I never filed." | Scroll: more than the Ideas folder held. **Athena's "training request - remove blanks" reply is the proof shot** |
 | 1:16 | "Here's the part people miss." | Click one message |
 | 1:20 | "That email is still sitting in my Inbox. Nothing moved." | Show its real folder |
 | 1:26 | "A Search Folder is a saved search, not a place." | The folder list |
