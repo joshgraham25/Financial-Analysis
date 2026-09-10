@@ -15,21 +15,86 @@ on, with what happened.
 
 ## Open
 
-### 1. Distribution group
+### 1. The weekly email does not reach the distribution group `Blocked`
 
-Seven addresses are hand-listed in the Hub's host config. That list rots and will keep mailing people
-after they leave, so nothing goes company-wide until it is a real group.
+**Episode 002 was sent on 2026-09-08 and almost nobody received it.** Found by Josh on
+2026-09-10, two days later, because a colleague mentioned it. Nothing in the Hub reported a
+problem: the draft is marked `Sent`, `Error` is null, and no bounce arrived.
 
-→ **Josh is requesting one.** Waiting on the group's address. Until it exists the pilot list stands.
+**What is actually happening.** The message carries the sender on `To` and every real
+recipient on `Bcc` — that is the reply-all fix from 2026-09-01. One message went out:
 
-### 2. Episode 002 — done, awaiting upload
+| Recipient | Header | Delivered |
+| --- | --- | --- |
+| Josh | `To` | **yes** |
+| `AllUsers@creativeliquidcoatings.com` (everyone) | `Bcc` | **no** |
+
+So Exchange accepted the message, delivered the `To` copy, and dropped the group expansion.
+Because the same message reached a mailbox fine, this is **not** the message being spam
+filtered — the only thing that differs is the recipient *type*.
+
+**Why the group specifically.** The Hub sends by **direct send**: unauthenticated SMTP on
+port 25 to `creativeliquidcoatings-com.mail.protection.outlook.com`, no credentials by
+design (it is how OTP codes go out). Exchange distribution groups default to
+`RequireSenderAuthenticationEnabled = $true`, which rejects unauthenticated senders. Direct
+send is unauthenticated. 001 worked because it went to seven **individual mailboxes**, which
+have no such gate.
+
+**Not yet confirmed, and it needs Exchange admin:** a **message trace** for 2026-09-08
+16:10 UTC, from `JoshGraham@` to `AllUsers@`, will say in one line whether it was blocked at
+group expansion. Also worth checking the Defender quarantine. Neither console is reachable
+from a session here.
+
+**The trap that hid it, and will hide it again.** Josh is on the `To` line of every send by
+design, so **his own copy arrives whether or not anyone else's does**. His inbox can never
+confirm delivery. Two days of "it went out fine" came from exactly that.
+
+**The three fixes:**
+
+1. **Authenticated submission instead of direct send** — SMTP AUTH as a real mailbox, or
+   Graph `sendMail` with an app registration. Satisfies the group's sender-authentication
+   requirement, and brings DKIM with it, which helps deliverability generally. Costs an app
+   registration or a licensed mailbox, and a change to the sender slice.
+2. **Have IT set `RequireSenderAuthenticationEnabled $false` on `All_Users`** — one flag,
+   done in minutes. But it also opens a company-wide group to **external** senders, which is
+   a standing spam and phishing surface in exchange for fixing one weekly email.
+3. **Go back to individual addresses on `Bcc`** — proven to work (001 reached all seven).
+   But it reinstates the hand-maintained list that rots and keeps mailing people after they
+   leave, which is the thing `AllUsers@` was adopted to remove.
+
+**Recommendation: (1), with (3) as the stopgap for one week if 003 is ready before (1) is.**
+(2) trades a permanent security hole for a temporary convenience, on a group that reaches
+everyone.
+
+**Regardless of which fix:** the admin page says `Sent` when it means *accepted for
+delivery*. That mislabel is what made a silent failure look like a success — worth renaming,
+and worth a one-line note under the button.
+
+→ *(open — needs the trace, then a pick from the three)*
+
+### 1b. Verifying a send from now on
+
+Josh's own copy proves nothing (see above). Until delivery is fixed and proven, confirm each
+week by asking **one person who is not Josh** whether it arrived — or check a shared mailbox
+that is on the group.
+
+→ *(open — could be automated later by Bcc-ing a mailbox a session can read)*
+
+### 2. Episode 002 — published, and delivered by hand
 
 → **Recorded by Josh 2026-09-08 in real Excel, cut with the new overlay pipeline** (1:43,
-`TMTT-002-Self-Maintaining-Dropdowns.mp4`). The synthetic render is retired. **Blocked on
-one thing only: the file needs uploading to SharePoint**, because the connector available
-here caps uploads at 1 MB and the video is 6 MB. Once it is up, its item URL goes in
-`episodes.json` as `videoUrl` — the weekly job refuses to send an episode with an empty
-one rather than mailing a dead link.
+`TMTT-002-Self-Maintaining-Dropdowns.mp4`). The synthetic render is retired. Uploaded to
+SharePoint the same day, `videoUrl` set, the Hub manifest deployed, and the email sent at
+16:10 UTC.
+
+**It reached almost nobody** — see item 1. Josh forwarded it by hand on 2026-09-10 with a
+note explaining the delay, which is how the company actually received it. The episode itself
+is done and correct; the delivery path is what is broken.
+
+Worth keeping: most of the company had seen **neither** 001 nor 002 before that forward, since
+001 only ever went to the seven-person pilot. The forward was most people's first contact with
+the series, so it carried a short "what this is, and it is safe to open" line rather than only
+an apology.
 
 ### 3. Episode 003 — scripted, ready to record
 
@@ -74,6 +139,17 @@ thing the whole company reads in Spanish.
 
 Kept because the reasoning is the useful part, and because a later session will otherwise re-litigate
 these.
+
+### The distribution group — it exists, and it is `All_Users`
+
+The pilot list of seven hand-listed addresses was replaced by
+`AllUsers@creativeliquidcoatings.com` (display name `All_Users`), a real Exchange
+distribution group that other company-wide senders already use. That closed the original
+question — nothing company-wide until it is a real group.
+
+**But adopting it introduced the failure in item 1.** A group is not a mailbox: it has a
+sender-authentication gate that individual mailboxes do not. The list stopped rotting and
+started silently not delivering. Both facts are worth holding at once.
 
 ### Deliverability — resolved 2026-08-25
 
