@@ -277,3 +277,37 @@ two ran together: re-record that stretch, or pass `--min-gap` yourself.
 **While recording:** pause about a second between lines, and don't pause mid-line. That
 pause is the entire signal. Speaking naturally is fine -- the words are never used, only
 their timing.
+
+---
+
+## Rule 1 of recording: make the text big enough to survive the player
+
+**Added 2026-09-10 after viewers reported 002 was "very blurry until full screen".**
+This is the single most important capture setting, ahead of framing, ahead of audio.
+
+**Why.** SharePoint transcodes every upload into an adaptive ladder and the player picks a
+rendition to fit its window. Embedded in a page at a few hundred pixels tall, it serves
+540p or less and only steps up to 1080p in full screen. At Excel's default 100% zoom, cell
+text is about **11 pixels tall**; halve that for a 540p rendition and it is gone. Going full
+screen fixed it for viewers because that is when the player finally fetches 1080p.
+
+**A better encode does not rescue this.** 002's master was re-encoded from 464 kbps to
+604 kbps with `-tune stillimage`, and CRF 12 only reaches 859 kbps — the Clipchamp source
+itself sustains about 1.3 Mbps over static frames, and no encoder invents detail the capture
+never had. Small text stays small.
+
+**So, before recording:**
+
+1. **Zoom the application to 150–175%.** Excel's zoom slider, bottom right, or `Ctrl+Scroll`.
+   Outlook's message list takes `Ctrl+Scroll` too.
+2. **Record a window, not the whole screen.** Every pixel spent on the taskbar, the ribbon
+   you are not using, and 40 empty columns is a pixel not spent on the thing you are
+   teaching. A maximised Excel window at 1080p is fine; a 4K desktop scaled down is not.
+3. **Scroll so only the columns in play are visible.** 002 showed columns A through AD and
+   used four of them.
+4. **Check it at the size people watch.** Play the finished file in a window about a third
+   of the screen. If you cannot read a cell value, neither can they — and most of them will
+   never click full screen.
+
+**The one thing to say in the email**, until a recording is captured this way: *"Full screen
+makes it much sharper."* It costs a line and it is true of the SharePoint player generally.
