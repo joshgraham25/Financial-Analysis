@@ -20,3 +20,13 @@ two-minute-training-tuesday/episodes/*/overlay-check/
 
 # Files staged for a manual SharePoint upload -- copies, not sources.
 two-minute-training-tuesday/distribution/_upload/
+
+# Real ERP exports dropped for the purchasing review. Live part numbers, balances
+# and supplier pricing -- the sample data in purchasing/sample-data/ is the only
+# input set that belongs in the repo. Generated packets under reviews/ do belong:
+# week over week they are the record of what was known and when.
+purchasing/exports/
+
+# Python bytecode
+__pycache__/
+*.pyc

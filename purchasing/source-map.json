@@ -1,0 +1,35 @@
+{
+  "_comment": [
+    "Left side is what the review calls a field. Right side is the column header",
+    "in your export, matched case-insensitively. Change the right side only.",
+    "Extra columns in the export are ignored. Optional fields (safety_stock, uom,",
+    "line, supplier, source, ref) can be dropped entirely if the export lacks them.",
+    "The values below match the headers in sample-data/."
+  ],
+  "parts": {
+    "part": "Item",
+    "description": "Item Desc",
+    "supplier": "Vendor",
+    "lead_time_days": "Lead Time",
+    "box_qty": "Purch Mult",
+    "on_hand": "QOH",
+    "safety_stock": "Safety",
+    "uom": "UM"
+  },
+  "open_pos": {
+    "po": "PO",
+    "line": "Ln",
+    "part": "Item",
+    "qty": "Qty Open",
+    "order_date": "Order Date",
+    "due_date": "Due Date",
+    "supplier": "Vendor"
+  },
+  "demand": {
+    "part": "Item",
+    "qty": "Qty Req",
+    "need_date": "Need Date",
+    "source": "Type",
+    "ref": "Order"
+  }
+}
