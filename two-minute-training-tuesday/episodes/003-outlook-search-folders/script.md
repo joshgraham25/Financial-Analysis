@@ -5,29 +5,23 @@
 | **Episode** | 003 |
 | **App** | Outlook — **new Outlook for Windows** |
 | **Tip** | **Search Folders** — a saved search that looks and behaves like a folder |
-| **Target runtime** | 1:45 (ceiling 2:30 — Josh, 2026-09-08: "2:00 plus or minus 30 seconds") |
+| **Target runtime** | 2:05 (ceiling 2:30 — Josh, 2026-09-08: "2:00 plus or minus 30 seconds") |
 | **Recorded** | Real Outlook, per [`../../production/recording-sop.md`](../../production/recording-sop.md) |
-| **Recap card lines** | 1. `Settings → Mail → Search Folders` · 2. Mail with specific words · 3. Mail never moves — it is a saved search |
+| **Recap card lines** | 1. `Settings → Mail → Search folders` · 2. Mail with specific words · 3. Mail never moves — the tag shows where it lives |
 
-## Which Outlook — this decides the whole build sequence
+## Which Outlook — confirmed, not assumed
 
-**Josh is on new Outlook, so this episode is recorded there.** That is not a detail; the
-two clients build Search Folders in completely different places, and an earlier draft of
-this script described the classic path, which does not exist for him.
+**New Outlook for Windows.** The 2026-09-17 take settles it: Josh drove
+`Settings → Mail → Search folders → New search folder`, with the name box, the **Type**
+dropdown and a **Filter to specific folders** checkbox. That is the new-Outlook flow, so the
+path below is right and does not need re-deciding.
 
-- **Classic Outlook:** `Folder` ribbon tab → New Search Folder → *Create a custom Search
-  Folder* → free-form criteria. Powerful, and **not what most of us have.**
-- **New Outlook:** Search Folders returned in the March 2026 update, but as **predefined
-  types only.** Microsoft: *"Advanced custom Search Folders are supported only in classic
-  Outlook."*
+Classic Outlook builds these from the `Folder` ribbon tab with free-form criteria, and
+Microsoft is explicit that *"advanced custom Search Folders are supported only in classic
+Outlook."* New Outlook offers predefined types instead. **Mail with specific words** does
+what this episode needs, so the lesson survives intact.
 
-The predefined type **Mail with specific words** does what this episode needs, so the
-lesson survives intact — only the clicks change.
-
-**Teach the client the audience has.** A tip people cannot follow is worse than a slightly
-less powerful one, so the script says one line acknowledging classic can go further.
-
-The types new Outlook offers, since the closing line name-checks three:
+The types new Outlook offers, since the script name-checks the list:
 
 | Reading mail | Mail from people and lists | Organizing mail |
 | --- | --- | --- |
@@ -38,52 +32,49 @@ The types new Outlook offers, since the closing line name-checks three:
 
 ## Read this before you hit record — Outlook is not Excel
 
-002 was safe because the workbook was generated. **Your mailbox is full of customer
-and employee names, and this goes to a company-wide library.** The whole video is a
-tour of your mail.
+**Everything in this section is now a pre-flight checklist:
+[`recording-setup.md`](recording-setup.md). Work through it with the recorder off.**
 
-- **Turn off the reading pane** so message bodies never render. The list alone teaches this.
-- **Check the sender and subject columns** in every shot. Those are the two legible things,
-  and they are enough to leak a customer dispute or an HR matter.
-- **Zoom the message list to 150–175%** (`Ctrl+Scroll`). This is Rule 1 in the SOP: 002 was
-  reported blurry because 11px text does not survive SharePoint's 540p rendition.
-- **Hide the screen-share banner** before recording. In 002 it sat in every frame carrying
-  the tenant hostname and had to be painted over in post.
-- **Record the Outlook window, not the whole screen.**
+The short version of why it exists. 002 was safe because the workbook was generated. **Your
+mailbox is full of customer and employee names, and this goes to a company-wide library.**
+The 2026-09-17 take demonstrated the folder on a person, and the results list showed
+external order disputes, tariff figures and invoice numbers — all legible, all with preview
+text on. That is not fixable in post, which is why the demo below uses the training-words
+folder instead: it matches internal training mail by construction.
 
-## Test the criteria before you record — twice bitten here
+## Criteria — tested for real, 2026-09-17
 
-**Unknown and worth five minutes: whether "Mail with specific words" searches the subject
-only, or the subject and the body.** Classic Outlook lets you pick; new Outlook's predefined
-type does not say.
+**Built the folder in the live mailbox, looked at it, deleted it.** No longer a question:
 
-It matters because searching bodies for `two minute` in Josh's real mailbox returned five
-unrelated messages — a Power BI newsletter ("**Two** settings… **two** finance benchmarks"),
-an "Introduction to Julia" thread, paint booth specs and an insurance campaign. A Search
-Folder full of junk argues against the episode while you are narrating it.
+- **It searches subject AND body.** The dialog says so outright in step 3: *"Please enter words
+  to search for in email subject and body."* That was the open risk.
+- **"Two-Minute Training" is clean anyway.** 12 messages, every one of them about the series, no
+  junk at all. The hyphenated three-word phrase is distinctive enough to survive a body search,
+  where the bare `two minute` was not. **Use these exact words.**
+- **The words become a removable tag** when you press Enter, and you can add several. Worth one
+  beat on camera.
+- **Name before type.** The form refuses to let you choose a type until the folder has a name —
+  it throws "Please enter a search folder name". The script follows that order.
+- **Label correction:** the person-based type is called *"Mail with specific people"*, not
+  "From specific people".
 
-**So: build it once, look at what it catches, delete it, then record building it again.**
-If it is noisy, use the fuller phrase **"Two-Minute Training Tuesday"**, which is
-distinctive enough to survive a body search.
+## The proof shot changed — and it got better
 
-## The payoff shot is real, and it is in the mailbox already
+**Every row in a Search Folder shows the folder it actually lives in**, as a small tag beside the
+date. That is a far stronger proof of "nothing moved" than the original plan of clicking back to
+the Inbox: you simply point at the tags.
 
-Athena Lakis replied to 001 with the subject *"RE: Two-Minute Training Tuesday #001 —
-training request - remove blanks"* — an actual training request, sitting in the Inbox rather
-than the Ideas folder. That demonstrates "including the ones I never filed" with a real
-message instead of asserting it. Frame that one when you scroll the results.
+It also **removes the one shot no setting could sanitise.** The old script needed the live Inbox on
+camera, with whatever arrived that morning sitting around the target message. It no longer does.
 
-Her name and subject line will be legible. It is an internal colleague asking for a tip,
-which is harmless — but it is a real person on a company-wide video.
+**What the tags actually say, as of 2026-09-17:** the 12 results come from **Sent Items** and
+**Two Minute Tuesday Ideas** — two different folders, one list. Nothing sits in the Inbox right
+now, so *"including the ones I never filed"* has no proof on screen and has been cut. The honest
+and more visual line is the one the tags support: **three folders at once, and nothing moved.**
 
-## Proving "nothing moved"
-
-Classic Outlook has an **In Folder** column, which makes this a one-shot proof. New Outlook
-may not expose it, so **the script uses a method that works in any client**: select the
-message in the Search Folder, then click **Inbox** — the same message is still sitting there.
-
-If your build of new Outlook does show a folder indicator in Search Folder results, use it;
-it is faster. Check before recording rather than discovering it mid-take.
+**Precision on the catch.** Deleting the *folder* does not delete anything — Outlook says so in its
+own confirmation dialog. Deleting a *message* from inside the folder deletes the real message.
+The script says message, deliberately.
 
 ## The pain, in one sentence
 
@@ -105,10 +96,10 @@ files idea emails into by hand. A real habit rather than an invented scenario is
 **Act 1 — the habit (0:00–0:25).** The Ideas folder. Every email in it got there because he
 moved it. The ones he forgot are still in the Inbox, unfound.
 
-**Act 2 — build it (0:25–1:05).** `Settings → Mail → Search Folders → Create new search
+**Act 2 — build it (0:25–1:10).** `Settings → Mail → Search Folders → Create new search
 folder → Mail with specific words`. Type the words. Save.
 
-**Act 3 — the part people miss (1:05–1:40).** The new folder holds every matching email,
+**Act 3 — the part people miss (1:20–2:05).** The new folder holds every matching email,
 *including ones never filed*. Then click back to the Inbox and show the message is **still
 there**. Nothing moved. That is the difference from a rule — a rule moves mail, a Search
 Folder finds it. And the catch that follows: delete from here and you delete the real email.
@@ -123,35 +114,38 @@ Your voice is the metronome; Andrew speaks the final cut.
 | --- | --- | --- |
 | 0:00 | "Welcome to Two-Minute Training Tuesday." | Outlook, folder list visible |
 | 0:04 | "This folder holds every training idea anyone sends me." | Click **Two Minute Tuesday Ideas** |
-| 0:09 | "Every one of these got here because I moved it by hand." | Scroll the list |
-| 0:14 | "So the ones I forgot to file aren't here at all." | Back to Inbox |
+| 0:09 | "Every one of these got here because I moved it by hand." | Scroll the short list |
+| 0:14 | "And the ones I never filed are scattered everywhere else." | — |
 | 0:19 | "A Search Folder fixes that. It's a folder that fills itself." | Hover the folder list |
 | 0:25 | "Settings — the gear, top right." | Click the gear |
-| 0:30 | "Mail, then Search Folders." | Settings dialog: **Mail → Search Folders** |
-| 0:36 | "Create new search folder." | The button |
-| 0:41 | "Under Organizing mail — Mail with specific words." | The type list |
-| 0:48 | "The words: Two-Minute Training." | The words box |
-| 0:55 | "Save." | Save, settings closes |
-| 1:00 | "There it is, under Search Folders." | The new folder in the folder pane, populated |
-| 1:06 | "Every email about it — including the ones I never filed." | Scroll past what the Ideas folder held. **Athena's "training request - remove blanks" reply is the proof shot** |
-| 1:13 | "Here's the part people miss." | Click that message |
-| 1:17 | "Now back to the Inbox. It's still sitting right there. Nothing moved." | Click **Inbox**, the same message is in the list |
-| 1:25 | "A Search Folder is a saved search, not a place." | The folder pane |
-| 1:30 | "That's the difference from a rule. A rule moves mail. This just finds it." | — |
-| 1:36 | "So deleting from here deletes the real email. That's the one catch." | — |
-| 1:42 | "There are more ready to go — unread mail, mail with attachments, large mail." | The type list again, briefly |
-| 1:48 | "Classic Outlook can build fully custom ones. This is the version most of us have." | — |
+| 0:29 | "Mail, then Search folders." | **Mail → Search folders** — the list of existing ones |
+| 0:34 | "Add search folder." | The blue **+ Add search folder** button |
+| 0:38 | "Name it first — it won't let you go on without one." | The name box |
+| 0:43 | "Two-Minute Training." | Type it |
+| 0:47 | "Then pick a type. There's a whole list of these." | Open **Type** — let the list sit open a beat |
+| 0:53 | "Mail with specific words." | Last item under **Organizing mail** |
+| 0:58 | "And the words: Two-Minute Training. Enter, and it becomes a tag." | Type, press Enter, the chip appears |
+| 1:05 | "You can limit it to certain folders, or leave it and it searches everything." | Hover **Filter to specific folders** — don't tick it |
+| 1:12 | "Save." | Save; the new folder joins the list |
+| 1:16 | "There it is, down with the other search folders." | Close settings; the folder in the pane |
+| 1:21 | "Twelve messages, from two different folders at once." | The populated list |
+| 1:27 | "Here's the part people miss. Look at the tag on each one." | **Slow scroll — the folder tag beside each date is the shot** |
+| 1:34 | "Sent Items. My ideas folder. That's where they still live." | Rest on two rows with different tags |
+| 1:40 | "Nothing moved. A Search Folder is a saved search, not a place." | — |
+| 1:46 | "A rule moves your mail. This one just finds it." | — |
+| 1:51 | "So deleting a message from here deletes the real message. That's the one catch." | — |
+| 1:58 | "I've got a few of these now — one per project, one per person I trade a lot of mail with." | **The folder pane only — do not open them** |
 | — | **Over the recap card:** "That's it for this week." | Recap card |
-| — | **Over the recap card:** "Next week: Teams, and how to never lose a message again." | Recap card |
+| — | **Over the recap card:** "Next week: colour-coding your inbox." | Recap card |
 
 The last two lines are prefixed `>` in `captions.md` so they are cut from the picture and
 spoken over the card — see 002.
 
 ## If it runs long, cut in this order
 
-1. The "Classic Outlook can build fully custom ones" line. True and useful, but it is a
-   footnote and the episode survives without it.
-2. "There are more ready to go…" — the other predefined types. Nice to have, not the lesson.
+1. "I've got a few of these now…" — the closing survey of existing folders. It is a nice
+   grace note and the riskiest shot in the episode; it goes first.
+2. "You can point it at certain folders…" — the folder filter. Useful, not the lesson.
 3. "A Search Folder is a saved search, not a place." The next line makes the same point better.
 
 **Never cut** the "still sitting right there / nothing moved" beat. That is the episode.

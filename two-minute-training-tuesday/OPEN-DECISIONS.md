@@ -140,6 +140,27 @@ thing the whole company reads in Spanish.
 Kept because the reasoning is the useful part, and because a later session will otherwise re-litigate
 these.
 
+### Episode 003 — which Outlook, and the first take
+
+**Asked and answered inside a day, 2026-09-17.** I opened this as a question after reading the
+first take as classic Outlook — the File tab misled me. It is **new Outlook**: the take shows
+`Settings → Mail → Search folders → New search folder`, with the Type dropdown and the
+*Filter to specific folders* checkbox. The scripted path was correct all along, so there was
+nothing for Josh to decide.
+
+**The take itself could not be used**, for reasons that were all setup rather than performance:
+the demo folder was built on a person, so the results list showed external order disputes,
+tariff figures and invoice numbers, legibly, with preview text on — on a video bound for a
+company-wide library. Alongside that: whole desktop captured instead of the Outlook window,
+Calendar pane holding a quarter of the frame, and 100% UI at 1920x1080, which is the same
+~11px message list that got 002 reported as blurry. The narration was fine.
+
+**What came out of it.** `recording-setup.md` is a pre-flight checklist built from those exact
+failures, and the script and lines were rewritten around the sequence Josh actually performed
+— which was better than the original: naming the folder, opening the type list, the folder
+filter, and a closing look at the search folders he already keeps. Demo content moved to the
+training-words folder, which matches internal mail by construction.
+
 ### The distribution group — it exists, and it is `All_Users`
 
 The pilot list of seven hand-listed addresses was replaced by
