@@ -47,6 +47,40 @@ only copied on.
 **Nothing was left behind.** The `Copied in` rule was deleted, `Finance` was re-enabled, and the
 Inbox was re-checked rendering Cranberry and Light green exactly as before.
 
+## Making the grey-out work — candidates to copy in
+
+**Josh, 2026-09-24: "if i am only in cc then grey out the text."** So the fix is not a
+different rule, it is messages the rule can match. There were none; there are plenty in the
+mailbox.
+
+Found read-only with Outlook's own search box, `cc:JoshGraham@creativeliquidcoatings.com`,
+which asks Exchange the same question the rule does. Almost every hit sits in `AI Temp Folder`
+or `Deleted Items`, never the Inbox — which is exactly why the live test found nothing.
+
+Shortlist, chosen to look like ordinary internal finance traffic and to name no customer, no
+claim and no figure in the subject:
+
+| From | Subject | Where it is |
+| --- | --- | --- |
+| Thomas Feddeler | Re: Weekly Director Dashboard Period 9 2026 | AI Temp Folder |
+| Jennifer Wilson | Updated MP PD 09 Week 4 Projection | AI Temp Folder |
+| Thomas Feddeler | Re: KV Period 9 Week 5 OPEX Reports | Deleted Items |
+| Thomas Feddeler | Re: NV Period 09 Week 5 OPEX Reports | Deleted Items |
+
+**Two is enough**, and two is better than four — six rows already fill the list without
+scrolling, and the shot wants a clear majority still un-greyed.
+
+Feddeler and Wilson are already in the folder, which helps rather than hurts: the grey-out then
+lands on senders the viewer has already seen in black, so the change is legible as a change.
+It also keeps the two rules on separate messages, since neither is Geist or Norton.
+
+**Copy, do not move** (right-click → *Copy to folder*), especially out of `Deleted Items` — a
+message moved out of the trash family cannot be moved back by the tooling here.
+
+**Verify before capturing**: build the rule, reload settings fully so the client re-hydrates,
+and confirm the rows actually grey. A rule that matches nothing looks identical to a rule that
+has not loaded yet, which is how this went wrong the first time.
+
 ## One subject worth a second look
 
 **#5** names two customers (Inteva, PACCAR), a part number and RESCHEDULE. Raised with Josh
