@@ -157,14 +157,17 @@ Written before a context compaction so none of this depends on conversation memo
    in its script, none in its video, because its frames were swept from the scratchpad before
    they were committed. Either re-capture it once (most of a session) or ship it as the last of
    the old name. → 
-2. **Re-capture 004 to demo the Cc rule?** Confirmed possible — see `demo-folder-contents.md`:
-   two of six rows fade under `I'm not on the To line`. Would take 004 from 1:15 to about 2:00
-   and give the "first rule to match wins" line something real to point at. The 1:15 cut is
-   finished and correct without it. → 
-3. **Nothing is committed** — the rename, the spelling sweep, 004 + frames, the three rebuilt
-   production scripts (`capture_window.ps1`, `prepare_frames.py`, `assemble_capture.py`), the
-   004 records, the backlog renumber. 003 is also still on branch `003-search-folders-render`,
-   unmerged, and the improved 002 re-encode is still uncommitted. → 
+2. ~~**Re-capture 004 to demo the Cc rule?**~~ **Closed 2026-09-24 — it cannot be done with
+   this folder.** Tried it: built the rule live, and `I'm not on the To line` colors nothing,
+   because Josh is on the To line of all six messages. Full test and its control in
+   `demo-folder-contents.md`. The shipped 1:15 cut names the rule rather than demonstrating it,
+   which is now the correct thing to do. Reopen only if messages Josh is genuinely only copied
+   on are added to the folder.
+3. ~~**Nothing is committed**~~ **Done 2026-09-24.** Six commits, merged to local `main`
+   (`003-search-folders-render` fast-forwarded in): 002 re-encode, the capture rig, the rename
+   and spelling sweep, a `.gitignore` fix, 004 with its frames, and the Cc finding above.
+   **Still needs pushing** — `git push origin main` was refused by this session's sandbox, so
+   `main` is ahead of `origin/main` by seven commits on Josh's machine only. →  
 4. **Delivery is still the real blocker** — see item 1. Two finished episodes are queued behind
    an email path that does not reach the distribution group.
 
