@@ -17,7 +17,7 @@ over the recap card.
 
 ---
 
-Welcome to Two-Minute Training Tuesday.
+Welcome to Two-Minute Training.
 This folder holds every training idea anyone sends me.
 Every one of these got here because I moved it by hand.
 And the ones I never filed are scattered everywhere else.
@@ -44,4 +44,4 @@ A rule moves your mail. This one just finds it.
 So deleting a message from here deletes the real message. That's the one catch.
 I've got a few of these now — one per project, one per person I trade a lot of mail with.
 That's it for this week.
-Next week: colour-coding your inbox.
+Next up: color-coding your inbox.

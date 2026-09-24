@@ -78,7 +78,7 @@ its own options section and its own `From`.
 
 ## Ordering
 
-1. **Create the SharePoint library** — a new `Two-Minute Training Tuesday`
+1. **Create the SharePoint library** — a new `Two-Minute Training`
    document library on the TFA site (not a folder in the app-data library), plus
    the per-app subfolders and the four columns. No admin needed. Migrating to
    `CLC Training` later is a one-file manifest edit, provided the originals are

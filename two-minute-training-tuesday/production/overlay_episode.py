@@ -1,4 +1,4 @@
-"""Overlay Two-Minute Training Tuesday branding onto a real screen recording.
+"""Overlay Two-Minute Training branding onto a real screen recording.
 
 This is the pipeline for every episode from 002 onward. Josh records real Excel
 (or Outlook, or whatever the tip is about); this script adds the title card, the
@@ -32,7 +32,7 @@ Inputs
 
               | Start | Text |
               | ---   | ---  |
-              | 0.0   | Welcome to Two-Minute Training Tuesday. |
+              | 0.0   | Welcome to Two-Minute Training. |
               | 4.2   | Last week this drop-down changed the whole report. |
 
           Each caption runs until the next beat starts, less a small gap.
@@ -72,7 +72,7 @@ CATALOGUE = ROOT / "episodes.json"
 
 W, H = 1920, 1080
 FPS = 30
-SERIES = "Two-Minute Training Tuesday"
+SERIES = "Two-Minute Training"
 
 TITLE_CARD_S = 2.5
 RECAP_CARD_S = 4.0

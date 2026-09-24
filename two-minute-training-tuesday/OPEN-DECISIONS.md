@@ -135,6 +135,39 @@ thing the whole company reads in Spanish.
 
 ---
 
+### 6. Where the series stands, 2026-09-24 `Decision`
+
+Written before a context compaction so none of this depends on conversation memory.
+
+**Done and on disk**
+
+- **Renamed to `Two-Minute Training`** — no longer pinned to Tuesday (Josh, 2026-09-23). 17
+  files. Published 001/002, the launch announcement and the settled history here were
+  deliberately NOT rewritten: they really did go out under the old name.
+- **Outros say "Next up:"** rather than "Next week", for the same reason.
+- **US spelling throughout** (Josh, 2026-09-24) — the trigger was a caption reading "Font
+  colour" over a dialog that says "Font color". 15 files.
+- **004 is rendered**: 1:15, real Outlook, `Stephen/Abe` rebuilt on camera, mailbox restored,
+  content reviewed frame by frame. Its frames ARE kept in the repo, so any rewording is a
+  re-render, not a re-record.
+
+**Open, in the order they block things**
+
+1. **003 is three changes behind** — old series name, "next week", British spelling. All fixed
+   in its script, none in its video, because its frames were swept from the scratchpad before
+   they were committed. Either re-capture it once (most of a session) or ship it as the last of
+   the old name. → 
+2. **Re-capture 004 to demo the Cc rule?** Confirmed possible — see `demo-folder-contents.md`:
+   two of six rows fade under `I'm not on the To line`. Would take 004 from 1:15 to about 2:00
+   and give the "first rule to match wins" line something real to point at. The 1:15 cut is
+   finished and correct without it. → 
+3. **Nothing is committed** — the rename, the spelling sweep, 004 + frames, the three rebuilt
+   production scripts (`capture_window.ps1`, `prepare_frames.py`, `assemble_capture.py`), the
+   004 records, the backlog renumber. 003 is also still on branch `003-search-folders-render`,
+   unmerged, and the improved 002 re-encode is still uncommitted. → 
+4. **Delivery is still the real blocker** — see item 1. Two finished episodes are queued behind
+   an email path that does not reach the distribution group.
+
 ## Settled
 
 Kept because the reasoning is the useful part, and because a later session will otherwise re-litigate

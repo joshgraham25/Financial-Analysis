@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compose and send the weekly Two-Minute Training Tuesday email.
+"""Compose and send the weekly Two-Minute Training email.
 
 Reads the episode catalogue, renders the message, and sends it. Intended to run
 ON the Thomas Anderson host with the shared SMTP config sourced, so no host name
@@ -71,7 +71,7 @@ def render_html(series: dict, ep: dict, recap: list[str]) -> str:
     library_line = (
         f"""<p style="margin:22px 0 0;font:13px/1.6 'Segoe UI',Arial,sans-serif;color:{INK_MUTED};">
              Every episode lives in
-             <a href="{library}" style="color:{RED};">the Two-Minute Training Tuesday library</a>.
+             <a href="{library}" style="color:{RED};">the Two-Minute Training library</a>.
            </p>"""
         if library
         else ""
@@ -130,7 +130,7 @@ def render_html(series: dict, ep: dict, recap: list[str]) -> str:
 
    <tr><td style="border-top:1px solid {LINE};padding:16px 24px;">
      <p style="margin:0;font:12px/1.6 'Segoe UI',Arial,sans-serif;color:{INK_MUTED};">
-       One tip. One video. Under two minutes. Every Tuesday.<br>
+       One tip. One video. Under two minutes.<br>
        Got a tip you want covered &mdash; ERP, Outlook, Teams, anything? Just reply.
      </p>
    </td></tr>
@@ -160,7 +160,7 @@ def render_text(series: dict, ep: dict, recap: list[str]) -> str:
         lines += ["", f"Every episode: {library}"]
     lines += [
         "",
-        "One tip. One video. Under two minutes. Every Tuesday.",
+        "One tip. One video. Under two minutes.",
         "Got a tip you want covered — ERP, Outlook, Teams, anything? Just reply.",
     ]
     return "\n".join(lines)
@@ -213,7 +213,7 @@ def main() -> None:
     sender = series["sender"]
     msg = EmailMessage()
     msg["Subject"] = (
-        f"Two-Minute Training Tuesday #{ep['number']:03d} — {ep['title']}"
+        f"Two-Minute Training #{ep['number']:03d} — {ep['title']}"
     )
     msg["From"] = formataddr((sender["displayName"], sender["address"]))
     msg["Reply-To"] = sender["address"]

@@ -5,7 +5,7 @@ each screen held for exactly as long as Andrew takes to read its line.
 
 | Start | Text |
 | --- | --- |
-| 0.0 | Welcome to Two-Minute Training Tuesday. |
+| 0.0 | Welcome to Two-Minute Training. |
 | 2.8 | This folder holds every training idea anyone sends me. |
 | 6.92 | Every one of these got here because I moved it by hand. |
 | 10.4 | And the ones I never filed are scattered everywhere else. |
@@ -32,4 +32,4 @@ each screen held for exactly as long as Andrew takes to read its line.
 | 83.54 | So deleting a message from here deletes the real message. That's the one catch. |
 | 88.82 | I've got a few of these now — one per project, one per person I trade a lot of mail with. |
 | 94.4 | That's it for this week. |
-| 96.73 | Next week: colour-coding your inbox. |
+| 96.73 | Next up: color-coding your inbox. |

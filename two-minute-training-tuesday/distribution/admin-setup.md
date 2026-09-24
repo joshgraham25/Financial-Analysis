@@ -14,7 +14,7 @@ Access to `CLC Training` on the main site is not available yet, so the series
 starts in its own document library on the site Josh already controls:
 
 > `https://creativeliquidcoatingsfw.sharepoint.com/sites/ThomasFAnderson`
-> → new document library: **Two-Minute Training Tuesday**
+> → new document library: **Two-Minute Training**
 
 **A new library, deliberately NOT a folder inside the existing Thomas F Anderson
 Library.** That library holds per-app *data* folders — `Fleet`, `Finance_OPEX`,
@@ -26,7 +26,7 @@ is set read-for-all-staff in one place.
 
 **Steps:**
 
-1. Create a document library named **Two-Minute Training Tuesday**.
+1. Create a document library named **Two-Minute Training**.
 2. Set it **read for all staff**, contribute for the producer.
 3. Add one folder per application: `Excel/`, `Outlook/`, `Teams/`, `ERP/`,
    `Windows/` — matching [`../production/publishing.md`](../production/publishing.md).
@@ -49,7 +49,7 @@ search and read, no upload and no library or folder creation.
 ### Eventual home: `CLC Training` on the main site
 
 Verified 2026-08-24 by listing it — this is already the company's training-video
-home, organised one folder per programme:
+home, organized one folder per programme:
 
 | Existing folder | Size |
 | --- | --- |
@@ -85,7 +85,7 @@ and nothing else. Decide after seeing whether anyone browses SharePoint directly
 
 **Right now no grant is needed.** The sender is configured as:
 
-> `Two-Minute Training Tuesday <JoshGraham@creativeliquidcoatings.com>`
+> `Two-Minute Training <JoshGraham@creativeliquidcoatings.com>`
 
 A display name over an address you own is entirely legitimate — it is not
 spoofing, it needs no permission, and it will pass DMARC. It also means the first

@@ -64,7 +64,7 @@ folder instead: it matches internal training mail by construction.
 date. That is a far stronger proof of "nothing moved" than the original plan of clicking back to
 the Inbox: you simply point at the tags.
 
-It also **removes the one shot no setting could sanitise.** The old script needed the live Inbox on
+It also **removes the one shot no setting could sanitize.** The old script needed the live Inbox on
 camera, with whatever arrived that morning sitting around the target message. It no longer does.
 
 **What the tags actually say, as of 2026-09-17:** the 12 results come from **Sent Items** and
@@ -89,7 +89,7 @@ replaces filing.
 
 It is also genuinely Josh's own problem — the **Two Minute Tuesday Ideas** subfolder he
 files idea emails into by hand. A real habit rather than an invented scenario is what made
-002's cost-centre drop-down land.
+002's cost-center drop-down land.
 
 ## Structure
 
@@ -112,7 +112,7 @@ Your voice is the metronome; Andrew speaks the final cut.
 
 | Time | Say | On screen |
 | --- | --- | --- |
-| 0:00 | "Welcome to Two-Minute Training Tuesday." | Outlook, folder list visible |
+| 0:00 | "Welcome to Two-Minute Training." | Outlook, folder list visible |
 | 0:04 | "This folder holds every training idea anyone sends me." | Click **Two Minute Tuesday Ideas** |
 | 0:09 | "Every one of these got here because I moved it by hand." | Scroll the short list |
 | 0:14 | "And the ones I never filed are scattered everywhere else." | — |
@@ -136,7 +136,7 @@ Your voice is the metronome; Andrew speaks the final cut.
 | 1:51 | "So deleting a message from here deletes the real message. That's the one catch." | — |
 | 1:58 | "I've got a few of these now — one per project, one per person I trade a lot of mail with." | **The folder pane only — do not open them** |
 | — | **Over the recap card:** "That's it for this week." | Recap card |
-| — | **Over the recap card:** "Next week: colour-coding your inbox." | Recap card |
+| — | **Over the recap card:** "Next up: color-coding your inbox." | Recap card |
 
 The last two lines are prefixed `>` in `captions.md` so they are cut from the picture and
 spoken over the card — see 002.

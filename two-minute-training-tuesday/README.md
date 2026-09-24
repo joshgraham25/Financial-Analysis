@@ -1,11 +1,16 @@
-# Two-Minute Training Tuesday
+# Two-Minute Training
 
 A weekly two-minute video showing one trick, shortcut, or better habit in the
 software we use every day — the ERP, Outlook, Teams, Excel, Windows itself.
 
-One tip. One video. Under two minutes. Every Tuesday.
+One tip. One video. Under two minutes.
 
 ## Why this name
+
+**Renamed 2026-09-23, at Josh's request: the series is no longer pinned to
+Tuesday.** It is now simply **Two-Minute Training**, and it goes out when an
+episode is ready rather than on a fixed day. What follows is why the original
+name was chosen, kept because the reasoning still explains most of the name.
 
 Four candidates were on the table originally: *The Shortcut*, *Tech Tip
 Tuesday*, *Two-Minute Tuesday*, and *Work Smarter Weekly*. **Two-Minute
@@ -14,16 +19,23 @@ Tuesday** won for three reasons:
 1. **It answers the only real objection up front.** Nobody skips a video because
    they don't want to learn — they skip it because they don't know if it will
    cost them two minutes or fifteen. The name removes that question.
-2. **It sets the cadence.** People learn when to expect it, which is what turns
-   a series into a habit instead of a broadcast.
+2. **It set the cadence.** People learn when to expect it, which is what turns
+   a series into a habit instead of a broadcast. **This is the one the rename
+   gives up** — see below.
 3. **It disciplines the producer.** The title is a promise with a number in it.
    You cannot ship a six-minute episode, so scope creep dies at the scripting
    stage.
 
-**"Training" was added afterwards, deliberately**, making it *Two-Minute
-Training Tuesday*. It says plainly what the series is to someone who has never
-seen an episode, and it sits alongside CLC's other training material instead of
-looking like a stray video series.
+**"Training" was added afterwards, deliberately.** It says plainly what the
+series is to someone who has never seen an episode, and it sits alongside CLC's
+other training material instead of looking like a stray video series.
+
+**What dropping "Tuesday" costs, stated plainly rather than forgotten:** reason 2
+above was real. A fixed day is what makes a series a habit; without it, each
+episode has to earn attention on its own. The trade is honesty — a promise of
+"every Tuesday" that slips is worse than no promise, and it blocked doing two in
+a week when there were two worth doing. Episodes 001 and 002 shipped under the
+old name and still say it out loud; that is history, not drift.
 
 That choice costs something, and the cost is worth stating rather than
 forgetting: the number now arrives third instead of second, and "training"
@@ -34,7 +46,7 @@ runtime is a contract either way.
 
 Two things follow from that tradeoff. The spoken tagline leads with the
 invitation, not the obligation. And the two-minute hard stop matters *more* under
-this name, not less — a six-minute "Two-Minute Training Tuesday" would read as
+this name, not less — a six-minute "Two-Minute Training" would read as
 exactly the kind of mandatory training nobody watches.
 
 ## The rules that keep it watchable
@@ -42,7 +54,7 @@ exactly the kind of mandatory training nobody watches.
 | Rule | Why |
 | --- | --- |
 | Hard stop at 2:00, aim for 1:45 | The name is a contract. Over 2:00 and you have broken it. |
-| One tip per episode | Two tips means neither gets remembered. Split it into two Tuesdays. |
+| One tip per episode | Two tips means neither gets remembered. Split it into two episodes. |
 | Open with the pain, not the feature | "Stop using copy and pasting to get a unique list" beats "Today we'll learn UNIQUE." |
 | Real company data, never `Foo`/`Bar` | People adopt what they recognize. Use job numbers, cost centers, real vendors. |
 | No intro music, no logo animation | Eight seconds of branding on a 120-second video is 7% of the runtime. |
@@ -100,7 +112,7 @@ project are all reused.
 
 ## Roles
 
-Keep this to one owner and one reviewer. More people means slower Tuesdays.
+Keep this to one owner and one reviewer. More people means slower turnaround.
 
 - **Producer** — picks the tip from the backlog, scripts, records, edits, publishes.
 - **Reviewer** — watches once before publish, checking only two things: is it

@@ -139,7 +139,7 @@ Name the outcome, not the feature. The feature name goes in the subtitle.
 Not optional, and cheap to get right.
 
 - Burned-in captions, proofread.
-- Never rely on colour alone to point at something — say the cell reference out
+- Never rely on color alone to point at something — say the cell reference out
   loud: "cell H1", not "the green one".
 - Keep contrast high on title and recap cards.
 - Post a one-paragraph written summary alongside every video, with the formula

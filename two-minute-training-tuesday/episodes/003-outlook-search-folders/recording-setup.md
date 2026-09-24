@@ -6,6 +6,28 @@ why it is a pre-flight list rather than a style note.
 
 Run through it once, glance at the screen, *then* record.
 
+## The demo folder — the standing answer for Outlook episodes
+
+**Josh, 2026-09-22.** Do not point the camera at a live Inbox. Copy hand-picked, vetted
+messages into a folder kept for this, and record that.
+
+This replaces hoping the view happens to be clean. 003's payoff shot was safe only because a
+Search Folder happened to contain nothing but training mail — luck, not a method — and the same
+episode shipped a cut with 401k audit, a subject reading "Confidential Information", K-1s and
+two LOIs legible in the Inbox behind the folder pane.
+
+- **Copy, never move.** Right-click → *Copy to folder*. Moving rearranges the real mailbox to
+  make a video and leaves the originals missing from where they belong.
+- **Pick for the lesson, not just for safety.** A rule that colors or filters needs rows that
+  match and rows that do not, or there is nothing to see. Check that while picking.
+- **Copies keep real senders and subjects**, so each one is a judgement — which is exactly why
+  a human picks them.
+- **Spread the dates** so Outlook renders its normal "Today / Last week" headers instead of one
+  flat block.
+- **Name it so it reads naturally on camera.** `Demo` or `Test` in the folder pane undercuts
+  the tip.
+- **Reuse it.** It is a standing asset for every Outlook episode, not a per-episode chore.
+
 ## After rendering — read every shot before anyone else does
 
 **This is not optional, and it is the step that failed twice on 003.** Technical checks
@@ -38,7 +60,7 @@ leak except the two named at the bottom, which no setting can reach.
 | 3 | **Conversation view → off** | `Settings → Mail → Layout` | Messages stop stacking, so clicking one cannot expand a thread of replies you did not plan to show |
 | 4 | **Focused Inbox → off** | `Settings → Mail → Layout → Message organization` | One list instead of two tabs. Fewer surprises, and the Inbox shot becomes predictable |
 | 5 | **Desktop notifications → off** | `Settings → General → Notifications` | A toast carries a sender and a subject line and lands wherever it likes. Unmissable on camera and impossible to remove afterwards |
-| 6 | **Windows Do Not Disturb → on** | Windows notification centre | Covers Teams, Outlook desktop and everything else that can pop a toast mid-take |
+| 6 | **Windows Do Not Disturb → on** | Windows notification center | Covers Teams, Outlook desktop and everything else that can pop a toast mid-take |
 
 **What the settings cannot fix — two shots that still need your eyes:**
 

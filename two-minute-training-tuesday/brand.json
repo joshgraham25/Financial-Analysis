@@ -1,5 +1,5 @@
 {
-  "_comment": "Single source of truth for Two-Minute Training Tuesday brand colors. Values are taken from the CLC platform theme (clc-theme.css in clc-webapp-starter, the design-standard source of truth) so the videos match the internal apps. Change these six values and re-run the episode's make_video.py and build_demo_workbook.py to restyle everything. The Excel UI itself (its green, its greys, its blue spill borders) is deliberately NOT themed -- recoloring Excel's own chrome makes a screencast look fake.",
+  "_comment": "Single source of truth for Two-Minute Training brand colors. Values are taken from the CLC platform theme (clc-theme.css in clc-webapp-starter, the design-standard source of truth) so the videos match the internal apps. Change these six values and re-run the episode's make_video.py and build_demo_workbook.py to restyle everything. The Excel UI itself (its green, its greys, its blue spill borders) is deliberately NOT themed -- recoloring Excel's own chrome makes a screencast look fake.",
   "dark": "#15171c",
   "accent": "#e0303e",
   "header": "#a8121f",

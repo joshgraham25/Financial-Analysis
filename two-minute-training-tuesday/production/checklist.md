@@ -1,9 +1,9 @@
 # Episode checklist
 
 Print it, or keep it open in a second window. Working the list is what makes
-Tuesday boring, and boring is the goal.
+each episode boring, and boring is the goal.
 
-## Pick (Friday before)
+## Pick (a few days ahead)
 
 - [ ] Pull the next tip from [`../backlog.md`](../backlog.md)
 - [ ] Confirm it is genuinely one tip, not two
@@ -11,7 +11,7 @@ Tuesday boring, and boring is the goal.
 - [ ] Copy [`../templates/episode-script-template.md`](../templates/episode-script-template.md)
       to `../episodes/###-slug/script.md`
 
-## Script (Monday)
+## Script
 
 - [ ] Write the pain in the audience's words, not the software's
 - [ ] Payoff shown by 0:20
@@ -20,7 +20,7 @@ Tuesday boring, and boring is the goal.
 - [ ] Demo file prepared and saved in the episode folder
 - [ ] Rehearse the click path twice
 
-## Record (Tuesday morning)
+## Record
 
 - [ ] Display resolution 1920×1080
 - [ ] Excel zoom 130–150%, ribbon collapsed
@@ -43,7 +43,7 @@ Tuesday boring, and boring is the goal.
 - [ ] **Watched the exported file end to end** (not the preview)
 - [ ] Runtime confirmed under 2:00
 
-## Publish (Tuesday, before lunch)
+## Publish (morning, before lunch)
 
 - [ ] Uploaded to the Teams channel
 - [ ] Written summary posted with it, including the formula or click path as text
@@ -56,5 +56,5 @@ Tuesday boring, and boring is the goal.
 - [ ] At least **one finished evergreen episode** sitting unpublished
 
 This is the whole insurance policy against the weekday in the name. When a
-Tuesday gets swallowed by a real emergency, you publish from the bank and refill
+a week gets swallowed by a real emergency, you publish from the bank and refill
 it later.
