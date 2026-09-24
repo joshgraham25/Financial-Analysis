@@ -1,10 +1,10 @@
 {
   "_comment": "The episode catalogue. One source of truth, read by both the Hub section and the weekly email job, so a title or link is never written down twice. Hand-maintained: add an entry when an episode publishes. `videoUrl` is the SharePoint item URL and stays empty until the file is uploaded -- the email job refuses to send an episode whose videoUrl is empty rather than mailing a dead link.",
   "series": {
-    "name": "Two-Minute Training Tuesday",
-    "tagline": "One tip. One video. Under two minutes. Every Tuesday.",
+    "name": "Two-Minute Training",
+    "tagline": "One tip. One video. Under two minutes.",
     "sender": {
-      "displayName": "Two-Minute Training Tuesday",
+      "displayName": "Two-Minute Training",
       "address": "JoshGraham@creativeliquidcoatings.com",
       "_comment": "Display name over an address Josh owns -- legitimate, and no Send As grant needed. Switching the address to the Mr. Bean finance alias later DOES need Send As on that mailbox; see distribution/admin-setup.md. Never put the Mr. Bean display name over this address -- that is the spoofing shape that renders as 'on behalf of' and can fail DMARC."
     },
@@ -83,6 +83,26 @@
       "attachments": [],
       "summary": "A Search Folder is a saved search that looks like a folder, so mail collects itself instead of being filed by hand. It finds the emails you forgot to file — and because nothing moves, deleting from it deletes the real message.",
       "_comment": "Scripted 2026-09-08, not yet recorded. This entry exists ahead of the recording on purpose: overlay_episode.py reads the title and recap card text from here, and refuses to run for an episode that is not in the catalogue. runtime, videoFile and captionsFile stay null until there is a cut; videoUrl stays empty so the weekly email job skips it rather than mailing a dead link."
+    },
+    {
+      "number": 4,
+      "slug": "004-outlook-conditional-formatting",
+      "title": "Color-code your inbox without moving a thing",
+      "app": "Outlook",
+      "tip": "Conditional formatting",
+      "recap": [
+        "Settings → Mail → Conditional formatting",
+        "Name it, pick a condition, pick a color",
+        "One rule can hold several people",
+        "Nothing moves — it only marks"
+      ],
+      "runtime": "1:15",
+      "published": null,
+      "videoFile": "TMTT-004-Outlook-Conditional-Formatting.mp4",
+      "videoUrl": "",
+      "captionsFile": null,
+      "attachments": [],
+      "summary": "A conditional formatting rule paints matching messages a color in the message list instead of filing them. The mail never moves and nothing is filtered — the list stays in the same order, it just stops shouting equally."
     }
   ]
 }

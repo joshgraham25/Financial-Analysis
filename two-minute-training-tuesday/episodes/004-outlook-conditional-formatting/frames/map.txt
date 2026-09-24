@@ -1,0 +1,21 @@
+# One frame per spoken PICTURE line, in order (see lines.md).
+# 19 entries for 21 lines -- the last two are the outro and play over the recap card.
+s01_list        # 1  Welcome
+s01_list        # 2  Six emails, all equally important
+s01_list        # 3  people I can't afford to miss
+s01_list        # 4  Outlook will mark them
+s05_cf          # 5  Settings > Mail > Conditional formatting
+s06_add         # 6  Add rule
+s07_name        # 7  Name it first
+s08_cond        # 8  the condition list
+s09_from        # 9  From, several people in one rule
+s10_people      # 10 Stephen and Abe
+s11_fmt         # 11 the formatting / modification list
+s12_palette     # 12 Cranberry - the palette
+s13_cranberry   # 13 Save (preview already recoloured)
+s15_after       # 14 Now look at the list
+s15_after       # 15 Theirs stand out
+s15_after       # 16 Nothing moved
+s15_after       # 17 the difference from a rule
+s08_cond        # 18 there's one for being copied in
+s14_saved       # 19 they run top to bottom (the arrows)
