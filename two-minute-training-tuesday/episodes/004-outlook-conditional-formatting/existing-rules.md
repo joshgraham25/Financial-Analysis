@@ -54,3 +54,28 @@ nothing about bold reached the script.
   "Please enter a name."
 - The people field is free text — type the **full address and press Enter**. Clicking the
   suggestion does not commit it.
+
+## How these frames were actually produced — re-derived 2026-09-24
+
+Recorded because it was written down nowhere and had to be brute-forced back out of the
+committed frames by searching for the offset that reproduced one pixel-for-pixel.
+
+```
+.\production\capture_window.ps1 -Size 1936x1400          # once, before the first grab
+.\production\capture_window.ps1 -Name s01_list -OutDir episodes/004-.../frames/raw
+python production/prepare_frames.py --in frames/raw --out frames/clean \
+       --page-top 128 --modal s05 s06 s07 s08 s09 s10 s11 s12 s13 s14
+```
+
+- Raw frames are **1936x1380** — a windowed capture, not fullscreen. The work area caps the
+  height, so `-Size 1936x1400` yields 1380.
+- **`--page-top 128`** is the row where the page starts, below Chrome's tab strip and address
+  bar. Verified exact: re-running `prepare` on `raw/s08_cond.png` at 128 with `--modal`
+  reproduces `clean/s08_cond.png` with zero differing pixels. 126 or 130 differ by ~157,000.
+- `--modal` applies to every frame with the settings dialog open, i.e. everything except
+  `s01_list` and `s15_after`.
+
+**The `Finance` rule was DISABLED for the whole capture and re-enabled afterwards.** This is
+not cosmetic and is not optional to reproduce: with it on, Feddeler and Wilson render light
+green, and in the committed frames they are blue. Any additional frame captured with `Finance`
+enabled will not cut together with the existing ones.

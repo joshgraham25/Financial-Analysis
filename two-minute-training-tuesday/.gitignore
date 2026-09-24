@@ -28,3 +28,6 @@ episodes/*/frames/render.log
 
 # scratch grabs taken while aiming a shot
 episodes/*/frames/_*.png
+
+# python bytecode
+production/__pycache__/

@@ -25,8 +25,8 @@
 .PARAMETER Match
   Regex matched against process MainWindowTitle. Default 'Outlook'.
 
-.PARAMETER Process
-  Process name to search. Default 'chrome'.
+.PARAMETER WindowClass
+  Top-level window class to enumerate. Default 'Chrome_WidgetWin_1', Chrome's frame.
 
 .PARAMETER OutDir
   Directory for the PNG. Created if missing.
@@ -47,7 +47,7 @@
 param(
     [string]$Name,
     [string]$Match = 'Outlook',
-    [string]$ProcessName = 'chrome',
+    [string]$WindowClass = 'Chrome_WidgetWin_1',
     [string]$OutDir = '.',
     [switch]$Fullscreen,
     [string]$Size
@@ -58,6 +58,8 @@ Add-Type -AssemblyName System.Drawing
 
 Add-Type @"
 using System;
+using System.Text;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 public class CapWin {
   [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr h, IntPtr dc, uint f);
@@ -66,17 +68,46 @@ public class CapWin {
   [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h,int c);
   [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
   [StructLayout(LayoutKind.Sequential)] public struct RECT { public int L,T,R,B; }
+
+  [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc cb, IntPtr l);
+  [DllImport("user32.dll", CharSet=CharSet.Unicode)] static extern int GetWindowTextW(IntPtr h, StringBuilder s, int c);
+  [DllImport("user32.dll", CharSet=CharSet.Unicode)] static extern int GetClassNameW(IntPtr h, StringBuilder s, int c);
+  [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr h);
+  delegate bool EnumProc(IntPtr h, IntPtr l);
+  public class Win { public IntPtr Handle; public string Title; }
+
+  public static List<Win> FindWindows(string cls) {
+    var found = new List<Win>();
+    EnumWindows((h, l) => {
+      if (!IsWindowVisible(h)) return true;
+      var c = new StringBuilder(256); GetClassNameW(h, c, 256);
+      if (c.ToString() != cls) return true;
+      var t = new StringBuilder(1024); GetWindowTextW(h, t, 1024);
+      if (t.Length > 0) found.Add(new Win { Handle = h, Title = t.ToString() });
+      return true;
+    }, IntPtr.Zero);
+    return found;
+  }
 }
 "@
 
-$proc = Get-Process $ProcessName -ErrorAction SilentlyContinue |
-        Where-Object { $_.MainWindowTitle -match $Match } |
-        Select-Object -First 1
-if (-not $proc) {
-    throw "No '$ProcessName' window whose title matches '$Match'. Open it, and note the title " +
-          "follows the ACTIVE tab -- a background tab will not match."
+# Enumerate top-level windows rather than asking Get-Process for MainWindowTitle.
+# Chrome spreads its windows across several processes and only reports a title for one
+# of them, so the Get-Process form this script used at first could not see a window that
+# was plainly on screen -- it failed with "no window matches" while the Outlook window
+# was sitting right there. Class name Chrome_WidgetWin_1 is Chrome's top-level frame.
+$found = [CapWin]::FindWindows($WindowClass) | Where-Object { $_.Title -match $Match }
+if (-not $found) {
+    $seen = ([CapWin]::FindWindows($WindowClass) | ForEach-Object { "  - " + $_.Title }) -join "`n"
+    throw ("No window whose title matches '$Match'.`nVisible windows of class " +
+           "'$WindowClass':`n$seen`n`nNote the title follows the ACTIVE tab -- a " +
+           "background tab will not match, so bring the tab you want to the front.")
 }
-$hwnd = $proc.MainWindowHandle
+if ($found.Count -gt 1) {
+    $list = ($found | ForEach-Object { "  - " + $_.Title }) -join "`n"
+    throw "'$Match' matches more than one window; narrow -Match.`n$list"
+}
+$hwnd = [IntPtr]$found[0].Handle
 
 if ($Fullscreen) {
     [CapWin]::SetForegroundWindow($hwnd) | Out-Null
