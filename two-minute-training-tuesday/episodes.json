@@ -75,11 +75,11 @@
         "Add Inbox, Sent and Deleted — or it misses them",
         "Nothing moves — the tag shows where it lives"
       ],
-      "runtime": "1:35",
+      "runtime": "1:42",
       "published": null,
       "videoFile": "TMTT-003-Outlook-Search-Folders.mp4",
       "videoUrl": "",
-      "captionsFile": "TMTT-003-Outlook-Search-Folders.srt",
+      "captionsFile": null,
       "attachments": [],
       "summary": "A Search Folder is a saved search that looks like a folder, so mail collects itself instead of being filed by hand. It finds the emails you forgot to file — and because nothing moves, deleting from it deletes the real message.",
       "_comment": "Scripted 2026-09-08, not yet recorded. This entry exists ahead of the recording on purpose: overlay_episode.py reads the title and recap card text from here, and refuses to run for an episode that is not in the catalogue. runtime, videoFile and captionsFile stay null until there is a cut; videoUrl stays empty so the weekly email job skips it rather than mailing a dead link."
