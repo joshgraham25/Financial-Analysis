@@ -31,3 +31,6 @@ episodes/*/frames/_*.png
 
 # python bytecode
 production/__pycache__/
+
+# overlay pass log, regenerated every render
+episodes/*/frames/overlay.log
