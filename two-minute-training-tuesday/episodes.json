@@ -76,13 +76,14 @@
         "Nothing moves — the tag shows where it lives"
       ],
       "runtime": "1:42",
-      "published": null,
+      "published": "2026-09-25",
       "videoFile": "TMTT-003-Outlook-Search-Folders.mp4",
-      "videoUrl": "",
+      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/_layouts/15/stream.aspx?id=%2Fsites%2FCLCMainSite%2FShared%20Documents%2FCLC%20Training%2FTwo-Minute%20Training%2FTMTT-003-Outlook-Search-Folders.mp4",
       "captionsFile": null,
       "attachments": [],
       "summary": "A Search Folder is a saved search that looks like a folder, so mail collects itself instead of being filed by hand. It finds the emails you forgot to file — and because nothing moves, deleting from it deletes the real message.",
-      "_comment": "Scripted 2026-09-08, not yet recorded. This entry exists ahead of the recording on purpose: overlay_episode.py reads the title and recap card text from here, and refuses to run for an episode that is not in the catalogue. runtime, videoFile and captionsFile stay null until there is a cut; videoUrl stays empty so the weekly email job skips it rather than mailing a dead link."
+      "_comment": "Scripted 2026-09-08, not yet recorded. This entry exists ahead of the recording on purpose: overlay_episode.py reads the title and recap card text from here, and refuses to run for an episode that is not in the catalogue. runtime, videoFile and captionsFile stay null until there is a cut; videoUrl stays empty so the weekly email job skips it rather than mailing a dead link.",
+      "publishedFileName": "TMTT-003-Outlook-Search-Folders.mp4"
     },
     {
       "number": 4,
@@ -97,12 +98,13 @@
         "Nothing moves — it only marks"
       ],
       "runtime": "1:59",
-      "published": null,
+      "published": "2026-09-25",
       "videoFile": "TMTT-004-Outlook-Conditional-Formatting.mp4",
-      "videoUrl": "",
+      "videoUrl": "https://creativeliquidcoatingsfw.sharepoint.com/sites/CLCMainSite/_layouts/15/stream.aspx?id=%2Fsites%2FCLCMainSite%2FShared%20Documents%2FCLC%20Training%2FTwo-Minute%20Training%2FTMTT-004-Outlook-Conditional-Formatting.mp4",
       "captionsFile": null,
       "attachments": [],
-      "summary": "A conditional formatting rule paints matching messages a color in the message list instead of filing them. The mail never moves and nothing is filtered — the list stays in the same order, it just stops shouting equally."
+      "summary": "A conditional formatting rule paints matching messages a color in the message list instead of filing them. The mail never moves and nothing is filtered — the list stays in the same order, it just stops shouting equally.",
+      "publishedFileName": "TMTT-004-Outlook-Conditional-Formatting.mp4"
     }
   ]
 }
