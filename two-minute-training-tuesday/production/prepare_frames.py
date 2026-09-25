@@ -48,6 +48,33 @@ REMINDER = (1600, 24, 1920, 132)     # next-meeting widget, relative to the page
                                      # exactly like a box that worked.
 MODAL_STRIP = (1598, 300, 1920, 1080)  # live mail visible past the settings dialog
 
+# Fullscreen capture (F11) is a different layout from the windowed one above -- no browser
+# chrome, so the page starts at row 0 and everything sits higher and wider. Measured on
+# 1920x1080, 2026-09-25. Do not reuse the windowed constants here; they miss.
+REMINDER_FS = (1600, 30, 1920, 100)
+MODAL_STRIP_FS = (1600, 250, 1920, 1080)   # the settings dialog's right edge is x=1600
+
+
+def clamp(box, w, h):
+    """Keep a shifted mask inside the image. Offsetting a box that already reaches the
+    bottom edge pushes it past it, and PIL raises on the fill-colour probe rather than
+    silently doing nothing."""
+    x0, y0, x1, y1 = box
+    return (max(0, min(x0, w - 1)), max(0, min(y0, h - 1)),
+            max(0, min(x1, w - 1)), max(0, min(y1, h - 1)))
+
+
+def offset(box, dy):
+    """Shift a mask down by dy.
+
+    The debug banner pushes the whole page down without changing anything else, and the
+    banner is painted over in place rather than cropped, so page-relative boxes have to move
+    with it. A frame WITH the banner and one WITHOUT need different boxes -- which is the
+    same per-frame-not-once lesson as the banner itself.
+    """
+    x0, y0, x1, y1 = box
+    return (x0, y0 + dy, x1, y1 + dy)
+
 
 def banner_bottom(im: Image.Image) -> int:
     """Last row of Chrome's infobar, or 0 when it is not showing.
@@ -67,7 +94,8 @@ def banner_bottom(im: Image.Image) -> int:
     return max(rows) + 10 if rows else 0
 
 
-def prepare(src: Path, dst: Path, modal: bool = False, page_top: int = 0) -> dict:
+def prepare(src: Path, dst: Path, modal: bool = False, page_top: int = 0,
+            fullscreen: bool = False) -> dict:
     im = Image.open(src).convert("RGB")
     if page_top:
         # Windowed capture: cut the browser's own chrome (tabs, address bar,
@@ -99,9 +127,11 @@ def prepare(src: Path, dst: Path, modal: bool = False, page_top: int = 0) -> dic
         im = out
 
     d = ImageDraw.Draw(im)
-    d.rectangle(REMINDER, fill=im.getpixel((REMINDER[0] - 40, REMINDER[1] + 4)))
+    rem = clamp(offset(REMINDER_FS, top), im.width, im.height) if fullscreen else REMINDER
+    strip = clamp(offset(MODAL_STRIP_FS, top), im.width, im.height) if fullscreen else MODAL_STRIP
+    d.rectangle(rem, fill=im.getpixel((rem[0] - 40, rem[1] + 4)))
     if modal:
-        d.rectangle(MODAL_STRIP, fill=im.getpixel((MODAL_STRIP[2] - 40, MODAL_STRIP[3] - 40)))
+        d.rectangle(strip, fill=im.getpixel((strip[2] - 40, strip[3] - 40)))
 
     dst.parent.mkdir(parents=True, exist_ok=True)
     im.save(dst)
@@ -116,6 +146,9 @@ def main() -> None:
     ap.add_argument("--page-top", type=int, default=0, dest="page_top",
                     help="row where the app's own UI starts in a WINDOWED capture, i.e. below "
                          "the browser chrome. 0 for a fullscreen capture, which has none.")
+    ap.add_argument("--fullscreen", action="store_true",
+                    help="frames came from an F11 fullscreen capture, which has no browser "
+                         "chrome and a different mask geometry. Use with --page-top 0.")
     ap.add_argument("--modal", nargs="*", default=[],
                     help="name prefixes of frames where a settings dialog is open, so the "
                          "strip of live mail beside it is masked")
@@ -128,7 +161,7 @@ def main() -> None:
 
     for f in files:
         modal = any(f.stem.startswith(m) for m in args.modal)
-        n = prepare(f, Path(args.dst) / f.name, modal, args.page_top)
+        n = prepare(f, Path(args.dst) / f.name, modal, args.page_top, args.fullscreen)
         bits = []
         if n["banner"]:
             bits.append(f"banner {n['banner']}px")

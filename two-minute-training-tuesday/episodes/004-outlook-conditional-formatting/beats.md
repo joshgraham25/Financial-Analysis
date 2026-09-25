@@ -6,23 +6,35 @@ each held for exactly as long as Andrew takes to read its line.
 | Start | Text |
 | --- | --- |
 | 0.0 | Welcome to Two-Minute Training. |
-| 2.35 | Six emails, and every one of them looks exactly as important as the others. |
-| 7.33 | But there are people I can't afford to miss. |
-| 10.16 | Outlook will mark them for me, if I ask it once. |
-| 13.78 | Settings, then Mail, then Conditional formatting. |
-| 17.61 | Add rule. |
-| 19.93 | Name it first — it won't let you go on without one. |
-| 23.6 | Then the condition. There's a whole list of these. |
-| 26.83 | From. And one rule takes several people, so I don't need one each. |
-| 31.58 | Stephen, and Abe. |
-| 33.9 | Then the formatting. Font color. |
-| 36.58 | Cranberry. Watch the sample change as I pick it. |
-| 40.03 | Save. |
-| 41.32 | Now look at the list. |
-| 43.64 | Theirs stand out. Everything else is exactly where it was. |
-| 47.55 | Nothing moved. Nothing got filtered. Same list, same order. |
-| 52.18 | That's the difference from a rule. A rule hides things. This just marks them. |
-| 57.16 | There's one for being copied in, too — I'm not on the To line fades those back. |
-| 62.63 | And they run top to bottom, so the first rule to match wins. |
-| 66.82 | That's it for this week. |
-| 69.14 | Next up: VLOOKUP and XLOOKUP. |
+| 2.35 | Five emails, and every one of them looks exactly as important as the others. |
+| 7.43 | But there are people I can't afford to miss. |
+| 10.25 | Outlook will mark them for me, if I ask it once. |
+| 13.87 | Settings, then Mail, then Conditional formatting. |
+| 17.71 | Add rule. |
+| 20.03 | Name it first — it won't let you go on without one. |
+| 23.69 | Then the condition. There's a whole list of these. |
+| 26.93 | Sender, subject, importance — and whether my name is on the To line or the Cc line. |
+| 33.19 | From. And one rule takes several people, so I don't need one each. |
+| 37.93 | Stephen, and Abe. |
+| 40.25 | Then the formatting. |
+| 42.58 | Three kinds of change: the text color, the typeface, or a fill behind the whole row. |
+| 48.57 | No bold, and no font size. Those used to be here, and they aren't any more. |
+| 53.94 | Font color. It's a fixed set of named colors, not a color picker. |
+| 58.64 | Cranberry. Watch the sample change as I pick it. |
+| 62.09 | Save. |
+| 63.38 | Now look at the list. |
+| 65.7 | Two names in red, and I can find them from across the room. |
+| 69.65 | Everything else is exactly where it was. |
+| 72.48 | Nothing moved. Nothing got filtered. Same list, same order. |
+| 77.11 | That's the difference from a rule. A rule hides things. This just marks them. |
+| 82.09 | Now a second one, for the mail I'm only copied on. |
+| 85.71 | I'm not on the To line. |
+| 88.03 | And a quieter color this time. Silver. |
+| 91.12 | Save. |
+| 92.41 | That one's faded back. |
+| 94.73 | Grey doesn't mean unimportant. It means it wasn't addressed to me. |
+| 98.76 | Still there, still in order — it just stopped competing for my attention. |
+| 103.58 | And they run top to bottom, so the first rule to match wins. |
+| 107.77 | You can also switch one off without deleting it. |
+| 111.01 | That's it for this week. |
+| 113.33 | Next up: VLOOKUP and XLOOKUP. |
