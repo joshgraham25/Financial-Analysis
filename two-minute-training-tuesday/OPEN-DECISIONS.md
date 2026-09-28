@@ -171,6 +171,52 @@ Written before a context compaction so none of this depends on conversation memo
 4. **Delivery is still the real blocker** — see item 1. Two finished episodes are queued behind
    an email path that does not reach the distribution group.
 
+### 7. Does everyone actually have XLOOKUP? `Blocked`
+
+**Asked 2026-09-28, before recording 005.**
+
+**What is being asked.** Which Excel version does the company run? XLOOKUP needs **Microsoft
+365 or Office 2021**. On Office 2019 and earlier the function does not exist — the formula
+returns `#NAME?`.
+
+**Why it matters.** If a meaningful number of people are on 2019, the episode as scripted is
+not just less useful to them, it is actively annoying: two minutes on a function they cannot
+type. That is the fastest way to lose the audience the series has. The fix is cheap if known
+in advance (a fifteen-second INDEX/MATCH tail) and expensive afterwards (a re-record, which
+is exactly what 003 is stuck in).
+
+**Options.**
+
+1. **Confirm M365 across the board**, record as scripted. Best case, no change.
+2. **Mixed estate** — add a closing beat: "on an older Excel this is INDEX and MATCH, and
+   here it is." Costs ~15s of a 2:00 budget, so something else gets cut.
+3. **Mostly 2019** — 005 becomes the INDEX/MATCH episode instead, and XLOOKUP waits for the
+   upgrade. 004's outro promised "VLOOKUP and XLOOKUP" on screen, so this needs saying out
+   loud in the episode rather than quietly swapping.
+
+**Recommendation: find out before recording.** IT will know in a minute; it is not worth
+guessing when the downside is a re-record.
+
+→ 
+
+### 8. 006 is Athena's request — confirm, and reply to her `Decision`
+
+**006 is "get rid of the blank rows", requested by Athena Lakis on 2026-09-01** in a reply to
+001. It has now been deferred **twice** — passed over at 003 and again at 004 — against the
+backlog's own rule that a tip somebody asked for beats a tip we chose.
+
+**Why it matters.** 005's outro has to name 006 on screen, so this gets committed the moment
+005 renders. And more importantly: being visibly answered is most of the value of taking
+requests at all. Three deferrals with no reply teaches people not to bother.
+
+**Options.** Confirm 006 as the blank-rows episode; or pick something else and tell her when
+hers lands.
+
+**Recommendation: confirm it, and send her a one-line reply now** rather than when it
+publishes — "it's next, here's roughly when" costs nothing and buys the next request.
+
+→ 
+
 ## Settled
 
 Kept because the reasoning is the useful part, and because a later session will otherwise re-litigate
