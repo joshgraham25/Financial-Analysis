@@ -27,6 +27,8 @@
 
 .PARAMETER WindowClass
   Top-level window class to enumerate. Default 'Chrome_WidgetWin_1', Chrome's frame.
+  Excel is 'XLMAIN'. The default is a browser class, so capturing any other app without
+  setting this reports "no window matches" while the window is plainly on screen.
 
 .PARAMETER OutDir
   Directory for the PNG. Created if missing.

@@ -95,7 +95,7 @@ def banner_bottom(im: Image.Image) -> int:
 
 
 def prepare(src: Path, dst: Path, modal: bool = False, page_top: int = 0,
-            fullscreen: bool = False) -> dict:
+            fullscreen: bool = False, no_masks: bool = False) -> dict:
     im = Image.open(src).convert("RGB")
     if page_top:
         # Windowed capture: cut the browser's own chrome (tabs, address bar,
@@ -126,12 +126,17 @@ def prepare(src: Path, dst: Path, modal: bool = False, page_top: int = 0,
         out.paste(im.crop((0, im.height - 1, W, im.height)).resize((W, down)), (0, up + im.height))
         im = out
 
-    d = ImageDraw.Draw(im)
-    rem = clamp(offset(REMINDER_FS, top), im.width, im.height) if fullscreen else REMINDER
-    strip = clamp(offset(MODAL_STRIP_FS, top), im.width, im.height) if fullscreen else MODAL_STRIP
-    d.rectangle(rem, fill=im.getpixel((rem[0] - 40, rem[1] + 4)))
-    if modal:
-        d.rectangle(strip, fill=im.getpixel((strip[2] - 40, strip[3] - 40)))
+    # The masks below are Outlook's: a next-meeting widget top right, and live mail beside a
+    # settings dialog. An Excel capture has neither, and painting the reminder box over a
+    # spreadsheet blanks part of the ribbon -- so --no-masks skips them. Banner cropping and
+    # the size normalisation still apply; the debug bar belongs to the browser, not the app.
+    if not no_masks:
+        d = ImageDraw.Draw(im)
+        rem = clamp(offset(REMINDER_FS, top), im.width, im.height) if fullscreen else REMINDER
+        strip = clamp(offset(MODAL_STRIP_FS, top), im.width, im.height) if fullscreen else MODAL_STRIP
+        d.rectangle(rem, fill=im.getpixel((rem[0] - 40, rem[1] + 4)))
+        if modal:
+            d.rectangle(strip, fill=im.getpixel((strip[2] - 40, strip[3] - 40)))
 
     dst.parent.mkdir(parents=True, exist_ok=True)
     im.save(dst)
@@ -146,6 +151,10 @@ def main() -> None:
     ap.add_argument("--page-top", type=int, default=0, dest="page_top",
                     help="row where the app's own UI starts in a WINDOWED capture, i.e. below "
                          "the browser chrome. 0 for a fullscreen capture, which has none.")
+    ap.add_argument("--no-masks", action="store_true", dest="no_masks",
+                    help="skip the Outlook-specific masks. Use for any app that is not Outlook "
+                         "on the web -- an Excel capture has no meeting reminder and no mail "
+                         "strip, and the reminder box would blank part of the ribbon.")
     ap.add_argument("--fullscreen", action="store_true",
                     help="frames came from an F11 fullscreen capture, which has no browser "
                          "chrome and a different mask geometry. Use with --page-top 0.")
@@ -161,7 +170,8 @@ def main() -> None:
 
     for f in files:
         modal = any(f.stem.startswith(m) for m in args.modal)
-        n = prepare(f, Path(args.dst) / f.name, modal, args.page_top, args.fullscreen)
+        n = prepare(f, Path(args.dst) / f.name, modal, args.page_top, args.fullscreen,
+                    args.no_masks)
         bits = []
         if n["banner"]:
             bits.append(f"banner {n['banner']}px")

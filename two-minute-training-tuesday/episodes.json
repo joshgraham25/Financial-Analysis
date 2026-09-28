@@ -118,15 +118,15 @@
         "It looks left, which VLOOKUP cannot",
         "Say what to show when it finds nothing"
       ],
-      "runtime": null,
+      "runtime": "1:41",
       "published": null,
-      "videoFile": null,
+      "videoFile": "TMTT-005-Excel-Xlookup.mp4",
       "videoUrl": "",
       "captionsFile": null,
       "attachments": [],
       "summary": "A VLOOKUP keeps working after someone inserts a column — it just returns the wrong column, with no error. XLOOKUP points at ranges instead of counting them, looks in either direction, and says so in English when it finds nothing.",
       "publishedFileName": null,
-      "_comment": "Scripted 2026-09-28, not yet recorded. 004's recap card promises this episode on screen, so the subject was committed before the script existed. runtime/videoFile/videoUrl stay empty until there is a cut; the Hub renders it as upcoming and the email job skips it. NEEDS A VERSION CHECK FIRST: XLOOKUP requires Microsoft 365 or Office 2021 and does not exist on 2019 -- see OPEN-DECISIONS."
+      "_comment": "Recorded and cut 2026-09-28 by driving Excel through COM and capturing the window with PrintWindow -- the same capture half as 003/004, only the driving changed. videoUrl stays empty until the file is uploaded to SharePoint; the Hub renders it as upcoming and the email job skips it."
     }
   ]
 }

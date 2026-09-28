@@ -1,0 +1,25 @@
+# One frame per spoken PICTURE line, in order (see lines.md).
+# 23 entries for 25 lines -- the last two are the outro and play over the recap card.
+s01_export      #  1 Welcome
+s01_export      #  2 a job cost export, and a little report
+s03_vlookup     #  3 the formula is a VLOOKUP
+s03_vlookup     #  4 twelve twenty-eight, and it's been right for months
+s04_inserted    #  5 somebody adds a column
+s04_inserted    #  6 not to the formula, to the sheet
+s05_wrong       #  7 look at the answer
+s05_wrong       #  8 twenty-one hundred
+s05_wrong       #  9 no error, no warning
+s05_wrong       # 10 that's a cost center
+s06_formulabar  # 11 VLOOKUP counts; five moved
+s07_xlookup     # 12 the same lookup as XLOOKUP
+s07_xlookup     # 13 nothing to count
+s09_holds       # 14 add another column, answer doesn't move
+s09_holds       # 15 there's a second thing it fixes
+s10_left        # 16 VLOOKUP only looks right
+s10_left        # 17 part number in, job number out -- VLOOKUP can't
+s10_left        # 18 XLOOKUP doesn't care which side
+s11_na          # 19 a job that isn't in the export
+s11_na          # 20 N/A, and you wrap it to hide it
+s12_notfound    # 21 XLOOKUP lets you say what to show
+s12_notfound    # 22 Not found, in English
+s12_notfound    # 23 no counting, either direction, tells you
