@@ -171,25 +171,33 @@ Written before a context compaction so none of this depends on conversation memo
 4. **Delivery is still the real blocker** — see item 1. Two finished episodes are queued behind
    an email path that does not reach the distribution group.
 
-### 8. 006 is Athena's request — confirm, and reply to her `Decision`
-
-**006 is "get rid of the blank rows", requested by Athena Lakis on 2026-09-01** in a reply to
-001. It has now been deferred **twice** — passed over at 003 and again at 004 — against the
-backlog's own rule that a tip somebody asked for beats a tip we chose.
-
-**Why it matters.** 005's outro has to name 006 on screen, so this gets committed the moment
-005 renders. And more importantly: being visibly answered is most of the value of taking
-requests at all. Three deferrals with no reply teaches people not to bother.
-
-**Options.** Confirm 006 as the blank-rows episode; or pick something else and tell her when
-hers lands.
-
-**Recommendation: confirm it, and send her a one-line reply now** rather than when it
-publishes — "it's next, here's roughly when" costs nothing and buys the next request.
-
-→ 
-
 ## Settled
+
+### 006 is TEXTSPLIT/TEXTJOIN, and the blank-rows request is declined — 2026-09-28
+
+**Josh: "no we aren't doing the blank row one" ... "lets do 017 next."** So 006 is
+**TEXTSPLIT and TEXTJOIN**, and 005's outro names it: "Next up: turning one messy cell into
+columns." Settled before the render, which is the whole point — 003 and 004 each shipped an
+outro nobody had agreed and each cost a re-render.
+
+**It is a good pairing.** 005 and 006 are both about Excel quietly mangling what came out of
+the ERP: one returns the wrong column without saying so, the other is the cell that arrives
+with three fields crammed into it. Two halves of the same weekly annoyance.
+
+**TEXTSPLIT is M365-only** — it does not exist in Office 2021, let alone 2019. It is only a
+safe subject because the estate was confirmed all-M365 the same day. Worth noting as the
+second episode in two to depend on that answer.
+
+**The declined request is recorded in the backlog's Retired section, not deleted.** The
+backlog's own rule is that a requested tip beats a chosen one, so declining Athena's is a
+deliberate override of that rule — twice deferred, then dropped. Writing down that it was a
+choice is what stops a future session "discovering" the rule and quietly re-queueing it.
+
+**Still outstanding: Athena has never been replied to**, four weeks after asking. That is the
+part worth fixing. Whatever the answer, being visibly answered is most of the value of taking
+requests at all; three silent deferrals and a drop teaches people not to bother. This needs a
+line from Josh, not from me.
+
 
 ### XLOOKUP is safe to use — answered 2026-09-28
 

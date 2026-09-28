@@ -11,8 +11,9 @@ are that seed's, so **re-check them if the workbook is ever regenerated with a d
 - Part `MNT-532` is on that same job, so the look-left demo agrees with the first demo
 - `J-9999` is not in the export
 
-**The outro names 006, which is not confirmed yet** — see OPEN-DECISIONS item 8. Do not
-render until it is; 003 and 004 both cost a re-render for exactly this.
+**006 is settled** (Josh, 2026-09-28): TEXTSPLIT and TEXTJOIN. The outro names it, so it is
+committed the moment this renders — which is the point of settling it first. 003 and 004 each
+cost a re-render for shipping an outro nobody had agreed.
 
 ---
 
@@ -40,3 +41,4 @@ XLOOKUP just lets you say what to show instead.
 Not found. In English, where anyone can read it.
 So: no counting, either direction, and it tells you when it finds nothing.
 That's it for this week.
+Next up: turning one messy cell into columns.
