@@ -1,0 +1,12 @@
+Item,Item Desc,Vendor,Lead Time,Purch Mult,QOH,Safety,UM
+PWD-RAL9005,"Powder, jet black RAL 9005",Tiger Drylac,21,500,1200,200,LB
+PWD-RAL7016,"Powder, anthracite RAL 7016",Tiger Drylac,21,500,3000,200,LB
+PWD-CLR-TC,"Clear topcoat powder",Sherwin,28,500,900,0,LB
+MSK-CAP-250,"Masking cap, 0.250 silicone",Caplugs,14,5000,1200,0,EA
+MSK-PLUG-375,"Masking plug, 0.375 silicone",Caplugs,14,,2400,0,EA
+MSK-CAP-500,"Masking cap, 0.500 silicone",Caplugs,14,5000,4800,0,EA
+HNG-C4,"C-hook, 4 in, 12 ga",Mid-States Wire,35,250,400,0,EA
+FST-M6-SS,"M6 x 16 SS cap screw",Fastenal,14,1000,2500,0,EA
+TAPE-GT-1,"Green polyester tape, 1 in",Uline,10,36,48,0,RL
+CTN-24X18,"Carton, 24 x 18 x 12",Uline,,50,300,0,EA
+RACK-BAR-6,"Rack load bar, 6 ft",Mid-States Wire,45,10,-20,0,EA
